@@ -16,12 +16,14 @@
 //=============================================================================================
 // TODO:
 // Get OLED screen printing text
-// Import some menu library
 // Set up controls
 // Allow for serial interface
 // Add bluetooth
 // App?
-// Add all color modes (lol)
+// Add all color modes
+// button.h?
+// 12v logic shifter for brakes and turn signals
+// Extra LED output lines
 
 
 //Libraries
@@ -133,6 +135,8 @@ void setup() {
   main.setItem(1,"Gauges","Choose a Gauge.");
   main.setItem(2,"Animations","Choose an LED Animation.");
   main.setItem(3,"Settings","Display current settings.");
+
+  loadSetting();
 }
 
 void loop() {
@@ -140,26 +144,7 @@ void loop() {
 
 }
 
-/*Menu - COMPLETE?
-// Structured like so:
-// Mode
-// - Car driven/gauge
-// - - Choose PID
-// - - - Gauge 1: One color, leds go from back to forward
-// - - - Gauge 2: One color, LEDs go from forward to back
-// - - - Gauge 3: Three colors, green bottom end, yellow middle and red for high
-// - - - etc...
-// - LED patterns
-// - - Solid color
-// - - Chasing colors
-// - - Rainbow
-// - - etc..
-// Settings
-// - Bluetooth
-// - - Bluetooth password
-// - - Pair new device
-// - Automatic driving shutoff (cuts lights when driving for legal reasons)
-*/
+//Menu - Possibly complete
 int menuSelect(Menu *m){
   //Initialize
   int select = 0;
@@ -283,6 +268,16 @@ float fetchCarData(int pid){
   return pidValue;
 }
 
+// Find valid PIDs for connected vehicle
+
+// Select a PID via menu
+
+// LED Color selection
+
+// LED Speed selection
+
+// LED Brightness selection
+
 //Sends text to screen - Used for errors and some other popups
 void pError(char *eText){
   int8_t textLen = sizeof(eText);
@@ -302,7 +297,9 @@ void saveSetting(){
   pError("Settings Saved");
 }
 
+//EEPROM - Reset
+
 //Take input from joystick and button(s)
 int8_t getInput(){
-  //TODO: Create bit mask thing for inputs, debouncer
+  
 }
