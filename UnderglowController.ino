@@ -66,6 +66,7 @@
 #define SELECT 4
 #define BACK 5
 //LEDS
+//It's assumed SIDE LEDs start near front of vehicle, and 
 #define LED_TYPE WS2811
 #define COLOR_ORDER GRB
 #define SIDELEDCOUNT 30
