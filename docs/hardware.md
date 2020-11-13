@@ -31,26 +31,28 @@ Hardware descriptions and pinouts
 ## Pinout
 | Item | Pin | Restrictions |
 | ---- | --- | ------------ |
-| Underglow data 1 |
-| LED Data 1 |
-| LED Data 2 |
-| LED Data 3 |
-| Brake wire |
-| Turn signal 1 | 
-| Turn Signal 2 |
+| LED Data 1 | 33 | No |
+| LED Data 2 | 32 | No |
+| LED Data 3 | 27 | No |
+| LED Data 4 | 26 | No |
+| LED SPARE 1 | 15 | No |
+| LED SPARE 2 | 14 | No |
+| Brake wire | 16 | No |
+| Turn signal 1 | 22 | No |
+| Turn Signal 2 | 21 | No |
 | OLED CS | 4 | No |
 | OLED DC | 2 | No |
 | OLED Reset | 5 | No |
 | OLED CLK | 18 | Hardware locked |
 | SPI MOSI | 23 | Hardware locked |
 | SPI MISO | 19 | Hardware locked |
-| Joystick X | | Analog |
-| Joystick Y | | Analog |
-| Joystick Button |
-| Button 1 |
-| Relay signal |
-| CAN high |
-| CAN low |
+| Joystick X | 36 | Analog |
+| Joystick Y | 39 | Analog |
+| Joystick Button | 34 | No |
+| Button 1 | 35 | No |
+| Relay signal | 13 | No |
+| CAN high | 25 | No |
+| CAN low | 17 | No |
 
 ## Additional parts
 - 3D printed case

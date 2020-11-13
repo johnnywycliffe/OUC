@@ -1,41 +1,39 @@
 // UnderglowController.ino
 // Copyright (c) 2020 Jeremy Stintzcum, all rights reserved.
-// License:
-// Description: A controller for underglow, utilizing the OBD-II port of the car to sync the
-// lights to the car in one of several modes. Works on all cars made after 2008 to time of writing.
+// License: MIT
+// Description: A controller for underglow/LED strips, utilizing the OBD-II port of the car to 
+// sync the lights to the car in one of several modes. Works on all cars made after 2008 to 
+// time of writing.
 
 //=============================================================================================
-// Information needed
-// LED strip type (WS2813?)
-// Number of LEDs in strip (total)
-// Number of LEDs in big strip and small strip
-// Order of control for all four strips
-// What PIDs are most wanted
-// What are the states for the bluetooth controller as it is? Can I mimic?
-
-//=============================================================================================
-// TODO:
+// TODO (rough order of priority):
+// preset class
+// LED mode presets
+// Fix menu to make non-blocking
 // Get OLED screen printing text
-// Set up controls
-// Allow for serial interface
+// Check orientation of Joystick X and Y
+// Add all color modes
+// Relay control
+// More options for brakes/turn signals
+// 12v logic shifter for brakes and turn signals
 // Add bluetooth
 // App?
-// Add all color modes
-// button.h?
-// 12v logic shifter for brakes and turn signals
 // Extra LED output lines
-
+// Chain (LOL)
 
 //Libraries
 #include <EEPROM.h>
 #include <CAN.h>
 #include <OBD2.h>
 #include "SSD1306Spi.h"
-//#include <FastLED.h>
+#include <FastLED.h>
+#include <Button.h>
 
 //Defines
 #define EEPROM_SIZE 8 //Adjust based on actual need
 #define RETRY_SPEED 1000 //In milliseconds, higher is slower
+#define DEADZONELOW 1024
+#define DEADZONEHIGH 3072
 //Hardware pins
 #define SPI_MOSI 23
 #define SPI_MISO 19
@@ -43,10 +41,23 @@
 #define DISP_RESET 5
 #define DISP_CS 4
 #define DISP_DC 2
-#define JOYSTICK_X
-#define JOYSTICK_Y
-#define JOYSTICK_BUTTON
-#define BUTTON_0
+#define JOYSTICK_X 36
+#define JOYSTICK_Y 39
+#define JOYSTICK_BUTTON 34
+#define BUTTON_0 35
+#define LED_FRONT 33
+#define LED_REAR 32
+#define LED_LEFT 27
+#define LED_RIGHT 26
+#define LED_SPARE1 15
+#define LED_SPARE2 14
+#define LTURNSIGNAL 22
+#define RTURNSIGNAL 21
+#define BRAKE 16
+#define RELAY 13
+#define CANH 25
+#define CANL 17
+
 //Input
 #define UP 0
 #define DOWN 1
@@ -54,6 +65,11 @@
 #define RIGHT 3
 #define SELECT 4
 #define BACK 5
+//LEDS
+#define LED_TYPE WS2811
+#define COLOR_ORDER GRB
+#define SIDELEDCOUNT 30
+#define FRONTLEDCOUNT 18 //Also for rear
 
 //Globals
 
@@ -64,7 +80,7 @@ typedef struct{
   //ADMIN:
   char deviceID[10]; //Custom ID for ease of connection
   bool AllowSerial;
-  //LED functions
+  //LED functions - move to preset class
   uint8_t trackedPID; //CANBUD PID currently being monitored.
   uint8_t currLEDAnim; //Saves previously used animation mode for future
   uint8_t LEDsettings1[3]; //Saves RGB values for primary color
@@ -82,6 +98,7 @@ typedef struct{
 typedef struct{
   char *title; //Title text
   char *desc; //Description text
+  int8_t pid; //For storing PIDs
 } MenuItem;
 
 // Menu class
@@ -106,9 +123,10 @@ public:
   int8_t getID(){
     return ID;
   }
-  void setItem(int8_t pos, char *t, char *d){
+  void setItem(int8_t pos, char *t, char *d, int8_t PID = 0){
     items[pos].title = t;
     items[pos].desc = d;
+    items[pos].pid = PID;
   }
   char* getTitle(int pos){
     return items[pos].title;
@@ -116,26 +134,48 @@ public:
   char* getDesc(int pos){
     return items[pos].desc;
   }
+  int8_t getPID(int pos){
+    return items[pos].pid;
+  }
 };
 
 //Initialization
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
 Settings s;
+Button joyButton(JOYSTICK_BUTTON);
+Button button1(BUTTON_0);
+CRGB frontLEDs[FRONTLEDCOUNT];
+CRGB rearLEDs[FRONTLEDCOUNT];
+CRGB leftLEDs[SIDELEDCOUNT];
+CRGB rightLEDs[SIDELEDCOUNT];
 Menu main(4);
 Menu *m = &main;
 
 void setup() {
+  // Set up each system
   EEPROM.begin(EEPROM_SIZE);
+  // Display
   display.init();
+  // Controls
+  joyButton.begin();
+  button1.begin();
+  // LEDs
+  FastLED.addLeds<LED_TYPE, LED_FRONT, COLOR_ORDER>(frontLEDs, FRONTLEDCOUNT);
+  FastLED.addLeds<LED_TYPE, LED_REAR, COLOR_ORDER>(rearLEDs, FRONTLEDCOUNT);
+  FastLED.addLeds<LED_TYPE, LED_LEFT, COLOR_ORDER>(leftLEDs, SIDELEDCOUNT);
+  FastLED.addLeds<LED_TYPE, LED_RIGHT, COLOR_ORDER>(rightLEDs, SIDELEDCOUNT);
+  // OBD2
   while(!OBD2.begin()){
     //Ask user to check connection to vehicle, pause for a second
     delay(RETRY_SPEED);
   }
+  // Main menu
   main.setItem(0,"Display","Display current selection.");
   main.setItem(1,"Gauges","Choose a Gauge.");
   main.setItem(2,"Animations","Choose an LED Animation.");
   main.setItem(3,"Settings","Display current settings.");
 
+  // load settings
   loadSetting();
 }
 
@@ -144,7 +184,7 @@ void loop() {
 
 }
 
-//Menu - Possibly complete
+//Menu
 int menuSelect(Menu *m){
   //Initialize
   int select = 0;
@@ -240,6 +280,9 @@ int executionTable(Menu *m, int8_t sel){
           break;
       }
       break;
+    case 1: //PID selector
+      //Just return PID value at sel
+      return m->getPID(sel);
     default://Menu ID unknown
       pError("Menu does not exist");
       return -1;
@@ -268,9 +311,43 @@ float fetchCarData(int pid){
   return pidValue;
 }
 
-// Find valid PIDs for connected vehicle
+// Find valid PIDs for connected vehicle - COMPLETE
+int8_t getValidPIDs(int *PIDArr){
+  //Use count as len for menu
+  int8_t count = 0;
+  for(int i = 0; i < 96; i++){
+    if (OBD2.pidSupported(i)) {
+      PIDArr[i] = i;
+      count++;
+    }
+  }
+  return count;
+}
 
-// Select a PID via menu
+
+// Select a PID via menu - COMPLETE
+int selectPID(){
+  int tempArray[96] = {0};
+  int8_t len = getValidPIDs(tempArray);
+  Menu pidMenu(len);
+  pidMenu.setID(1);
+  int8_t count = 0;
+  for(int8_t i = 0; i < 96; i++){
+    if(tempArray[i] == 0){
+      continue;
+    } else {
+      char cBuffer1[32];
+      char cBuffer2[32];
+      OBD2.pidName(i).toCharArray(cBuffer1,32);
+      OBD2.pidUnits(i).toCharArray(cBuffer2,32);
+      pidMenu.setItem(count, cBuffer1, cBuffer2); //Hacky work-around, remove
+      count++;
+    }
+    int result = menuSelect(&pidMenu);
+    PIDMode(result);
+    return result;
+  }
+}
 
 // LED Color selection
 
@@ -297,9 +374,37 @@ void saveSetting(){
   pError("Settings Saved");
 }
 
-//EEPROM - Reset
+//EEPROM - Reset - COMPLETE
+void EEPROMReset(){
+  //Create new, zeroed struct
+  Settings temp = {0};
+  //Copy important information
+  for(int8_t i = 0; i < 10; i++){
+    temp.deviceID[i] = s.deviceID[i];
+  }
+  //Save settings
+  s = temp;
+  saveSetting;
+}
 
-//Take input from joystick and button(s)
+//Take input from joystick and button(s). Only accepts one input per cycle. Not building an NES here.
 int8_t getInput(){
-  
+  int analogVal = analogRead(JOYSTICK_X);
+  if(analogVal >= DEADZONEHIGH){
+    return RIGHT;
+  } else if(analogVal <= DEADZONELOW){
+    return LEFT;
+  }
+  analogVal = analogRead(JOYSTICK_Y);
+  if(analogVal >= DEADZONEHIGH){
+    return DOWN;
+  } else if(analogVal <= DEADZONELOW){
+    return UP;
+  }
+  if(button1.pressed()){
+    return SELECT;
+  }
+  if(joyButton.pressed()){
+    return BACK;
+  }
 }
