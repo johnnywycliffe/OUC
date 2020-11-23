@@ -47,3 +47,5 @@
 [DB9](https://www.mouser.com/Connectors/D-Sub-Connectors/D-Sub-Standard-Connectors/_/N-9gybx?P=1z0xbudZ1ytmhdqZ1yzv7x2)
 
 [Level shifter](https://electronics.stackexchange.com/questions/486571/12v-to-3-3-v-logic-level-shifter)
+
+[Level shifter 2](https://www.diodes.com/assets/Datasheets/74HCT14.pdf)

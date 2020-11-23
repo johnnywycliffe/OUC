@@ -11,15 +11,16 @@ Hardware descriptions and pinouts
 | OLED 0.96" | SSD1306, SPI | Screen for displaying information |
 | Joystick | Joystick w/ pushbutton | Used for navigation of the menus |
 | Pushbutton | Pushbutton | Used for navigation of the menus |
-| Underglow | WS2812B | Blinky lights |
+| Underglow | WS2811 | Blinky lights |
 | Power regulator | - | Shift from 12v to 3.3v for microcontroller's use |
+| Level shifter | 74HCT14 | 12v to 3.3v, used for Brake and turn signal input signals and LED control signal (~5v) |
 
 ## Secondary components
 | Part Name | Part number | Description |
 | --------- | ----------- | ----------- |
 | 12v plug | - | Used to provide power if not using OBD2 port to poer device |
 | Relay | - | Used for cutting power to LED strips in emergency |
-| Level shifter | - | 12v to 3.3v, used for Brake and turn signal input signals |
+
 
 ## Functions
 - Underglow control
@@ -38,8 +39,8 @@ Hardware descriptions and pinouts
 | LED SPARE 1 | 15 | No |
 | LED SPARE 2 | 14 | No |
 | Brake wire | 16 | No |
-| Turn signal 1 | 22 | No |
-| Turn Signal 2 | 21 | No |
+| Turn signal 1 | 34 | No |
+| Turn Signal 2 | 35 | No |
 | OLED CS | 4 | No |
 | OLED DC | 2 | No |
 | OLED Reset | 5 | No |
@@ -48,8 +49,8 @@ Hardware descriptions and pinouts
 | SPI MISO | 19 | Hardware locked |
 | Joystick X | 36 | Analog |
 | Joystick Y | 39 | Analog |
-| Joystick Button | 34 | No |
-| Button 1 | 35 | No |
+| Joystick Button | 21 | Needs internal pullup |
+| Button 1 | 22 | Needs internal pullup |
 | Relay signal | 13 | No |
 | CAN high | 25 | No |
 | CAN low | 17 | No |
@@ -59,3 +60,13 @@ Hardware descriptions and pinouts
 - PCB
 - Programming interface
 - Various capacitors and resistors to run board
+
+## Notes
+Logic shifter is actually hex buffer; need a voltage divider on Controller side, WS2811 seems to take 5v input without issue.
+
+Screen D0 is CLK, D1 is MOSI.
+
+Joystick is oriented with headers up.
+- Y Axis pot is HIGH when DOWN, LOW when UP
+- X Axis pot is HIGH when LEFT, LOW when RIGHT
+May want to reorient for ease of mounting.

@@ -21,6 +21,32 @@
 // Extra LED output lines
 // Chain (LOL)
 
+// LED pattern 
+//      18                          32|33                           47
+//       |                            V                             |
+//       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+// 17 > #                                                           # < 48
+//      #                         PASSENGER                         #
+//      #                                                           #
+//      #     LEDs are represented a "#"                            #
+//      #                                                           #
+//      #                                                           #
+//      # F   0 is driver corner of car                             #
+//      # R                                                      R  #
+//  9 > # O                                                      E  # < 56
+//  8 > # N   Numbers are positioned along string                A  # < 57
+//      # T                                                      R  #
+//      #                                                           #
+//      #     Long sides are 30 LEDS long                           #
+//      #                                                           #
+//      #                                                           #
+//      #     Short sides are 18 LEDS long                          #
+//      #                                                           #
+//  0 > #                         DRIVER                            # < 65
+//       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+//       |                          ^                              |
+//      95                        81|80                            66
+
 //Libraries
 #include <EEPROM.h>
 #include <CAN.h>
@@ -32,10 +58,10 @@
 //Defines
 #define EEPROM_SIZE 8 //Adjust based on actual need
 #define RETRY_SPEED 1000 //In milliseconds, higher is slower
-#define DEADZONELOW 1024
-#define DEADZONEHIGH 3072
+#define DEADZONELOW 300
+#define DEADZONEHIGH 3896
 //Hardware pins
-#define SPI_MOSI 23
+#define SPI_MOSI 23 
 #define SPI_MISO 19
 #define SPI_CLK 18
 #define DISP_RESET 5
@@ -46,7 +72,7 @@
 #define JOYSTICK_BUTTON 34
 #define BUTTON_0 35
 #define LED_FRONT 33
-#define LED_REAR 32
+#define LED_REAR 32 
 #define LED_LEFT 27
 #define LED_RIGHT 26
 #define LED_SPARE1 15
@@ -66,11 +92,11 @@
 #define SELECT 4
 #define BACK 5
 //LEDS
-//It's assumed SIDE LEDs start near front of vehicle, and 
-#define LED_TYPE WS2811
+//Make customizable?
+#define LED_TYPE WS2811 
 #define COLOR_ORDER GRB
 #define SIDELEDCOUNT 30
-#define FRONTLEDCOUNT 18 //Also for rear
+#define FRONTLEDCOUNT 18 
 
 //Globals
 
@@ -90,7 +116,7 @@ typedef struct{
   uint8_t LEDSpeed; //LED animation speed
   uint8_t LEDBrightness; //LED brightness
   //User settings
-  bool Bluetooth; //Bluttoth on or off
+  bool Bluetooth; //Bluetooth on or off
   bool rollingShutoff; //If device should cut power when vehicle in motion
   bool blinkersAndBrakes; //Mimics blinkers and brakes when driving
 } Settings;
@@ -157,6 +183,10 @@ void setup() {
   EEPROM.begin(EEPROM_SIZE);
   // Display
   display.init();
+  display.flipScreenVertically();
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_CENTER);
+  display.setContrast(255);
   // Controls
   joyButton.begin();
   button1.begin();
@@ -325,7 +355,6 @@ int8_t getValidPIDs(int *PIDArr){
   return count;
 }
 
-
 // Select a PID via menu - COMPLETE
 int selectPID(){
   int tempArray[96] = {0};
@@ -390,17 +419,17 @@ void EEPROMReset(){
 
 //Take input from joystick and button(s). Only accepts one input per cycle. Not building an NES here.
 int8_t getInput(){
-  int analogVal = analogRead(JOYSTICK_X);
-  if(analogVal >= DEADZONEHIGH){
-    return RIGHT;
-  } else if(analogVal <= DEADZONELOW){
-    return LEFT;
-  }
-  analogVal = analogRead(JOYSTICK_Y);
+  int analogVal = analogRead(JOYSTICK_Y);
   if(analogVal >= DEADZONEHIGH){
     return DOWN;
   } else if(analogVal <= DEADZONELOW){
     return UP;
+  }
+  analogVal = analogRead(JOYSTICK_X);
+  if(analogVal >= DEADZONEHIGH){
+    return LEFT;
+  } else if(analogVal <= DEADZONELOW){
+    return RIGHT;
   }
   if(button1.pressed()){
     return SELECT;

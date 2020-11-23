@@ -1,6 +1,8 @@
 # LED Patterns
 A list of patterns to implement.
 
+Pixel order is clockwise, starting at front drivers corner front LED strip.
+
 Front/Back LED count is 18 pixels in groups of three
 Side LED count is 30 Pixels in groups of three.
 
@@ -18,6 +20,9 @@ Special modes and effects are patterns, but don't utilize the data the same way.
 - Blend
 - Offset (pixel offset for static patterns)
 - Pattern
+ - Animation
+ - Colors
+ - Pattern arguments
 
 ## Patterns
 Basic patterns, user programmable
@@ -43,16 +48,16 @@ Can be applied to basic patterns
 7. Sawtooth shift
 
 ## Special patterns
-Preset patterns, more complex than 
+Preset patterns, more complex than the "simple" patterns
 
 1. Pacifica - Looks like water flowing 
 2. Rising flames - Kind of like a candle
 3. Twinklefox - Snow?
 4. Police - red and blue alternating with variable timings
-5. MURICA - Blue and white in the front, red and white down sides and front
+5. MURICA - Blue and white in the front, red and white down sides and rear. Flutters?
 6. Color pop - random color appears at random location. Spreads out until next pixel covers it up
 7. Splatter - color(s) fades as it gets closer to back of vehicle
-8. Drip - color(s) randomly appears and fades
+8. Drip - color(s) randomly, suddenly appears and fades
 
 ## Colors
 ### Built in palettes
