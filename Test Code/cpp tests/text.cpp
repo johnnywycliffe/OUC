@@ -9,10 +9,12 @@ typedef struct{
 class Menu{
   MenuItem *items;
   int8_t len;
+  Menu *prev;
 public:
-  Menu(int8_t arrLen){
+  Menu(int8_t arrLen,Menu *prevMenu=nullptr){
     len = arrLen;
     items = new MenuItem[arrLen];
+    prev = prevMenu;
   }
   ~Menu(){
     delete items;
@@ -34,18 +36,25 @@ public:
   int getReturnVal(int pos){
     return items[pos].returnVal;
   }
+  //Add to main program
+  Menu *getPrevMenu(){
+    return prev;
+  }
 };
 
-void mendostuff(Menu *m){
-    std::cout << m << std::endl;
-    //std::cout << *m << std::endl;
-    std::cout << m->getDesc(2) << std::endl;
+void mendostuff(Menu *m1, Menu *m2){
+    std::cout << m1 << std::endl;
+    std::cout << m1->getDesc(2) << std::endl;
+    std::cout << m1 << std::endl;
+    std::cout << m2->getPrevMenu() << std::endl;
 }
 
 int main()
 {
     Menu m1(4);
     Menu *ptr = &m1;
+    Menu m2(3,ptr);
+    Menu *ptr2 = &m2;
     ptr->setItem(0,"12345678901","abc",34);
     m1.setItem(2,"elevenchars","def",69);
     m1.setItem(1,"fuckyoutoo!","ghi",420);
@@ -58,5 +67,5 @@ int main()
     std::cout << m1.getTitle(2) << std::endl;
     std::cout << m1.getDesc(2) << std::endl;
     std::cout << m1.getReturnVal(2) << std::endl;
-    mendostuff(ptr);
+    mendostuff(ptr, ptr2);
 }
