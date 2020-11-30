@@ -2,36 +2,22 @@
 Software description and some constructs
 
 ## Overview
-THe general use of this device is to drive underglow LEDs based on a variety of inputs, with an extra few channels for additional LEDs should they be installed.
+The general use of this device is to drive underglow LEDs based on a variety of inputs, with an extra few channels for additional LEDs should they be installed.
 
 The inputs to the device are:
 - OBD2/CANBUS: Direct information from the car. RPM, Throttle position, speed, gear, and anything else available.
-- Self/Animations: Pre=programmed animations to drive LEDs in a set pattern.
+- Self/Animations: Pre-programmed animations to drive LEDs in a set pattern.
 - Turn Signals/Brakes: When installed, can light up red when braking and flash yellow when using turn signals
 
-To choose between these, there is bluetooth or a joystick/button combo.
+To choose between these, there is bluetooth mode or a joystick/button combo.
 
 ### Menu
- Structured like so:
- Mode
- - Car driven/gauge
- - - Choose PID
- - - - Gauge 1: One color, leds go from back to forward
- - - - Gauge 2: One color, LEDs go from forward to back
- - - - Gauge 3: Three colors, green bottom end, yellow middle and red for high
- - - - etc...
- - LED patterns
- - - Solid color
- - - Chasing colors
- - - Rainbow
- - - etc..
- Settings
- - Bluetooth
- - - Bluetooth password
- - - Pair new device
- - Automatic driving shutoff (cuts lights when driving for legal reasons)
-
-Honestly, the most challenging part as this eats memory for breakfast and has dynamically allocated memory to boot.
+The menu has a few modes:
+- Navigation: consistes of menu and submenues
+- Choose color/pallete: Used to set colors
+- Choose text: Used to set text (if needed)
+- Choose PID: CHoose  avalid PID to monitor for gauges
+- Variable adjust: Brightness, speed, anything represented as 1 number
 
 ### OLED
 A monochrom OLED display. Generic, used to display information about settings. 
@@ -54,9 +40,20 @@ The same struct is what the rest of the program uses to get settings.
 There is also a reset function.
 
 ### FastLED
+See Patterns document for LED implementation.
 
+## Settings
+Some settings:
+- Reverse direction of LED bar (For incorrect instals
+- Set new LED bad chip (WS2812, etc)
+- Set LED bar length
+- Bluetooth on/of
+- Bluetooth password (if possible)
+- Blackout mode
 
 ## Bluetooth
-Bluettoth integration can be done with no additional hardware, but will require a bunch of work on the software end, including a companion app for Android and iPhone.
+Bluetooth integration can be done with no additional hardware, but will require a bunch of work on the software end, including a companion app for Android and iPhone.
 
-Bluetooth works similarly to serial communication (read: it works identically from the ESP's perspective), but the messages have to be parsed on either end and displayed to the user in a sane manner. This is handled by the App for must bluetooth controllers on the market.
+Bluetooth works similarly to serial communication (read: it works identically from the ESP's perspective), but the messages have to be parsed on either end and displayed to the user in a sane manner. This is handled by the App for most bluetooth controllers on the market.
+
+A standard for setting the LEDs needs to be made.

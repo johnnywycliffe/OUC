@@ -21,6 +21,11 @@
 #define DEADZONELOW 300
 #define DEADZONEHIGH 3800
 
+//State Enum
+enum State{
+  main, settings, gauges, patterns, bluetooth, ledsettings
+};
+
 // MenuItem Struc for objects
 typedef struct{
   char *title; //Title text
@@ -30,47 +35,51 @@ typedef struct{
 
 // Menu class
 class Menu{
-  MenuItem *items;
+  MenuItem itemArr[100];
   int8_t len;
-  int8_t ID;
+  State s;
 public:
-  Menu(int8_t arrLen){
-    len = arrLen;
-    items = new MenuItem[arrLen];
+  Menu(){
   }
   ~Menu(){
-    delete items;
+    delete itemArr;
   }
-  int8_t setID(int8_t id){
-    ID = id;
+  void setState(State state){
+    s = state;
   }
   int8_t getLen(){
     return len;
   }
-  int8_t getID(){
-    return ID;
+  State getState(){
+    return s;
   }
   void setItem(int8_t pos, char *t, char *d, int8_t PID = 0){
-    items[pos].title = t;
-    items[pos].desc = d;
-    items[pos].pid = PID;
+    itemArr[pos].title = t;
+    itemArr[pos].desc = d;
+    itemArr[pos].pid = PID;
+    len++;
   }
   char* getTitle(int pos){
-    return items[pos].title;
+    return itemArr[pos].title;
   }
   char* getDesc(int pos){
-    return items[pos].desc;
+    return itemArr[pos].desc;
   }
   int8_t getPID(int pos){
-    return items[pos].pid;
+    return itemArr[pos].pid;
+  }
+  void resetLen(){
+    len = 0;
   }
 };
 
 Button joyButton(JOYSTICK_BUTTON,PULLUP);
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
 
-Menu main(4);
-Menu *mPtr = &main;
+//Menu init
+Menu mMenu;
+State s;
+
 int sel = 0;
 
 void setup() {
@@ -83,19 +92,45 @@ void setup() {
   }
   display.flipScreenVertically();
   display.setContrast(255);
-  main.setItem(0,"Display","Display current selection.");
-  main.setItem(1,"Gauges","Choose a Gauge.");
-  main.setItem(2,"Animations","Choose an LED Animation.");
-  main.setItem(3,"Settings","Display current settings.");
+  s == main;
+  setupMenu(s);
   pError("Press any button to continue");
 }
 
 void loop() {
-  menuSelect(mPtr, sel);
-  
+  int result = menuSelect(&mMenu, sel);
+  if(result==-1){
+    sel = 0;
+    s == main;
+    setupMenu(s);
+  }
+  ShowMenu(&mMenu, sel);
   delay(250);
 }
-//Menu
+
+//Set menu options
+void setupMenu(State sel){
+  mMenu.resetLen();
+  mMenu.setState(sel);
+  switch(sel){
+    default:
+      pError("Not defined, returning to main");
+    case main:
+      mMenu.setItem(0,"Display","Display current selection.");
+      mMenu.setItem(1,"Gauges","Choose a Gauge.");
+      mMenu.setItem(2,"Animations","Choose an LED Animation.");
+      mMenu.setItem(3,"Settings","Display current settings.");
+      break;
+    case settings:
+      mMenu.setItem(0,"Bluetooth","Set up bluetooth");
+      mMenu.setItem(1,"LED Settings","Set up and tweak LEDs");
+      mMenu.setItem(2,"Device Info","Licenses, credits, stuff like that.");
+      break;
+  }
+  ShowMenu(&mMenu, sel);
+}
+
+//Navigate menus
 int menuSelect(Menu *m, int &select){
   //Get input
   int8_t input = getInput();
@@ -123,11 +158,11 @@ int menuSelect(Menu *m, int &select){
     case RIGHT:
     case SELECT:
       //Send state to execution table for further input
-      return executionTable(m,select);
+      return executionTable(m->getState(),select);
       break;
   }
-  ShowMenu(m, select);
   Serial.println(select);
+  return 0;
 }
 
 //Displays menu item
@@ -142,74 +177,61 @@ void ShowMenu(Menu *m, int select){
 }
 
 //Defines menu behaviour -not complete... at all
-int executionTable(Menu *m, int8_t sel){
-  switch(m->getID()){ //Switch based on menu
-    //Default menu
-    case 0:
+int executionTable(State s, int &sel){
+  switch(s){ //Switch based on menu
+    case main:
       switch(sel){//Switch based on selection
-        case 0:
-          //Generate infor about current state of the device
-          Serial.println("KDA");
+        case 0: //Display (Magic numbers)
+          //Show present configuration
+          pError("TODO");
           break;
-        case 1:
-          {
-            //Generate menu for gauges and run
-            Menu gaugeMenu(1);
-            //Items ---
-            //return menuSelect(&gaugeMenu, sel);
-            Serial.println("Gauges");
-          }
+        case 1: //Gauge menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=gauges);
           break;
-        case 2:
-          {
-            //Generate menu for animations and run
-            Menu animMenu(1);
-            //Items ---
-            //return menuSelect(&animMenu, sel);
-            Serial.println("Animations");
-          }
+        case 2: //Pattern menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=patterns);
           break;
-        case 3:
-          {  //Generate menu for settings and run
-            Menu selMenu(3);
-            selMenu.setID(3);
-            selMenu.setItem(0,"Bluetooth","Turn Bluetooth On/Off");
-            selMenu.setItem(1,"Blackout","Auto turn off when driving");
-            selMenu.setItem(2,"Signals","Use lights as signals");
-            //return menuSelect(&selMenu, sel);
-            Serial.println("Settings");
-          }
+        case 3: //Settings menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=settings);
           break;
         default:
+          sel = 0;
           pError("Selection does not exist");
           return -1;
           break;
       }
       break;
     //User settings menu
-    case 3:
+    case settings:
       switch(sel){
         case 0: //Set up bluetooth
+          sel = 0;
+          setupMenu(s=bluetooth);
           break;
-        case 1: //Set Blackout
+        case 1: //Set LED behavior
+          sel = 0;
+          setupMenu(s=ledsettings);
           break;
         case 2: //Set Signals
+          pError("TODO");
           break;
-        default: //Return back to menu
-          pError("exit"); //REMOVE - for debug only
-          return 0;
+        default: 
+          sel = 0;
+          pError("Selection does not exist");
+          return -1;
           break;
       }
       break;
-    case 1: //PID selector
-      //Just return PID value at sel
-      return m->getPID(sel);
     default://Menu ID unknown
       pError("Menu does not exist");
       return -1;
       break;
   }
 }
+
 //Sends text to screen - Used for errors and some other popups
 void pError(char *eText){
   display.clear();
@@ -227,6 +249,7 @@ void pError(char *eText){
   display.clear();
   display.display();
 }
+
 int8_t getInput(){
   int analogVal = analogRead(JOYSTICK_Y);
   if(analogVal >= DEADZONEHIGH){

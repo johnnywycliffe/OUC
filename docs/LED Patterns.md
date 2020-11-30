@@ -1,28 +1,17 @@
 # LED Patterns
 A list of patterns to implement.
 
-Pixel order is clockwise, starting at front drivers corner front LED strip.
-
-Front/Back LED count is 18 pixels in groups of three
-Side LED count is 30 Pixels in groups of three.
+Pixel order is clockwise, starting at front drivers corner front LED strip by default.
 
 Use a pallette for storing colors. This allows for blending.
 
-User defines up to four colors and the pallette adjusts for that
+User defines up to four colors and the pallete adjusts for that
 
 Special modes and effects are patterns, but don't utilize the data the same way.
 
-## Struct parts
-- preset ID
-- saved pallette
-- Animation
-- Brightness
-- Blend
-- Offset (pixel offset for static patterns)
-- Pattern
- - Animation
- - Colors
- - Pattern arguments
+Current test LEDS:
+- Front/Back LED count is 18 pixels in groups of three
+- Side LED count is 30 Pixels in groups of three.
 
 ## Patterns
 Basic patterns, user programmable
@@ -35,6 +24,7 @@ Basic patterns, user programmable
 6. Split left/right (subdivide into chunks?)
 7. Gradient f/b
 8. Gradient l/r
+9. Dot(s) (with trail when animated)
 
 ## Animations
 Can be applied to basic patterns
@@ -46,6 +36,7 @@ Can be applied to basic patterns
 5. Fade, random
 6. Sinewave shift
 7. Sawtooth shift
+8. Dot shift
 
 ## Special patterns
 Preset patterns, more complex than the "simple" patterns
@@ -58,6 +49,7 @@ Preset patterns, more complex than the "simple" patterns
 6. Color pop - random color appears at random location. Spreads out until next pixel covers it up
 7. Splatter - color(s) fades as it gets closer to back of vehicle
 8. Drip - color(s) randomly, suddenly appears and fades
+9. Christmas - Red and green lights, white twinkles
 
 ## Colors
 ### Built in palettes
@@ -70,6 +62,7 @@ Preset patterns, more complex than the "simple" patterns
 7. PartyColors_p
 
 ### Custom palettes
+TODO
 
 ## Gauges
 ### Monochrome
@@ -81,12 +74,19 @@ Preset patterns, more complex than the "simple" patterns
 1. Back to forwards with "red" zone
 2. Forwards to back with "red" zone
 3. Layered gauges (Tracking two stats, overlaid)
+4. Equalizer, with 'local maximum'
 
 ## Turn signal and brake hardwires
-### Turn signal and brakes 1
-Left and right are completely yellow when signal engaged
-Rear is dimly red unless brake is pressed, then gets brighter.
-### Turn signal and brakes 2
-Left and right are completely yellow when signal engaged. 
-Rear is dimly red unless brake is pressed, then gets brighter. 
-If turn signal is active, front and rear strip  outer two sets of LEDs also flash yellow
+### Brakes
+1. Off
+2. Off when not pressed, lit when pressed
+3. Dim when not pressed, lit when pressed
+
+### Turn signals
+1. Off
+2. Only sides of car, solid yellow
+3. Sides of car in solid yellow, Outer front and rear LEDs flash yellow as well
+4. Side of car in solid yellow, rear leds flash red on/off
+5. Only sides of car, chasing yellow
+6. Sides of car in chasing yellow, Outer front and rear LEDs flash yellow as well
+7. Side of car in chasing yellow, rear leds flash red on/off

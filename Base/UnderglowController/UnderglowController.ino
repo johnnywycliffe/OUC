@@ -1,27 +1,23 @@
 // UnderglowController.ino
 // Copyright (c) 2020 Jeremy Stintzcum, all rights reserved.
 // License: MIT
-// Description: A controller for underglow/LED strips, utilizing the OBD-II port of the car to 
-// sync the lights to the car in one of several modes. Works on all cars made after 2008 to 
-// time of writing.
+// Description: A controller for underglow/LED strips. Designed to grab infor frm a vehicle
+// through ODB-II port, display a preset or custom pattern, or act as additional turn signals 
+// or brake lights.
 
 //=============================================================================================
 // TODO (rough order of priority):
-// preset class
-// LED mode presets
-// Fix menu to make non-blocking
-// Get OLED screen printing text
-// Check orientation of Joystick X and Y
-// Add all color modes
-// Relay control
-// More options for brakes/turn signals
-// 12v logic shifter for brakes and turn signals
-// Add bluetooth
-// App?
-// Extra LED output lines
-// Chain (LOL)
+// Non-submenu functionality / options
+// LEDHardware class + settings adjustment
+// LED setters
+// LED preset modes
+// Brake/Turn signal modes
+// Bluetooth
+// App (Android)
+// Chain between vehicles
 
-// LED pattern 
+//=============================================================================================
+// LED pattern - default (Can be changed in settings)
 //      18                          32|33                           47
 //       |                            V                             |
 //       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -56,33 +52,38 @@
 #include <Button.h>
 
 //Defines
-#define EEPROM_SIZE 8 //Adjust based on actual need
+#define EEPROM_SIZE 8 //Adjust based on actual need (Get sizeof settings struct)
 #define RETRY_SPEED 1000 //In milliseconds, higher is slower
 #define DEADZONELOW 300
 #define DEADZONEHIGH 3896
-//Hardware pins
+//Hardware pins - ESP32 defined
 #define SPI_MOSI 23 
 #define SPI_MISO 19
 #define SPI_CLK 18
+//Pins - Display
 #define DISP_RESET 5
 #define DISP_CS 4
 #define DISP_DC 2
-#define JOYSTICK_X 36
-#define JOYSTICK_Y 39
-#define JOYSTICK_BUTTON 34
-#define BUTTON_0 35
+//Pins - input
+#define JOYSTICK_X 26
+#define JOYSTICK_Y 27
+#define JOYSTICK_BUTTON 21
+#define BUTTON_0 22
+//Pins - LED outputs
 #define LED_FRONT 33
 #define LED_REAR 32 
-#define LED_LEFT 27
-#define LED_RIGHT 26
+#define LED_LEFT 13
+#define LED_RIGHT 25
 #define LED_SPARE1 15
 #define LED_SPARE2 14
+//Pins - Input signals
 #define LTURNSIGNAL 22
 #define RTURNSIGNAL 21
 #define BRAKE 16
-#define RELAY 13
-#define CANH 25
-#define CANL 17
+#define CANH 36
+#define CANL 39
+//Pins - other
+#define RELAY 12
 
 //Input
 #define UP 0
@@ -92,13 +93,19 @@
 #define SELECT 4
 #define BACK 5
 //LEDS
-//Make customizable?
+//Make customizable (Move to LEDHardware Class)
 #define LED_TYPE WS2811 
 #define COLOR_ORDER GRB
 #define SIDELEDCOUNT 30
 #define FRONTLEDCOUNT 18 
 
-//Globals
+//Globals/enums
+//State Enum
+enum State{
+  main, settings, gauges, patterns, bluetooth, ledsettings
+};
+//Menu
+int sel = 0; //current selection
 
 //Structs/Classes
 // Lighting system struct
@@ -145,53 +152,57 @@ typedef struct{
 
 // Menu class
 class Menu{
-  MenuItem *items;
+  MenuItem itemArr[100];
   int8_t len;
-  int8_t ID;
+  State s;
 public:
-  Menu(int8_t arrLen){
-    len = arrLen;
-    items = new MenuItem[arrLen];
+  Menu(){
   }
   ~Menu(){
-    delete items;
+    delete itemArr;
   }
-  int8_t setID(int8_t id){
-    ID = id;
+  void setState(State state){
+    s = state;
   }
   int8_t getLen(){
     return len;
   }
-  int8_t getID(){
-    return ID;
+  State getState(){
+    return s;
   }
   void setItem(int8_t pos, char *t, char *d, int8_t PID = 0){
-    items[pos].title = t;
-    items[pos].desc = d;
-    items[pos].pid = PID;
+    itemArr[pos].title = t;
+    itemArr[pos].desc = d;
+    itemArr[pos].pid = PID;
+    len++;
   }
   char* getTitle(int pos){
-    return items[pos].title;
+    return itemArr[pos].title;
   }
   char* getDesc(int pos){
-    return items[pos].desc;
+    return itemArr[pos].desc;
   }
   int8_t getPID(int pos){
-    return items[pos].pid;
+    return itemArr[pos].pid;
+  }
+  void resetLen(){
+    len = 0;
   }
 };
 
 //Initialization
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
-Settings s;
+Settings settingStruct;
 Button joyButton(JOYSTICK_BUTTON);
 Button button1(BUTTON_0);
 CRGB frontLEDs[FRONTLEDCOUNT]; //move to hardware led class
 CRGB rearLEDs[FRONTLEDCOUNT];
 CRGB leftLEDs[SIDELEDCOUNT];
 CRGB rightLEDs[SIDELEDCOUNT];
-Menu main(4);
-Menu *m = &main;
+Menu mMenu;
+State s;
+
+
 LEDPatterns active;
 
 void setup() {
@@ -214,22 +225,50 @@ void setup() {
     //Ask user to check connection to vehicle, pause for a second
     delay(RETRY_SPEED);
   }
-  // Main menu
-  main.setItem(0,"Display","Display current selection.");
-  main.setItem(1,"Gauges","Choose a Gauge.");
-  main.setItem(2,"Animations","Choose an LED Animation.");
-  main.setItem(3,"Settings","Display current settings.");
-
+  //Menu
+  s == main;
+  setupMenu(s);
   // load settings
   loadSetting();
 }
 
 void loop() {
- //State machine for operation of device.
-
+  //Menu 
+  int result = menuSelect(&mMenu, sel);
+  //Return to main menu
+  if(result==-1){
+    sel = 0;
+    s == main;
+    setupMenu(s);
+  }
+  ShowMenu(&mMenu, sel);
+  //Refresh rate (Faster allows for more inputs, but thumbstick will scroll rapidly)
+  delay(150);
 }
 
-//Menu
+//Set menu options
+void setupMenu(State sel){
+  mMenu.resetLen();
+  mMenu.setState(sel);
+  switch(sel){
+    default:
+      pError("Not defined, returning to main");
+    case main:
+      mMenu.setItem(0,"Display","Display current selection.");
+      mMenu.setItem(1,"Gauges","Choose a Gauge.");
+      mMenu.setItem(2,"Animations","Choose an LED Animation.");
+      mMenu.setItem(3,"Settings","Display current settings.");
+      break;
+    case settings:
+      mMenu.setItem(0,"Bluetooth","Set up bluetooth");
+      mMenu.setItem(1,"LED Settings","Set up and tweak LEDs");
+      mMenu.setItem(2,"Device Info","Licenses, credits, stuff like that.");
+      break;
+  }
+  ShowMenu(&mMenu, sel);
+}
+
+//Navigate menus
 int menuSelect(Menu *m, int &select){
   //Get input
   int8_t input = getInput();
@@ -251,85 +290,16 @@ int menuSelect(Menu *m, int &select){
     case LEFT:
     case BACK:
       //exit back to parent menu
-      //Serial.println("Back up");
       return -1;
       break;
     case RIGHT:
     case SELECT:
       //Send state to execution table for further input
-      return executionTable(m,select);
+      return executionTable(m->getState(),select);
       break;
   }
-  //Display Menu
-  ShowMenu(m, select);
-  //Serial.println(select);
-}
-
-//Defines menu behaviour -not complete... at all
-int executionTable(Menu *m, int8_t sel){
-  switch(m->getID()){ //Switch based on menu
-    //Default menu
-    case 0:
-      switch(sel){//Switch based on selection
-        case 0:
-          //Generate infor about current state of the device
-          return 0;
-          break;
-        case 1:
-        {
-          //Generate menu for gauges and run
-          Menu gaugeMenu(1);
-          //Items ---
-          return menuSelect(&gaugeMenu);
-        }
-          break;
-        case 2:
-        {
-          //Generate menu for animations and run
-          Menu animMenu(1);
-          //Items ---
-          return menuSelect(&animMenu);
-        }
-          break;
-        case 3:
-        {  //Generate menu for settings and run
-          Menu selMenu(3);
-          selMenu.setID(3);
-          selMenu.setItem(0,"Bluetooth","Turn Bluetooth On/Off");
-          selMenu.setItem(1,"Blackout","Auto turn off when driving");
-          selMenu.setItem(2,"Signals","Use lights as signals");
-          return menuSelect(&selMenu);
-        }
-          break;
-        default:
-          pError("Selection does not exist");
-          return -1;
-          break;
-      }
-      break;
-    //User settings menu
-    case 3:
-      switch(sel){
-        case 0: //Set up bluetooth
-          break;
-        case 1: //Set Blackout
-          break;
-        case 2: //Set Signals
-          break;
-        default: //Return back to menu
-          pError("exit"); //REMOVE - for debug only
-          return 0;
-          break;
-      }
-      break;
-    case 1: //PID selector
-      //Just return PID value at sel
-      return m->getPID(sel);
-    default://Menu ID unknown
-      pError("Menu does not exist");
-      return -1;
-      break;
-  }
+  Serial.println(select);
+  return 0;
 }
 
 //Displays menu item
@@ -343,12 +313,66 @@ void ShowMenu(Menu *m, int select){
   display.display();
 }
 
-//Set PID to control - COMPLETE
+//Defines menu behaviour -not complete... at all
+int executionTable(State s, int &sel){
+  switch(s){ //Switch based on menu
+    case main:
+      switch(sel){//Switch based on selection
+        case 0: //Display (Magic numbers)
+          //Show present configuration
+          pError("TODO");
+          break;
+        case 1: //Gauge menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=gauges);
+          break;
+        case 2: //Pattern menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=patterns);
+          break;
+        case 3: //Settings menu selected (Magic numbers)
+          sel = 0;
+          setupMenu(s=settings);
+          break;
+        default:
+          sel = 0;
+          pError("Selection does not exist");
+          break;
+      }
+      break;
+    //User settings menu
+    case settings:
+      switch(sel){
+        case 0: //Set up bluetooth
+          sel = 0;
+          setupMenu(s=bluetooth);
+          break;
+        case 1: //Set LED behavior
+          sel = 0;
+          setupMenu(s=ledsettings);
+          break;
+        case 2: //Set Signals
+          pError("TODO");
+          break;
+        default: 
+          sel = 0;
+          pError("Selection does not exist");
+          break;
+      }
+      break;
+    default://Menu ID unknown
+      pError("Menu does not exist");
+      return -1;
+      break;
+  }
+}
+
+//Set PID to control - FIXME
 void PIDMode(int PID){
   if (!OBD2.pidSupported(PID)){
     pError("Unsupported");
   } else {
-    s.curr.trackedPID = PID;
+    //s.curr.trackedPID = PID;
     saveSetting();
   }
 }
@@ -377,11 +401,11 @@ int8_t getValidPIDs(int *PIDArr){
   return count;
 }
 
-// Select a PID via menu
+// Select a PID via menu - FIXME (New menu system)
 int selectPID(){
   int tempArray[96] = {0};
   int8_t len = getValidPIDs(tempArray);
-  Menu pidMenu(len);
+  /*Menu pidMenu(len);
   pidMenu.setID(1);
   int8_t count = 0;
   for(int8_t i = 0; i < 96; i++){
@@ -398,7 +422,7 @@ int selectPID(){
     int result = menuSelect(&pidMenu);
     PIDMode(result);
     return result;
-  }
+  }*/
 }
 
 // LED Color selection
@@ -427,12 +451,12 @@ void pError(char *eText){
 
 //EEPROM - get setting value - COMPLETE
 char loadSetting(){
-  EEPROM.get(0,s);
+  EEPROM.get(0,settingStruct);
 }
 
 //EEPROM - save value - COMPLETE
 void saveSetting(){
-  EEPROM.put(0,s);
+  EEPROM.put(0,settingStruct);
   EEPROM.commit();
   //Notify user settings saved
   pError("Settings Saved");
@@ -444,10 +468,10 @@ void EEPROMReset(){
   Settings temp = {0};
   //Copy important information
   for(int8_t i = 0; i < 10; i++){
-    temp.deviceID[i] = s.deviceID[i];
+    temp.deviceID[i] = settingStruct.deviceID[i];
   }
   //Save settings
-  s = temp;
+  settingStruct = temp;
   saveSetting;
 }
 

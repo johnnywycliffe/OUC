@@ -1,71 +1,82 @@
 #include<iostream>
 
+
+// MenuItem Struc for objects
 typedef struct{
   char *title; //Title text
   char *desc; //Description text
-  int returnVal; //Value to return to 
+  int8_t pid; //For storing PIDs
 } MenuItem;
 
+// Menu class
 class Menu{
-  MenuItem *items;
+  MenuItem *itemArr;
   int8_t len;
-  Menu *prev;
+  int8_t ID;
+  Menu *prevMenu;
 public:
-  Menu(int8_t arrLen,Menu *prevMenu=nullptr){
-    len = arrLen;
-    items = new MenuItem[arrLen];
-    prev = prevMenu;
+  Menu(Menu *prev = NULL){
+    Menu *prevMenu;
   }
   ~Menu(){
-    delete items;
+    delete itemArr;
+  }
+  int8_t setID(int8_t id){
+    ID = id;
   }
   int8_t getLen(){
     return len;
   }
-  void setItem(int8_t pos, char *t, char *d, int retVal){
-    items[pos].title = t;
-    items[pos].desc = d;
-    items[pos].returnVal = retVal;
+  int8_t getID(){
+    return ID;
+  }
+  void setItem(int8_t pos, char *t, char *d, int8_t PID = 0){
+    itemArr[pos].title = t;
+    itemArr[pos].desc = d;
+    itemArr[pos].pid = PID;
   }
   char* getTitle(int pos){
-    return items[pos].title;
+    return itemArr[pos].title;
   }
   char* getDesc(int pos){
-    return items[pos].desc;
+    return itemArr[pos].desc;
   }
-  int getReturnVal(int pos){
-    return items[pos].returnVal;
+  int8_t getPID(int pos){
+    return itemArr[pos].pid;
   }
-  //Add to main program
-  Menu *getPrevMenu(){
-    return prev;
+  Menu* getPrevMenu(){
+    return prevMenu;
+  }
+  void generateMenu(uint8_t arrLen){
+    itemArr = new MenuItem[arrLen];
+    len = arrLen;
+  }
+  void setPrev(Menu *prev){
+    prevMenu = prev;
   }
 };
 
 void mendostuff(Menu *m1, Menu *m2){
     std::cout << m1 << std::endl;
-    std::cout << m1->getDesc(2) << std::endl;
+    std::cout << m1->getDesc(0) << std::endl;
     std::cout << m1 << std::endl;
     std::cout << m2->getPrevMenu() << std::endl;
 }
 
+Menu m1;
+Menu *ptr = &m1;
+Menu m2(ptr);
+Menu *ptr2 = &m2;
+    
 int main()
 {
-    Menu m1(4);
-    Menu *ptr = &m1;
-    Menu m2(3,ptr);
-    Menu *ptr2 = &m2;
+    ptr->generateMenu(4);
+    if(true){
+        ptr2->generateMenu(4);
+    }
+    ptr = ptr2;
     ptr->setItem(0,"12345678901","abc",34);
     m1.setItem(2,"elevenchars","def",69);
     m1.setItem(1,"fuckyoutoo!","ghi",420);
-    std::cout << m1.getTitle(0) << std::endl;
-    std::cout << m1.getDesc(0) << std::endl;
-    std::cout << m1.getReturnVal(0) << std::endl;
-    std::cout << m1.getTitle(1) << std::endl;
-    std::cout << m1.getDesc(1) << std::endl;
-    std::cout << m1.getReturnVal(1) << std::endl;
-    std::cout << m1.getTitle(2) << std::endl;
-    std::cout << m1.getDesc(2) << std::endl;
-    std::cout << m1.getReturnVal(2) << std::endl;
     mendostuff(ptr, ptr2);
 }

@@ -49,3 +49,6 @@
 [Level shifter](https://electronics.stackexchange.com/questions/486571/12v-to-3-3-v-logic-level-shifter)
 
 [Level shifter 2](https://www.diodes.com/assets/Datasheets/74HCT14.pdf)
+
+[Light bar connectors](https://www.amazon.com/gp/product/B01LCV8ZMA/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+- Get 5 pin, small for current LED set
