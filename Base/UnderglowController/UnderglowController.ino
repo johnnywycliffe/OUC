@@ -101,32 +101,34 @@
 #define FRONTLEDCOUNT 18 
 
 //Globals/enums
-//State Enum
-enum State{
-  main, settings, gauge1, gauge2, gauge3, pattern1, pattern2, pattern3, bluetooth, ledsetting1,
-  ledsetting2, ledsetting3, brakeandturn
-};
 //Menu
+enum State{
+  main, settings, gauge1, pattern1, pattern2, pattern3, bluetooth, ledsetting1, ledsetting2,
+  brakeandturn, brake, turn, color, pickpattern, animation, ledorder, ledtype
+};
 int sel = 0; //current selection
 bool demo = false; //if true, lets user preview LEDS as they scroll through options
+bool screenUpdated = false; //Updates screen if true
 //LEDs
 enum ColorOrder {
   rgb, rbg, grb, gbr, brg, bgr
-}
+};
 enum SelectedPattern {
   narrow, medium, large, wide, halfandhalf, quarters, dots, pacifica, risingflames, twinklefox,
-  murica, colorpop, splatter, drip, christmas
-}
-
+  murica, colorpop, splatter, drip, christmas, valentines, shamrock, halloween
+};
+enum SelectedString {
+  front, rear, passenger, driver, spare1, spare2
+};
 //Structs/Classes
 // Lighting system struct
 typedef struct {
-  SelectedPattern sp; //Current pattern used
   uint8_t offsetPos; //How offset from default position pattern is.
   CRGBPalette16 RGBP; //RGB color pallette
   uint8_t brightness; //Brightness level of LEDs
   uint8_t animSpd; //Animation speed
-  int8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
+  uint8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
+  SelectedPattern sp; //Current pattern used
 } LEDPatterns;
 
 // Allows for mixing of LED types. One per string.
@@ -144,10 +146,10 @@ public:
     flipDir = fd;
   }
   void setNumLEDs(uint8_t num){
-    ledcount = num;
+    ledCount = num;
     //Create
   }
-  ColorOrder getColorOrder(){
+  ColorOrder setColorOrder(){
     return order;
   }
   //Get
@@ -155,7 +157,7 @@ public:
     return flipDir;
   }
   uint8_t getNumLEDs(){
-    return ledcount;
+    return ledCount;
   }
   ColorOrder getColorOrder(){
     return order;
@@ -196,6 +198,7 @@ class Menu{
   int8_t len;
   char *menuTitle;
   State s;
+  State prev;
 public:
   Menu(){
     len = 0;
@@ -219,6 +222,9 @@ public:
   void setMenuTitle(char *mt){
     menuTitle = mt;
   }
+  void setPrevMenu(State s){
+    prev = s;
+  }
   //Get
   int8_t getLen(){
     return len;
@@ -238,6 +244,9 @@ public:
   State getState(){
     return s;
   }
+  State getPrevMenu(){
+    return prev;
+  }
 };
 
 //Initialization
@@ -252,6 +261,7 @@ CRGB rightLEDs[SIDELEDCOUNT];
 Menu mMenu;
 State s;
 LEDPatterns active;
+SelectedString sLEDString;
 
 void setup() {
   // Set up each system
@@ -274,8 +284,7 @@ void setup() {
     delay(RETRY_SPEED);
   }
   //Menu
-  s == main;
-  setupMenu(s);
+  setupMenu(main);
   // load settings
   loadSetting();
 }
@@ -284,14 +293,17 @@ void loop() {
   // Bluetooth input
   // Menu - Change to only be active when needed
   int result = menuSelect(&mMenu, sel);
-  //Return to main menu
+  //Return to main menu - FIXME: Back up one menu if possible
   if(result==-1){
     sel = 0;
-    s == main;
-    setupMenu(s);
+    setupMenu(main);
   }
-  ShowMenu(&mMenu, sel);
-  // If demo mode is on / LEDS are on, run them.
+  //Behaviours for menu states
+  switch(s){
+    default:
+      //Do nothing
+      break;
+  }
   //Refresh rate (Faster allows for more inputs, but thumbstick will scroll rapidly)
   delay(150);
 }
@@ -305,6 +317,7 @@ void setupMenu(State sel){
       pError("Not defined, returning to main");
     case main: //Default menu
       mMenu.setMenuTitle("Main Menu");
+      mMenu.setPrevMenu(main);
       mMenu.setItem("Display","Display current selection");
       mMenu.setItem("Gauges","Choose a Gauge");
       mMenu.setItem("Animations","Choose an LED Animation");
@@ -312,50 +325,121 @@ void setupMenu(State sel){
       break;
     case gauge1: //Top level gauge menu
       mMenu.setMenuTitle("");
+      mMenu.setPrevMenu(main);
       mMenu.setItem("","");
       break;
     case pattern1: //Top level pattern menu
       mMenu.setMenuTitle("Pattern selection");
+      mMenu.setPrevMenu(main);
       mMenu.setItem("Custom pattern","Choose colors, pattern and animations");
       mMenu.setItem("Preset patterns","A selection of pre-made patterns");
       break;
     case pattern2: //Custom patterns menu
       mMenu.setMenuTitle("Custom patterns");
-      mMenu.setItem("Set Colors","Choose colors for display");
+      mMenu.setPrevMenu(pattern1);
       mMenu.setItem("Set Pattern","Choose specific pattern to display");
-      mMenu.setItem("Set animation","Choose animation to display");
+      mMenu.setItem("Set Colors","Choose colors for display");
+      mMenu.setItem("Set Animation","Choose animation to display");
+      break;
+    case pickpattern: //Choose a pattern + offset
+      mMenu.setMenuTitle("Pattern Selection");
+      mMenu.setPrevMenu(pattern2);
+      mMenu.setItem("Narrow","1 pixels wide");
+      mMenu.setItem("Medium","2 pixels wide");
+      mMenu.setItem("Large","3 pixels wide");
+      mMenu.setItem("Wide","6 pixels wide");
+      mMenu.setItem("Half-n-Half","2 colors");
+      mMenu.setItem("Quarters","4 colors");
+      mMenu.setItem("Dots","Includes trail");
+      break;
+    case color: //Pick a method of choosing color (Next level down, include fade or no fade options)
+      mMenu.setMenuTitle("Color selection");
+      //TODO: Set prev menus from calling menu
+      mMenu.setItem("Standard colors","A list of common colors");
+      mMenu.setItem("Pallete","Pick from a pre-made pallete");
+      mMenu.setItem("RGB","Pick values by RGB values");
+      mMenu.setItem("HSV","Pick values by HSV method");
+      break;
+    case animation: //Choose animation + Animation speed
+      mMenu.setMenuTitle("Animation Selection");
+      mMenu.setPrevMenu(pattern2);
+      mMenu.setItem("Cycle CW","Cycles pattern clockwise");
+      mMenu.setItem("Cycle CCW","Cycles pattern counterclockwise");
+      mMenu.setItem("Breathe","LEDs fade in and out all at once");
+      mMenu.setItem("Fade","LEDs alternate fading in and out");
+      mMenu.setItem("Random Fade","LEDs fade randomly");
+      mMenu.setItem("Cylon","Back and forth");
+      mMenu.setItem("Color pop","Sparks of color");
+      mMenu.setItem("Splatter","Like plowing through somethign");
+      mMenu.setItem("Drip","Color dripping from under car");
+      break;
+    case pattern3: //Premade patterns menu
+      mMenu.setMenuTitle("Premade patterns");
+      mMenu.setPrevMenu(pattern1);
+      mMenu.setItem("Pacifica","A calming water effect");
+      mMenu.setItem("Rising Flames","A not-so-calming flame effect");
+      mMenu.setItem("TwinkleFox","I got nothin'");
+      mMenu.setItem("MURICA","FREEDOM MODE");
+      mMenu.setItem("Valentines","Think fluffy thoughts");
+      mMenu.setItem("Shamrock","Top o' the mornin'");
+      mMenu.setItem("Halloween","Spooky");
+      mMenu.setItem("Christmas","Commercialization!");
+      break;
     case settings: //Main settings menu
       mMenu.setMenuTitle("Settings");
-      mMenu.setItem("Bluetooth","Set up bluetooth");
+      mMenu.setPrevMenu(main);
       mMenu.setItem("LED Settings","Set up and tweak LEDs");
       mMenu.setItem("Brake and Turn","Brake and turn signal wiring");
+      mMenu.setItem("Bluetooth","Set up bluetooth");
       mMenu.setItem("Driving shutoff","Automatically cut lights when car in motion");
       mMenu.setItem("Device Info","Licenses, credits, stuff like that");
       break;
     case ledsetting1: //Pick which LED string is being accessed.
       mMenu.setMenuTitle("Set up LED string.");
-      mMenu.setItem("Left string","Direction, number, etc.");
-      mMenu.setItem("Right string","Direction, number, etc.");
-      mMenu.setItem("Rear string","Direction, number, etc.");
+      mMenu.setPrevMenu(settings);
       mMenu.setItem("Front string","Direction, number, etc.");
+      mMenu.setItem("Passenger string","Direction, number, etc.");
+      mMenu.setItem("Rear string","Direction, number, etc.");
+      mMenu.setItem("Driver string","Direction, number, etc.");
       mMenu.setItem("Spare string 1","Direction, number, etc.");
       mMenu.setItem("Spare string 2","Direction, number, etc.");
       break;
     case ledsetting2:
-      //Change title based on LED string selected
-      mMenu.setMenuTitle("");
-      mMenu.setItem("Direction","Change direction of led flow"); //Reverse strip if installed backwards
-      mMenu.setItem("Number","Change number of LEDs on the strip"); //Remember to put notice for WS2811s
+      //TODO: Change title based on LED string selected
+      mMenu.setPrevMenu(ledsetting1);
       mMenu.setItem("LED Type","Change what type of LED strip is being used"); //WS2811, WS2812...
       mMenu.setItem("Color order","Change RGB color order"); //Default for WS2811s is GRB
+      mMenu.setItem("Number","Change number of LEDs on the strip"); //Remember to put notice for WS2811s
+      mMenu.setItem("Direction","Change direction of led flow"); //Reverse strip if installed backwards
+      break;
+    case ledtype: //Set type of LED
+      mMenu.setMenuTitle("Pick Strip type");
+      mMenu.setPrevMenu(ledsetting2);
+      mMenu.setItem("WS2811","Displaying test pattern");
+      mMenu.setItem("WS2812","Displaying test pattern");
+      mMenu.setItem("WS2812B","Displaying test pattern");
+      mMenu.setItem("WS2813","Displaying test pattern");
+      //TODO: ADD MORE
+      break;
+    case ledorder: //Top level gauge menu
+      mMenu.setMenuTitle("Select color Order");
+      mMenu.setPrevMenu(ledsetting2);
+      mMenu.setItem("RGB","Should display red, green, blue");
+      mMenu.setItem("RBG","Should display red, green, blue");
+      mMenu.setItem("GRB","Should display red, green, blue");
+      mMenu.setItem("GBR","Should display red, green, blue");
+      mMenu.setItem("BRG","Should display red, green, blue");
+      mMenu.setItem("BGR","Should display red, green, blue");
       break;
     case brakeandturn: //Set brake and turn signal behavior
       mMenu.setMenuTitle("Brakes and signals");
+      mMenu.setPrevMenu(settings);
       mMenu.setItem("Brakes","Set brake behavior");
       mMenu.setItem("Turn signals","Set turn signal behavior");
       break;
     case bluetooth: //Bluetooth settings
       mMenu.setMenuTitle("Bluetooth settings");
+      mMenu.setPrevMenu(settings);
       mMenu.setItem("BT Enabled","Toggle bluttooth on or off.");
       mMenu.setItem("BT Name","Name for identifying device.");
       mMenu.setItem("BT Pair","Pair a new bluetooth device.");
@@ -413,55 +497,282 @@ void ShowMenu(Menu *m, int select){
 int executionTable(State s, int &sel){
   switch(s){ //Switch based on menu
     case main: //Main menu
-      switch(sel){//Switch based on selection
-        case 0: //Display (Magic numbers)
+      switch(sel){
+        case 0: //Display
           //Show present configuration
-          pError("TODO");
+          pError("TODO: CURR CONFIG"); //Scrolling text
           break;
-        case 1: //Gauge menu selected (Magic numbers)
+        case 1: //Gauge menu selected
           sel = 0;
           setupMenu(s=gauge1);
           break;
-        case 2: //Pattern menu selected (Magic numbers)
+        case 2: //Pattern menu selected
           sel = 0;
           setupMenu(s=pattern1);
           break;
-        case 3: //Settings menu selected (Magic numbers)
+        case 3: //Settings menu selected
           sel = 0;
           setupMenu(s=settings);
           break;
         default:
           sel = 0;
-          pError("Selection does not exist");
-          break;
-      }
-      break;
-    case settings: //User settings menu
-      switch(sel){
-        case 0: //Set up bluetooth
-          sel = 0;
-          setupMenu(s=bluetooth);
-          break;
-        case 1: //Set LED behavior
-          sel = 0;
-          setupMenu(s=ledsetting1);
-          break;
-        case 2: //Set Signals
-          pError("TODO");
-          break;
-        default: 
-          sel = 0;
-          pError("Selection does not exist");
+          pError("Error: Out of bounds");
           break;
       }
       break;
     case gauge1:
       switch(sel){
-        
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case pattern1:
+      switch(sel){
+        case 0: //Show custom pattern menu
+          sel = 0;
+          setupMenu(s=pattern2);
+          break;
+        case 1: //Show premade pattern menu
+          sel = 0;
+          setupMenu(s=pattern3);
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case pattern2:
+      switch(sel){
+        case 0: //Show pattern menu
+          sel = 0;
+          setupMenu(s=pickpattern);
+          break;
+        case 1: //Show Color picker menu
+          sel = 0;
+          setupMenu(s=color);
+          break;
+        case 2: //Show Animation menu
+          sel = 0;
+          setupMenu(s=animation);
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case pickpattern:
+      switch(sel){
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case color:
+      switch(sel){
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case animation:
+      switch(sel){
+        case 4: //Color Pop
+          pError("TODO: COLORPOP"); //Pattern selection
+          pError("CHOOSE SPEED"); //Pick speed w/ default
+          break;
+        case 5: //Splatter
+          pError("TODO: SPLATTER"); //Pattern selection
+          pError("CHOOSE SPEED"); //Pick speed w/ default
+          break;
+        case 6: //Drip
+          pError("TODO: DRIP"); //Pattern selection
+          pError("CHOOSE SPEED"); //Pick speed w/ default
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case pattern3:
+      switch(sel){
+        case 0: //Pacifica
+          pError("TODO: PACIFICA"); //Pattern selection
+          break;
+        case 1: //Rising FLames
+          pError("TODO: RISING FLAMES"); //Pattern selection
+          break;
+        case 2: //TwinkleFox
+          pError("TODO: TWINKLEFOX"); //Pattern selection
+          break;
+        case 3: //MURICA
+          pError("TODO: MURICA"); //Pattern selection
+          break;
+        case 4: //Valentine's
+          pError("TODO: VAENTINES"); //Pattern selection
+          break;
+        case 5: //Shamrock
+          pError("TODO: SHAMROCK"); //Pattern selection
+          break;
+        case 6: //Halloween
+          pError("TODO: HALLOWEEN"); //Pattern selection
+          break;
+        case 7: //Christmas
+          pError("TODO: CHRISTMAS"); //Pattern selection
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case settings:
+      switch(sel){
+        case 0: //Set up LED Settings
+          sel = 0;
+          setupMenu(s=ledsetting1);
+          break;
+        case 1: //Set up Brakes and turn signals
+          sel = 0;
+          setupMenu(s=brakeandturn);
+          break;
+        case 2: //Set up bluetooth
+          sel = 0;
+          setupMenu(s=bluetooth);
+          break;
+        case 3: //Set up auto shutoff when driving
+          pError("TODO: AUTOSHUTOFF"); //Bool (Add warning for ODB-II?)
+          break;
+        case 4: //Display device info
+          pError("TODO: DEVICE INFO"); //Scrolling text
+          break;
+        default: 
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case ledsetting1:
+      switch(sel){
+        case 0: //Front LED String
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Front String");
+          sLEDString = front;
+          break;
+        case 1: //Passenger LED String
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Passenger String");
+          sLEDString = passenger;
+          break;
+        case 2: //Rear LED String
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Rear String");
+          sLEDString = rear;
+          break;
+        case 3: //Driver LED String
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Driver String");
+          sLEDString = driver;
+          break;
+        case 4: //Spare LED String 1
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Spare String 1");
+          sLEDString = spare1;
+          break;
+        case 5: //Spare LED String 2
+          sel = 0;
+          setupMenu(s=ledsetting2);
+          mMenu.setMenuTitle("Spare String 2");
+          sLEDString = spare2;
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case ledsetting2:
+      switch(sel){
+        case 0: //LED type
+          pError("TODO: LED TYPE MENU"); //Sub menu
+          break;
+        case 1: //RGB order
+          pError("TODO: RGB ORDER MENU"); //Sub menu
+          break;
+        case 2: // Number of LEDs
+          pError("TODO: STRING SIZE SELECTION"); //Int
+          break;
+        case 3: //Direction
+          pError("TODO: REVERSE DIRECTION"); //Bool
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case ledtype:
+      //Set LEDS strip type after user verifies
+      //use sLEDSetring to save to correct string
+      switch(sLEDString){
+        default:
+          pError("Error: String of lights not defined");
+          break;
+      }
+    case ledorder:
+      //Set LEDS strip type after user verifies
+      //use sLEDSetring to save to correct string
+      switch(sLEDString){
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case brakeandturn:
+      switch(sel){
+        case 0: //Set brakes
+          pError("TODO: BRAKE MENU"); //Sub menu
+          break;
+        case 1: //Turn signal behaviours
+          pError("TODO: TURN SIGNAL MENU"); //Sub menu
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
+      }
+      break;
+    case bluetooth:
+      switch(sel){
+        case 0: //BT enabled
+          pError("TODO: BLUETOOTH ENABLE/DISABLE"); //bool
+          break;
+        case 1: //BT name
+          pError("TODO: RENAME BT DEVICE"); //Text entry
+          break;
+        case 2: //BT pair
+          pError("TODO: BT PAIRING"); //Pair device function
+          break;
+        default:
+          sel = 0;
+          pError("Error: Out of bounds");
+          break;
       }
       break;
     default://Menu ID unknown
-      pError("Menu does not exist");
+      pError("Error: Menu does not exist");
       return -1;
       break;
   }
@@ -544,9 +855,12 @@ void pError(char *eText){
   while(getInput() == -1){
     continue;
   }
+  //Print to Serial
+  Serial.println(eText);
   //Clear screen
   display.clear();
   display.display();
+  
 }
 
 //EEPROM - get setting value - COMPLETE

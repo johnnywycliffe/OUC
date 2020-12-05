@@ -26,6 +26,15 @@ enum State{
   main, settings, gauges, patterns, bluetooth, ledsettings
 };
 
+typedef struct {
+  uint8_t offsetPos; //How offset from default position pattern is.
+  //CRGBPalette16 RGBP; //RGB color pallette
+  uint8_t brightness; //Brightness level of LEDs
+  uint8_t animSpd; //Animation speed
+  uint8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
+  //SelectedPattern sp; //Current pattern used
+} LEDPatterns;
+
 // MenuItem Struc for objects
 typedef struct{
   char *title; //Title text

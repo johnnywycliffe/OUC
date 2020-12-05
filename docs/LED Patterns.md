@@ -20,23 +20,23 @@ Basic patterns, user programmable
 2. 2 wide: every two pixels alternates color 1 and 2
 3. 3 Wide: every three pixels...
 4. 6 wide: every six pixels...
-5. Split forwards/back (subdivide into chunks?)
-6. Split left/right (subdivide into chunks?)
-7. Gradient f/b
-8. Gradient l/r
-9. Dot(s) (with trail when animated)
+5. Split 50/50
+6. Split 25/25/25/25
+7. Dot(s) (with trail when animated)
 
 ## Animations
 Can be applied to basic patterns
 
-1. Cycle clockwise
+1. Cycle clockwise (Sawtooth?)
 2. Cycle counterclockwise
 3. Fade in and out
 4. Fade in and out, alternating
 5. Fade, random
-6. Sinewave shift
-7. Sawtooth shift
-8. Dot shift
+6. Sinewave shift (Cylon)
+7. Dot shift
+8. Color pop - random color appears at random location. Spreads out until next pixel covers it up
+9. Splatter - color(s) fades as it gets closer to back of vehicle
+10. Drip - color(s) randomly, suddenly appears and fades
 
 ## Special patterns
 Preset patterns, more complex than the "simple" patterns
@@ -46,9 +46,9 @@ Preset patterns, more complex than the "simple" patterns
 3. Twinklefox - Snow?
 4. Police - red and blue alternating with variable timings
 5. MURICA - Blue and white in the front, red and white down sides and rear. Flutters?
-6. Color pop - random color appears at random location. Spreads out until next pixel covers it up
-7. Splatter - color(s) fades as it gets closer to back of vehicle
-8. Drip - color(s) randomly, suddenly appears and fades
+6. Valentine's - Pink, white and purple
+7. Shamrock - Green shifting pattern
+8. Halloween - Orange, green and purple
 9. Christmas - Red and green lights, white twinkles
 
 ## Colors
@@ -61,8 +61,17 @@ Preset patterns, more complex than the "simple" patterns
 6. ForestColors_p
 7. PartyColors_p
 
-### Custom palettes
-TODO
+### Pre-defined colors
+1. Red
+2. Green
+3. Blue
+4. White
+5. Pink
+6. Purple
+8. Cyan
+9. Yellow
+
+More need added...
 
 ## Gauges
 ### Monochrome
