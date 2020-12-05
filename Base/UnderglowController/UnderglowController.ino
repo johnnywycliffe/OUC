@@ -16,33 +16,34 @@
 // App (Android)
 // Chain between vehicles
 
-//=============================================================================================
-// LED pattern - default (Can be changed in settings)
-//      18                          32|33                           47
-//       |                            V                             |
-//       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-// 17 > #                                                           # < 48
-//      #                         PASSENGER                         #
-//      #                                                           #
-//      #     LEDs are represented a "#"                            #
-//      #                                                           #
-//      #                                                           #
-//      # F   0 is driver corner of car                             #
-//      # R                                                      R  #
-//  9 > # O                                                      E  # < 56
-//  8 > # N   Numbers are positioned along string                A  # < 57
-//      # T                                                      R  #
-//      #                                                           #
-//      #     Long sides are 30 LEDS long                           #
-//      #                                                           #
-//      #                                                           #
-//      #     Short sides are 18 LEDS long                          #
-//      #                                                           #
-//  0 > #                         DRIVER                            # < 65
-//       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-//       |                          ^                              |
-//      95                        81|80                            66
-
+/*=============================================================================================
+ * LED pattern - default (Can be changed in settings)
+ *      18                          32|33                           47
+ *       |                            V                             |
+ *       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+ * 17 > #                                                           # < 48
+ *      #                         PASSENGER                         #
+ *      #                                                           #
+ *      #     LEDs are represented a "#"                            #
+ *      #                                                           #
+ *      #                                                           #
+ *      # F   0 is driver corner of car                             #
+ *      # R                                                      R  #
+ *  9 > # O                                                      E  # < 56
+ *  8 > # N   Numbers are positioned along string                A  # < 57
+ *      # T                                                      R  #
+ *      #                                                           #
+ *      #     Long sides are 30 LEDS long                           #
+ *      #                                                           #
+ *      #                                                           #
+ *      #     Short sides are 18 LEDS long                          #
+ *      #                                                           #
+ *  0 > #                         DRIVER                            # < 65
+ *       # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+ *       |                          ^                              |
+ *      95                        81|80                            66
+ */
+ 
 //Libraries
 #include <EEPROM.h>
 #include <CAN.h>
@@ -102,24 +103,63 @@
 //Globals/enums
 //State Enum
 enum State{
-  main, settings, gauges, patterns, bluetooth, ledsettings
+  main, settings, gauge1, gauge2, gauge3, pattern1, pattern2, pattern3, bluetooth, ledsetting1,
+  ledsetting2, ledsetting3, brakeandturn
 };
 //Menu
 int sel = 0; //current selection
+bool demo = false; //if true, lets user preview LEDS as they scroll through options
+//LEDs
+enum ColorOrder {
+  rgb, rbg, grb, gbr, brg, bgr
+}
+enum SelectedPattern {
+  narrow, medium, large, wide, halfandhalf, quarters, dots, pacifica, risingflames, twinklefox,
+  murica, colorpop, splatter, drip, christmas
+}
 
 //Structs/Classes
 // Lighting system struct
 typedef struct {
+  SelectedPattern sp; //Current pattern used
+  uint8_t offsetPos; //How offset from default position pattern is.
   CRGBPalette16 RGBP; //RGB color pallette
   uint8_t brightness; //Brightness level of LEDs
-  int8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
   uint8_t animSpd; //Animation speed
-  uint8_t anim; //Animation
+  int8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
 } LEDPatterns;
 
 // Allows for mixing of LED types. One per string.
 class LEDHardware {
+  bool flipDir; //True for backwards, false for forwards
+  uint8_t ledCount; //num of LEDs on strip
+  ColorOrder order; //GRB for WS2811
+public:
+  LEDHardware(){}
+  ~LEDHardware(){}
+  //Initialize
   
+  //Set
+  void setReversed(bool fd){
+    flipDir = fd;
+  }
+  void setNumLEDs(uint8_t num){
+    ledcount = num;
+    //Create
+  }
+  ColorOrder getColorOrder(){
+    return order;
+  }
+  //Get
+  bool isReversed(){
+    return flipDir;
+  }
+  uint8_t getNumLEDs(){
+    return ledcount;
+  }
+  ColorOrder getColorOrder(){
+    return order;
+  }
 };
 
 // Settings struct for running program.
@@ -154,27 +194,37 @@ typedef struct{
 class Menu{
   MenuItem itemArr[100];
   int8_t len;
+  char *menuTitle;
   State s;
 public:
   Menu(){
+    len = 0;
   }
   ~Menu(){
     delete itemArr;
   }
+  //Set
   void setState(State state){
     s = state;
   }
+  void resetLen(){
+    len = 0;
+  }
+  void setItem(char *t, char *d, int8_t PID = 0){
+    itemArr[len].title = t;
+    itemArr[len].desc = d;
+    itemArr[len].pid = PID;
+    len++;
+  }
+  void setMenuTitle(char *mt){
+    menuTitle = mt;
+  }
+  //Get
   int8_t getLen(){
     return len;
   }
-  State getState(){
-    return s;
-  }
-  void setItem(int8_t pos, char *t, char *d, int8_t PID = 0){
-    itemArr[pos].title = t;
-    itemArr[pos].desc = d;
-    itemArr[pos].pid = PID;
-    len++;
+  char* getMenuTitle(){
+    return menuTitle;
   }
   char* getTitle(int pos){
     return itemArr[pos].title;
@@ -185,8 +235,8 @@ public:
   int8_t getPID(int pos){
     return itemArr[pos].pid;
   }
-  void resetLen(){
-    len = 0;
+  State getState(){
+    return s;
   }
 };
 
@@ -201,8 +251,6 @@ CRGB leftLEDs[SIDELEDCOUNT];
 CRGB rightLEDs[SIDELEDCOUNT];
 Menu mMenu;
 State s;
-
-
 LEDPatterns active;
 
 void setup() {
@@ -233,7 +281,8 @@ void setup() {
 }
 
 void loop() {
-  //Menu 
+  // Bluetooth input
+  // Menu - Change to only be active when needed
   int result = menuSelect(&mMenu, sel);
   //Return to main menu
   if(result==-1){
@@ -242,27 +291,74 @@ void loop() {
     setupMenu(s);
   }
   ShowMenu(&mMenu, sel);
+  // If demo mode is on / LEDS are on, run them.
   //Refresh rate (Faster allows for more inputs, but thumbstick will scroll rapidly)
   delay(150);
 }
 
-//Set menu options
+//Set menu options and prepare for display
 void setupMenu(State sel){
   mMenu.resetLen();
   mMenu.setState(sel);
   switch(sel){
-    default:
+    default: //If a menu hasn't been implemented or an error occurs, return to main
       pError("Not defined, returning to main");
-    case main:
-      mMenu.setItem(0,"Display","Display current selection.");
-      mMenu.setItem(1,"Gauges","Choose a Gauge.");
-      mMenu.setItem(2,"Animations","Choose an LED Animation.");
-      mMenu.setItem(3,"Settings","Display current settings.");
+    case main: //Default menu
+      mMenu.setMenuTitle("Main Menu");
+      mMenu.setItem("Display","Display current selection");
+      mMenu.setItem("Gauges","Choose a Gauge");
+      mMenu.setItem("Animations","Choose an LED Animation");
+      mMenu.setItem("Settings","Display current settings");
       break;
-    case settings:
-      mMenu.setItem(0,"Bluetooth","Set up bluetooth");
-      mMenu.setItem(1,"LED Settings","Set up and tweak LEDs");
-      mMenu.setItem(2,"Device Info","Licenses, credits, stuff like that.");
+    case gauge1: //Top level gauge menu
+      mMenu.setMenuTitle("");
+      mMenu.setItem("","");
+      break;
+    case pattern1: //Top level pattern menu
+      mMenu.setMenuTitle("Pattern selection");
+      mMenu.setItem("Custom pattern","Choose colors, pattern and animations");
+      mMenu.setItem("Preset patterns","A selection of pre-made patterns");
+      break;
+    case pattern2: //Custom patterns menu
+      mMenu.setMenuTitle("Custom patterns");
+      mMenu.setItem("Set Colors","Choose colors for display");
+      mMenu.setItem("Set Pattern","Choose specific pattern to display");
+      mMenu.setItem("Set animation","Choose animation to display");
+    case settings: //Main settings menu
+      mMenu.setMenuTitle("Settings");
+      mMenu.setItem("Bluetooth","Set up bluetooth");
+      mMenu.setItem("LED Settings","Set up and tweak LEDs");
+      mMenu.setItem("Brake and Turn","Brake and turn signal wiring");
+      mMenu.setItem("Driving shutoff","Automatically cut lights when car in motion");
+      mMenu.setItem("Device Info","Licenses, credits, stuff like that");
+      break;
+    case ledsetting1: //Pick which LED string is being accessed.
+      mMenu.setMenuTitle("Set up LED string.");
+      mMenu.setItem("Left string","Direction, number, etc.");
+      mMenu.setItem("Right string","Direction, number, etc.");
+      mMenu.setItem("Rear string","Direction, number, etc.");
+      mMenu.setItem("Front string","Direction, number, etc.");
+      mMenu.setItem("Spare string 1","Direction, number, etc.");
+      mMenu.setItem("Spare string 2","Direction, number, etc.");
+      break;
+    case ledsetting2:
+      //Change title based on LED string selected
+      mMenu.setMenuTitle("");
+      mMenu.setItem("Direction","Change direction of led flow"); //Reverse strip if installed backwards
+      mMenu.setItem("Number","Change number of LEDs on the strip"); //Remember to put notice for WS2811s
+      mMenu.setItem("LED Type","Change what type of LED strip is being used"); //WS2811, WS2812...
+      mMenu.setItem("Color order","Change RGB color order"); //Default for WS2811s is GRB
+      break;
+    case brakeandturn: //Set brake and turn signal behavior
+      mMenu.setMenuTitle("Brakes and signals");
+      mMenu.setItem("Brakes","Set brake behavior");
+      mMenu.setItem("Turn signals","Set turn signal behavior");
+      break;
+    case bluetooth: //Bluetooth settings
+      mMenu.setMenuTitle("Bluetooth settings");
+      mMenu.setItem("BT Enabled","Toggle bluttooth on or off.");
+      mMenu.setItem("BT Name","Name for identifying device.");
+      mMenu.setItem("BT Pair","Pair a new bluetooth device.");
       break;
   }
   ShowMenu(&mMenu, sel);
@@ -313,10 +409,10 @@ void ShowMenu(Menu *m, int select){
   display.display();
 }
 
-//Defines menu behaviour -not complete... at all
+//Defines menu behaviour
 int executionTable(State s, int &sel){
   switch(s){ //Switch based on menu
-    case main:
+    case main: //Main menu
       switch(sel){//Switch based on selection
         case 0: //Display (Magic numbers)
           //Show present configuration
@@ -324,11 +420,11 @@ int executionTable(State s, int &sel){
           break;
         case 1: //Gauge menu selected (Magic numbers)
           sel = 0;
-          setupMenu(s=gauges);
+          setupMenu(s=gauge1);
           break;
         case 2: //Pattern menu selected (Magic numbers)
           sel = 0;
-          setupMenu(s=patterns);
+          setupMenu(s=pattern1);
           break;
         case 3: //Settings menu selected (Magic numbers)
           sel = 0;
@@ -340,8 +436,7 @@ int executionTable(State s, int &sel){
           break;
       }
       break;
-    //User settings menu
-    case settings:
+    case settings: //User settings menu
       switch(sel){
         case 0: //Set up bluetooth
           sel = 0;
@@ -349,7 +444,7 @@ int executionTable(State s, int &sel){
           break;
         case 1: //Set LED behavior
           sel = 0;
-          setupMenu(s=ledsettings);
+          setupMenu(s=ledsetting1);
           break;
         case 2: //Set Signals
           pError("TODO");
@@ -358,6 +453,11 @@ int executionTable(State s, int &sel){
           sel = 0;
           pError("Selection does not exist");
           break;
+      }
+      break;
+    case gauge1:
+      switch(sel){
+        
       }
       break;
     default://Menu ID unknown
