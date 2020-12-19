@@ -37,20 +37,20 @@ Needs sorting
 | OLED CS | 4 | No | Yes |
 | OLED Reset | 5 | No | Yes |
 | Relay signal | 12 | Boot fails if pulled high | No |
-| LED Data (left) | 13 | No | No |
-| LED SPARE 2 | 14 | No | No |
-| LED SPARE 1 | 15 | No | No |
+| LED Data (left) | 13 | No | Yes |
+| LED SPARE 2 | 14 | No | Yes |
+| LED SPARE 1 | 15 | No | Yes |
 | Brake wire | 16 | No | No |
 | OLED CLK | 18 | Hardware locked | Yes |
 | SPI MISO | 19 | Hardware locked | Yes |
 | Joystick Button | 21 | Needs internal pullup | Yes |
 | Button 0 | 22 | Needs internal pullup | Yes |
 | SPI MOSI | 23 | Hardware locked | Yes |
-| LED Data (right) | 25 | No | No |
+| LED Data (right) | 25 | No | Yes |
 | Joystick X | 26 | Analog | Yes |
 | Joystick Y | 27 | Analog | Yes |
-| LED Data (rear) | 32 | No | No |
-| LED Data (front) | 33 | No | No |
+| LED Data (rear) | 32 | No | Yes |
+| LED Data (front) | 33 | No | Yes |
 | Turn signal input 1 | 34 | Input only | No |
 | Turn Signal input 2 | 35 | Input only | No |
 | CAN high | 36 | Input only | No |
@@ -66,3 +66,5 @@ Joystick is oriented with headers up.
 - X Axis pot is HIGH when LEFT, LOW when RIGHT
 
 May want to reorient for ease of mounting.
+
+Pin 33 spazzes on software load. 

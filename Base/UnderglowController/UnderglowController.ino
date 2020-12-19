@@ -8,7 +8,9 @@
 //=============================================================================================
 // TODO (rough order of priority):
 // Non-submenu functionality / options
-// LEDHardware class + settings adjustment
+// - Add in menu for Spare 1 and Spare 2
+// - Remove LED type menu items. 
+// LEDHardware settings adjustment
 // LED setters
 // LED preset modes
 // Brake/Turn signal modes
@@ -57,6 +59,14 @@
 #define RETRY_SPEED 1000 //In milliseconds, higher is slower
 #define DEADZONELOW 300
 #define DEADZONEHIGH 3896
+#define MAX_BRIGHTNESS 200
+//Input
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+#define SELECT 4
+#define BACK 5
 //Hardware pins - ESP32 defined
 #define SPI_MOSI 23 
 #define SPI_MISO 19
@@ -86,20 +96,6 @@
 //Pins - other
 #define RELAY 12
 
-//Input
-#define UP 0
-#define DOWN 1
-#define LEFT 2
-#define RIGHT 3
-#define SELECT 4
-#define BACK 5
-//LEDS
-//Make customizable (Move to LEDHardware Class)
-#define LED_TYPE WS2811 
-#define COLOR_ORDER GRB
-#define SIDELEDCOUNT 30
-#define FRONTLEDCOUNT 18 
-
 //Globals/enums
 //Menu
 enum State{
@@ -120,6 +116,8 @@ enum SelectedPattern {
 enum SelectedString {
   front, rear, passenger, driver, spare1, spare2
 };
+bool preset = false; //TODO: move to EERPOM saved settings
+
 //Structs/Classes
 // Lighting system struct
 typedef struct {
@@ -131,38 +129,13 @@ typedef struct {
   SelectedPattern sp; //Current pattern used
 } LEDPatterns;
 
-// Allows for mixing of LED types. One per string.
-class LEDHardware {
-  bool flipDir; //True for backwards, false for forwards
-  uint8_t ledCount; //num of LEDs on strip
-  ColorOrder order; //GRB for WS2811
-public:
-  LEDHardware(){}
-  ~LEDHardware(){}
-  //Initialize
-  
-  //Set
-  void setReversed(bool fd){
-    flipDir = fd;
-  }
-  void setNumLEDs(uint8_t num){
-    ledCount = num;
-    //Create
-  }
-  ColorOrder setColorOrder(){
-    return order;
-  }
-  //Get
-  bool isReversed(){
-    return flipDir;
-  }
-  uint8_t getNumLEDs(){
-    return ledCount;
-  }
-  ColorOrder getColorOrder(){
-    return order;
-  }
-};
+// Hardware definition struct
+typedef struct {
+  bool reversed = true; //True for backwards, false for forwards
+  uint8_t ledCount; //num of LEDs on strip.
+  int startPos; //First led array val
+  ColorOrder order; //BRG for test code
+} LEDHardware;
 
 // Settings struct for running program.
 typedef struct{
@@ -254,14 +227,18 @@ SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
 Settings settingStruct;
 Button joyButton(JOYSTICK_BUTTON);
 Button button1(BUTTON_0);
-CRGB frontLEDs[FRONTLEDCOUNT]; //move to hardware led class
-CRGB rearLEDs[FRONTLEDCOUNT];
-CRGB leftLEDs[SIDELEDCOUNT];
-CRGB rightLEDs[SIDELEDCOUNT];
+CRGB *underglow;
+
 Menu mMenu;
 State s;
 LEDPatterns active;
 SelectedString sLEDString;
+LEDHardware frontLH;
+LEDHardware rightLH;
+LEDHardware rearLH;
+LEDHardware leftLH;
+LEDHardware spare1LH;
+LEDHardware spare2LH;
 
 void setup() {
   // Set up each system
@@ -273,11 +250,8 @@ void setup() {
   // Controls
   joyButton.begin();
   button1.begin();
-  // LEDs - move to led hardware class
-  FastLED.addLeds<LED_TYPE, LED_FRONT, COLOR_ORDER>(frontLEDs, FRONTLEDCOUNT);
-  FastLED.addLeds<LED_TYPE, LED_REAR, COLOR_ORDER>(rearLEDs, FRONTLEDCOUNT);
-  FastLED.addLeds<LED_TYPE, LED_LEFT, COLOR_ORDER>(leftLEDs, SIDELEDCOUNT);
-  FastLED.addLeds<LED_TYPE, LED_RIGHT, COLOR_ORDER>(rightLEDs, SIDELEDCOUNT);
+  // LEDs
+  setupLEDs();
   // OBD2
   while(!OBD2.begin()){
     //Ask user to check connection to vehicle, pause for a second
@@ -836,12 +810,6 @@ int selectPID(){
   }*/
 }
 
-// LED Color selection
-
-// LED Speed selection
-
-// LED Brightness selection
-
 //Sends text to screen - Used for errors and some other popups - COMPLETE
 void pError(char *eText){
   display.clear();
@@ -909,4 +877,186 @@ int8_t getInput(){
   if(joyButton.pressed()){
     return BACK;
   }
+}
+
+//LED Initialization - Only run on init
+//On reboot, initialize LEDS
+void setupLEDs(){
+  int LEDTotal = 0;
+  if(preset){
+    //Load from EEPROM
+    
+  } else {
+    //Load test strip setup
+    LEDS.setBrightness(MAX_BRIGHTNESS);
+    frontLH.order = brg;
+    frontLH.ledCount = 18;
+    rightLH.order = brg;
+    rightLH.ledCount = 30;
+    rearLH.order = brg;
+    rearLH.ledCount = 18;
+    leftLH.order = brg;
+    leftLH.ledCount = 30;
+    spare1LH.order = brg;
+    spare1LH.ledCount = 2;
+    spare2LH.order = brg;
+    spare2LH.ledCount = 2;
+  }
+  LEDTotal = frontLH.ledCount + rightLH.ledCount + rearLH.ledCount + 
+  leftLH.ledCount + spare1LH.ledCount + spare2LH.ledCount;
+  underglow = new CRGB[LEDTotal];
+  //based on rgb order, initialize front LEDs
+  LEDTotal = 0;
+  switch(frontLH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_FRONT,RGB>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_FRONT,RBG>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_FRONT,GRB>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_FRONT,GBR>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_FRONT,BRG>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_FRONT,BGR>(underglow,LEDTotal,frontLH.ledCount);
+      break;
+  }
+  LEDTotal += frontLH.ledCount;
+  rightLH.startPos = LEDTotal;
+  switch(rightLH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_RIGHT,RGB>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_RIGHT,RBG>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_RIGHT,GRB>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_RIGHT,GBR>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_RIGHT,BRG>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_RIGHT,BGR>(underglow,LEDTotal,rightLH.ledCount);
+      break;
+  }
+  LEDTotal += rightLH.ledCount;
+  rearLH.startPos = LEDTotal;
+  switch(rearLH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_REAR,RGB>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_REAR,RBG>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_REAR,GRB>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_REAR,GBR>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_REAR,BRG>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_REAR,BGR>(underglow,LEDTotal,rearLH.ledCount);
+      break;
+  }
+  LEDTotal += rearLH.ledCount;
+  leftLH.startPos = LEDTotal;
+  switch(leftLH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_LEFT,RGB>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_LEFT,RBG>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_LEFT,GRB>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_LEFT,GBR>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_LEFT,BRG>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_LEFT,BGR>(underglow,LEDTotal,leftLH.ledCount);
+      break;
+  }
+  LEDTotal += leftLH.ledCount;
+  spare1LH.startPos = LEDTotal;
+  switch(spare1LH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_SPARE1,RGB>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_SPARE1,RBG>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_SPARE1,GRB>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_SPARE1,GBR>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_SPARE1,BRG>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_SPARE1,BGR>(underglow,LEDTotal,spare1LH.ledCount);
+      break;
+  }
+  LEDTotal += spare1LH.ledCount;
+  spare2LH.startPos = LEDTotal;
+  switch(spare2LH.order){
+    default:
+    case rgb:
+      LEDS.addLeds<WS2811,LED_SPARE2,RGB>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+    case rbg:
+      LEDS.addLeds<WS2811,LED_SPARE2,RBG>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+    case grb:
+      LEDS.addLeds<WS2811,LED_SPARE2,GRB>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+    case gbr:
+      LEDS.addLeds<WS2811,LED_SPARE2,GBR>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+    case brg:
+      LEDS.addLeds<WS2811,LED_SPARE2,BRG>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+    case bgr:
+      LEDS.addLeds<WS2811,LED_SPARE2,BGR>(underglow,LEDTotal,spare2LH.ledCount);
+      break;
+  }
+  LEDTotal += spare2LH.ledCount;
+}
+
+//Strip flipper. Flips strips.
+void colorSorter(CRGB color, int led){
+  if(led < frontLH.ledCount && frontLH.reversed){
+    underglow[((frontLH.startPos+frontLH.ledCount-1)-(led-frontLH.startPos))] = color;
+  } else if (led < rightLH.ledCount + rightLH.startPos && rightLH.reversed){
+    underglow[((rightLH.startPos+rightLH.ledCount-1)-(led-rightLH.startPos))] = color;
+  } else if (led < rearLH.ledCount + rearLH.startPos && rearLH.reversed){
+    underglow[((rearLH.startPos+rearLH.ledCount-1)-(led-rearLH.startPos))] = color;
+  } else if (led < leftLH.ledCount + leftLH.startPos && leftLH.reversed){
+    underglow[((leftLH.startPos+leftLH.ledCount-1)-(led-leftLH.startPos))] = color;
+  } else { //Not flipped, one of the spare strips.
+    underglow[led] = color;
+  } 
 }

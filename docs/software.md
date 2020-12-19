@@ -20,7 +20,7 @@ The menu has a few modes:
 - Variable adjust: Brightness, speed, anything represented as 1 number
 
 ### OLED
-A monochrom OLED display. Generic, used to display information about settings. 
+A monochrome OLED display. Generic, used to display information about settings. 
 
 ### CAN/OBD2
 The CAN/OBD2 libraries in use handle most of the packet send and receive pattern, only requiring a PID to get the relevant data in the correct units.
