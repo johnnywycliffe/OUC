@@ -47,10 +47,10 @@ Needs sorting
 | Button 0 | 22 | Needs internal pullup | Yes |
 | SPI MOSI | 23 | Hardware locked | Yes |
 | LED Data (right) | 25 | No | Yes |
-| Joystick X | 26 | Analog | Yes |
-| Joystick Y | 27 | Analog | Yes |
-| LED Data (rear) | 32 | No | Yes |
-| LED Data (front) | 33 | No | Yes |
+| LED Data (rear) | 26 | No | Yes |
+| LED Data (front) | 27 | No | Yes |
+| Joystick X | 32 | Analog | Yes |
+| Joystick Y | 33 | Analog | Yes |
 | Turn signal input 1 | 34 | Input only | No |
 | Turn Signal input 2 | 35 | Input only | No |
 | CAN high | 36 | Input only | No |

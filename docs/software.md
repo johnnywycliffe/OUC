@@ -16,8 +16,15 @@ The menu has a few modes:
 - Navigation: consistes of menu and submenues
 - Choose color/pallete: Used to set colors
 - Choose text: Used to set text (if needed)
-- Choose PID: CHoose  avalid PID to monitor for gauges
+- Choose PID: Choose a valid PID to monitor for gauges
 - Variable adjust: Brightness, speed, anything represented as 1 number
+
+LED patterns will continue to run while running settings.
+- Custom patterns will change in real time for ease of modification
+- Preset patterns will display when selecting them
+- When choosing direction, indicate clockwise and have a slow clockwise pattern
+- When choosing RGB, get initialization parameters and adjust accordingly. This may be difficult.
+- When setting brakes and turn signals, provide a preview in real time
 
 ### OLED
 A monochrome OLED display. Generic, used to display information about settings. 
@@ -45,7 +52,6 @@ See Patterns document for LED implementation.
 ## Settings
 Some settings:
 - Reverse direction of LED bar (For incorrect instals
-- Set new LED bad chip (WS2812, etc)
 - Set LED bar length
 - Bluetooth on/of
 - Bluetooth password (if possible)

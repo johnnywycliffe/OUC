@@ -62,7 +62,6 @@ int cntr = 0;
 void setup() {
   Serial.begin(115200);
   setupLEDs();
-  FastLED.clear();
 }
 
 void loop() { 

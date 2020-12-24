@@ -76,13 +76,13 @@
 #define DISP_CS 4
 #define DISP_DC 2
 //Pins - input
-#define JOYSTICK_X 26
-#define JOYSTICK_Y 27
+#define JOYSTICK_X 32
+#define JOYSTICK_Y 33
 #define JOYSTICK_BUTTON 21
 #define BUTTON_0 22
 //Pins - LED outputs
-#define LED_FRONT 33
-#define LED_REAR 32 
+#define LED_FRONT 26
+#define LED_REAR 27
 #define LED_LEFT 13
 #define LED_RIGHT 25
 #define LED_SPARE1 15
@@ -100,7 +100,7 @@
 //Menu
 enum State{
   main, settings, gauge1, pattern1, pattern2, pattern3, bluetooth, ledsetting1, ledsetting2,
-  brakeandturn, brake, turn, color, pickpattern, animation, ledorder, ledtype
+  brakeandturn, brake, turn, color, pickpattern, animation, ledorder
 };
 int sel = 0; //current selection
 bool demo = false; //if true, lets user preview LEDS as they scroll through options
@@ -225,8 +225,8 @@ public:
 //Initialization
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
 Settings settingStruct;
-Button joyButton(JOYSTICK_BUTTON);
-Button button1(BUTTON_0);
+Button joyButton(JOYSTICK_BUTTON, PULLUP);
+Button button1(BUTTON_0, PULLUP);
 CRGB *underglow;
 
 Menu mMenu;
@@ -253,10 +253,10 @@ void setup() {
   // LEDs
   setupLEDs();
   // OBD2
-  while(!OBD2.begin()){
+  /*while(!OBD2.begin()){
     //Ask user to check connection to vehicle, pause for a second
     delay(RETRY_SPEED);
-  }
+  }*/
   //Menu
   setupMenu(main);
   // load settings
@@ -267,10 +267,12 @@ void loop() {
   // Bluetooth input
   // Menu - Change to only be active when needed
   int result = menuSelect(&mMenu, sel);
-  //Return to main menu - FIXME: Back up one menu if possible
+  //Return to main menu
   if(result==-1){
     sel = 0;
-    setupMenu(main);
+    if(s != main){
+      setupMenu(mMenu.getPrevMenu());
+    } 
   }
   //Behaviours for menu states
   switch(s){
@@ -381,19 +383,9 @@ void setupMenu(State sel){
     case ledsetting2:
       //TODO: Change title based on LED string selected
       mMenu.setPrevMenu(ledsetting1);
-      mMenu.setItem("LED Type","Change what type of LED strip is being used"); //WS2811, WS2812...
       mMenu.setItem("Color order","Change RGB color order"); //Default for WS2811s is GRB
       mMenu.setItem("Number","Change number of LEDs on the strip"); //Remember to put notice for WS2811s
       mMenu.setItem("Direction","Change direction of led flow"); //Reverse strip if installed backwards
-      break;
-    case ledtype: //Set type of LED
-      mMenu.setMenuTitle("Pick Strip type");
-      mMenu.setPrevMenu(ledsetting2);
-      mMenu.setItem("WS2811","Displaying test pattern");
-      mMenu.setItem("WS2812","Displaying test pattern");
-      mMenu.setItem("WS2812B","Displaying test pattern");
-      mMenu.setItem("WS2813","Displaying test pattern");
-      //TODO: ADD MORE
       break;
     case ledorder: //Top level gauge menu
       mMenu.setMenuTitle("Select color Order");
@@ -678,16 +670,13 @@ int executionTable(State s, int &sel){
       break;
     case ledsetting2:
       switch(sel){
-        case 0: //LED type
-          pError("TODO: LED TYPE MENU"); //Sub menu
-          break;
-        case 1: //RGB order
+        case 0: //RGB order
           pError("TODO: RGB ORDER MENU"); //Sub menu
           break;
-        case 2: // Number of LEDs
+        case 1: // Number of LEDs
           pError("TODO: STRING SIZE SELECTION"); //Int
           break;
-        case 3: //Direction
+        case 2: //Direction
           pError("TODO: REVERSE DIRECTION"); //Bool
           break;
         default:
@@ -696,14 +685,6 @@ int executionTable(State s, int &sel){
           break;
       }
       break;
-    case ledtype:
-      //Set LEDS strip type after user verifies
-      //use sLEDSetring to save to correct string
-      switch(sLEDString){
-        default:
-          pError("Error: String of lights not defined");
-          break;
-      }
     case ledorder:
       //Set LEDS strip type after user verifies
       //use sLEDSetring to save to correct string

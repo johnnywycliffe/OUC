@@ -1,3 +1,5 @@
+//Used to clear LED strips during testing
+
 #include <FastLED.h>
 #define NUM_LEDS 100
 #define DATA_PIN 2

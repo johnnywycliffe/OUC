@@ -85,6 +85,9 @@ More need added...
 3. Layered gauges (Tracking two stats, overlaid)
 4. Equalizer, with 'local maximum'
 
+## Spare LEDs 1 & 2
+These can either mimic the underglow, take only the primary color, or do something completely different.
+
 ## Turn signal and brake hardwires
 ### Brakes
 1. Off
