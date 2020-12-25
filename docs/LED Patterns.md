@@ -44,12 +44,11 @@ Preset patterns, more complex than the "simple" patterns
 1. Pacifica - Looks like water flowing 
 2. Rising flames - Kind of like a candle
 3. Twinklefox - Snow?
-4. Police - red and blue alternating with variable timings
-5. MURICA - Blue and white in the front, red and white down sides and rear. Flutters?
-6. Valentine's - Pink, white and purple
-7. Shamrock - Green shifting pattern
-8. Halloween - Orange, green and purple
-9. Christmas - Red and green lights, white twinkles
+4. MURICA - Blue and white in the front, red and white down sides and rear. Flutters?
+5. Valentine's - Pink, white and purple
+6. Shamrock - Green shifting pattern
+7. Halloween - Orange, green and purple
+8. Christmas - Red and green lights, white twinkles
 
 ## Colors
 ### Built in palettes

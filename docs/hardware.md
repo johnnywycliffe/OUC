@@ -56,6 +56,15 @@ Needs sorting
 | CAN high | 36 | Input only | No |
 | CAN low | 39 | Input only | No |
 
+## Power
+Vehicle power systems are generously described as "Hostile". So, there needs to be a system in place to get the power to everything. THe voltage ranges from 11-14V and 10A typically, but there's spikes.
+
+Using a MAX20008E chip to go from whatever the battery decides to provide to 5V, 8A. It's rated for automotive use as well.
+
+Then, 2 step up chips (MIC2251 or TPS61085A) to get back to 12v. Also need a MIC23050-SYML-TR for 3.3v
+
+Power supply circuitry alone account for like $10, and I don't even have inductors picked yet...
+
 ## Notes
 Logic shifter is actually hex buffer; need a voltage divider on Controller side, WS2811 seems to take 5v input without issue.
 

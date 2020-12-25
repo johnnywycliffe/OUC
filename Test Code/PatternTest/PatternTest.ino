@@ -3,13 +3,14 @@
 #include <FastLED.h>
 
 //Pins - LED outputs
-#define LED_FRONT 33
-#define LED_REAR 32 
+#define LED_FRONT 27
+#define LED_REAR 26
 #define LED_LEFT 13
 #define LED_RIGHT 25
 #define LED_SPARE1 15
 #define LED_SPARE2 14
-#define MAX_BRIGHTNESS 100 //For testing. Realistically, maybe 200?
+
+#define MAX_BRIGHTNESS 100
 
 enum ColorOrder {
   rgb, rbg, grb, gbr, brg, bgr
