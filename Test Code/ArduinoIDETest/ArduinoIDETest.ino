@@ -687,22 +687,22 @@ int executionTable(State s, int &sel){
     case pattern2:
       switch(sel){
         case 0:
-          //TODO: Add save
+          pError("Add save option");
           break;
-        case 0: //Show pattern menu
+        case 1: //Show pattern menu
           sel = 0;
           setupMenu(pickpattern);
           break;
-        case 1: //Show Color picker menu
+        case 2: //Show Color picker menu
           sel = 0;
           setupMenu(color);
           mMenu.setPrevMenu(pattern2);
           break;
-        case 2: //Show Animation menu
+        case 3: //Show Animation menu
           sel = 0;
           setupMenu(animation);
           break;
-        case 3: //Show Animation speed selection
+        case 4: //Show Animation speed selection
           sel = 0;
           setupMenu(animation);
           break;

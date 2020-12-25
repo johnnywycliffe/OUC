@@ -11,9 +11,15 @@ The inputs to the device are:
 
 To choose between these, there is bluetooth mode or a joystick/button combo.
 
+### Optimizations to make:
+- Function pointers to clean up the menu and make it OH SO MUCH easier to work with
+- add in passive (on click) and active (constantly running) functions 
+- Add in new control schemes
+- Add in return to last menu in last menu position
+
 ### Menu
 The menu has a few modes:
-- Navigation: consistes of menu and submenues
+- Navigation: consists of menu and submenues
 - Choose color/pallete: Used to set colors
 - Choose text: Used to set text (if needed)
 - Choose PID: Choose a valid PID to monitor for gauges
