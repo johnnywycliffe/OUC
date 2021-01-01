@@ -1,7 +1,7 @@
 #include <Button.h>
 //#include <FastLED.h>
 #include "SSD1306Spi.h"
-//#include "bitmaps.h"
+#include "bitmaps.h"
 
 //Display
 #define SPI_MOSI 23 
@@ -29,19 +29,18 @@
 #define DEADZONEHIGH 3800
 #define MENUDELAY 200
 
-
 enum State{ //Menu state
   main, settings, gauge1, pattern1, pattern2, pattern3, bluetooth, ledsetting1, ledsetting2,
   brakeandturn, brake, turn, color, pickpattern, animation, ledorder, ledcount, ledflip,
   autoshutoff, screenbright, palette, presetcolor1, presetcolor2, colornumset
 };
-//Refence for enums
-State stateRef[] = {main, settings, gauge1, pattern1, pattern2, pattern3, bluetooth, ledsetting1, 
-  ledsetting2, brakeandturn, brake, turn, color, pickpattern, animation, ledorder, ledcount, 
-  ledflip, autoshutoff, screenbright, palette, presetcolor1, presetcolor2, colornumset};
-
 enum Controls{up, down, left, right, select, back, nop}; //Controls
-
+enum SelectedPattern {
+  narrow, medium, large, wide, halfandhalf, quarters, dots, pacifica, risingflames, twinklefox,
+  murica, colorpop, splatter, drip, christmas, valentines, shamrock, halloween, turnsignaloff, 
+  solid, chase, solidnrear, chasenrear, solidnboth, chasenboth, brakesignaloff, onnodim, onwithdim
+};
+/*
 //LED theory
 //Three patterns: Active, Test, and Current
 //Current is saved into EEPROM on update. It is what is loaded on reboot
@@ -70,10 +69,25 @@ enum Controls{up, down, left, right, select, back, nop}; //Controls
 //Passives
 //Update color palette on active: Active is known, state and sel describe 
 //Update screen brightness: deviceSettings is known, 
+*/
 
-typedef void (*GFunc)(void*);           //Function pointer for MenuItem
-typedef void (*displayFunc)(int);       //Screen display Function
-typedef int (*controlFunc)(int&);       //Control scheme function
+//Templates
+typedef void (*GFunc)(void*);       //Function pointer for MenuItem
+typedef void (*displayFunc)(int);   //Screen display Function
+typedef int (*controlFunc)(int&);   //Control scheme function
+
+//Device settings
+typedef struct {
+  //Internal use
+  char deviceID[10];
+  bool firstboot = true;
+  //User settings
+  uint8_t brightness; //Screen brightness
+  //LED settings
+  bool autoshutoff; //If device automatically shuts off when driving
+  SelectedPattern turn; //Turn signal behaviour
+  SelectedPattern brake; //Brake light behaviour
+} Settings;
 
 // MenuItem class
 class MenuItem{
@@ -131,7 +145,7 @@ public:
   //Member Functions
   displayFunc disp; //function to call to display
   controlFunc cont;  //Control scheme
-  void setItem(char *t, char *d, GFunc a, void* ai=NULL, GFunc p=NULL, void* pi=NULL){
+  void setItem(char *t, char *d, GFunc a,  void* ai=NULL, GFunc p=NULL, void* pi=NULL){
     itemArr[len].set(t,d,a,ai,p,pi);  //Initialize MenuItem
     len++;                            //Incriment length
   }
@@ -139,7 +153,11 @@ public:
     itemArr[select].active(itemArr[select].getActiveItem());
   }
   void runPassive(int select){
-    itemArr[select].passive(itemArr[select].getPassiveItem());
+    if(itemArr[select].passive != NULL){
+      void *PassItem = itemArr[select].getPassiveItem();
+      Serial.println("Gets to here");
+      itemArr[select].passive(PassItem);
+    }
   }
   //Setters
   void set(char *mt, State s, State p, displayFunc d, controlFunc c){
@@ -149,6 +167,9 @@ public:
     disp = d;
     cont = c;
     len = 0;
+  }
+  void setLen(uint8_t l){
+    len = l;
   }
   //Getters
   char* getMenuTitle(){
@@ -160,13 +181,20 @@ public:
   char* getDesc(int select){
     return itemArr[select].getDesc();
   }
+  void* getAI(int select){
+    return itemArr[select].getActiveItem();
+  }
   State getPrev(){
     return prev;
   }
-  int8_t getLen(){
+  uint8_t getLen(){
     return len;
   }
-  
+
+
+  State getState(){
+    return currState;
+  }
   /*
   
   void setLen(int l){ //used for int as maxVal, bool as true(1) or false(0), and progBar as maxVal
@@ -201,9 +229,17 @@ public:
 
 Button joyButton(JOYSTICK_BUTTON,PULLUP);
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
+Settings deviceSettings;
 
+//Menu init
 Menu menu;
 int selector = 0;
+unsigned long menuTime = 0;
+//Pointers for storing data
+int *selPtr = &selector;
+State *sPtr;
+int *intPtr;
+uint8_t *uint8_tPtr;
 
 void setup(){
   //debug
@@ -221,7 +257,7 @@ void setup(){
   display.display();
   // /debug
   setMenu(main);
-  menu.disp(select);
+  menu.disp(selector);
 }
 
 void loop(){
@@ -232,22 +268,42 @@ void loop(){
     - Passive functions are called when button is pressed
     - Screen is updated according to state
   */
-  
+  if(millis() >= menuTime + MENUDELAY){
+    menuTime = millis();
+    menu.cont(selector);
+    menu.disp(selector);
+    menu.runPassive(selector);
+  }
 }
 
-void setScreenBrightness(void* bPtr){
-  int8_t *bri;
-  bri = (int8_t*)bPtr;
-  display.setBrightness(*bri);
-}
-
+//Set state of menu, add options
 void setMenu(State s){
+  selector = 0;
   switch(s){ //Add options based off of
     default: //Something went wrong, throw an error
       pError("Not defined, returning to main");
     case main: //Main menu, default landing page
-      menu.set("Main Menu",s,s,optionMenuDisplay,optionMenuControls);
-      menu.setItem("Patterns","Choose an LED pattern and animation",setMenuW,&State.pattern1);
+      menu.set("Main Menu",s,s,optionMenuDisplay,optionMenuControls); //Setup menu
+      sPtr = new State[3]{screenbright,pattern1,gauge1};
+      menu.setItem("Brightness","Set screen brightness",setMenuW,sPtr);
+      menu.setItem("Gauges","Choose a gauge to display",setMenuW,sPtr+2);
+      menu.setItem("Patterns","Choose an LED pattern and animation",setMenuW,sPtr+1);
+      break;
+    case gauge1:
+      menu.set("Gauges Menu",s,main,optionMenuDisplay,optionMenuControls);
+      menu.setItem("gauge 1","none",pErrorW);
+      menu.setItem("gauge 2","none",pErrorW);
+      break;
+    case pattern1:
+      menu.set("Pattern Menu",s,main,optionMenuDisplay,optionMenuControls);
+      menu.setItem("Pattern 1","none",pErrorW);
+      menu.setItem("Pattern 2","none",pErrorW);
+      break;
+    case screenbright:
+      menu.set("Set Brightness",s,main,optionMenuDisplay,optionMenuControls);
+      selector = 127;
+      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //FIXME: Add save func
+      menu.setLen(255);
       break;
   }
 }
@@ -257,8 +313,13 @@ void setMenuW(void* ptr){
   setMenu(*(State*)ptr);
 }
 
+//Set screen brightness
+void setScreenBrightness(void* bPtr){
+  display.setBrightness(*(int*)bPtr);
+}
+
 //Display options =================================================================================
-void optionMenuDisplay(int select){
+void optionMenuDisplay(int sel){
   display.clear();
   display.setFont(ArialMT_Plain_10);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
@@ -266,9 +327,28 @@ void optionMenuDisplay(int select){
   display.drawLine(0,10,128,10);
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.setFont(ArialMT_Plain_16);
-  display.drawStringMaxWidth(0,10,128,menu.getSubtitle(select));
+  display.drawStringMaxWidth(0,10,128,menu.getSubtitle(sel));
   display.setFont(ArialMT_Plain_10);
-  display.drawStringMaxWidth(0,26,128,menu.getDesc(select));
+  display.drawStringMaxWidth(0,26,128,menu.getDesc(sel));
+  display.display();
+}
+
+//Displays the integer menu
+void brightnessMenuDisplay(int sel){
+  display.clear();
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_CENTER);
+  display.drawStringMaxWidth(63,0,128,menu.getMenuTitle());
+  display.drawLine(0,10,128,10);
+  display.setFont(ArialMT_Plain_16);
+  display.drawStringMaxWidth(63,10,128,"Current: "+String(deviceSettings.brightness));
+  display.drawStringMaxWidth(63,36,128,"New: "+String(sel + 1));
+  if(sel != 0){
+    display.drawFastImage(60,30,8,8,upArrowBitmap);
+  } 
+  if (sel != menu.getLen()-1) {
+    display.drawFastImage(60,53,8,8,downArrowBitmap);
+  }
   display.display();
 }
 
@@ -284,7 +364,8 @@ void pError(char *eText){
   display.drawStringMaxWidth(0,20,123,eText);
   display.display();
   // Wait for controls to be used
-  while(getInput() == -1){
+  delay(200);
+  while(getInput() == nop){
     continue;
   }
   //Clear screen
@@ -292,9 +373,10 @@ void pError(char *eText){
   display.display();
 }
 
-//pError Wrapper
+//pError Wrapper 
+//FIXME: Char arrays are const, which means const void*, which mean, this doesn't work.
 void pErrorW(void *ptr){
-  pError(*(char*)ptr);
+  pError((char*)ptr); //pError expects pointer
 }
 
 //Controls Options ================================================================================
@@ -312,6 +394,31 @@ int optionMenuControls(int &sel){
     case left:
     case back:
       setMenu(menu.getPrev());              //Back up a menu
+      break;
+    case right:
+    case select:
+      menu.runActive(sel);                //Run whatever is in MenuItem
+      break;
+  }
+  //Serial.println(select);
+  return 0;
+}
+
+//Controls for options menu
+int intMenuControls(int &sel){
+  switch(getInput()){
+    case up:
+      sel--;                              //Decriment select / move up
+      if(sel < 0) sel = menu.getLen()-1;  //Wrap if out of bounds
+      break;
+    case down:
+      sel++;                              //Incriment select / move down
+      if(sel >= menu.getLen()) sel = 0;   //Wrap if out of bounds
+      break;
+    case left:
+    case back:
+      setMenu(menu.getPrev());              //Back up a menu
+      break;
     case right:
     case select:
       menu.runActive(sel);                //Run whatever is in MenuItem
