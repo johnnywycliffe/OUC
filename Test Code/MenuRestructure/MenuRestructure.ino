@@ -227,7 +227,7 @@ public:
   }*/
 };
 
-Button joyButton(JOYSTICK_BUTTON,PULLUP);
+Button joyButton(JOYSTICK_BUTTON,INPUT_PULLUP);
 SSD1306Spi display(DISP_RESET, DISP_DC, DISP_CS);
 Settings deviceSettings;
 
@@ -301,9 +301,9 @@ void setMenu(State s){
       break;
     case screenbright:
       menu.set("Set Brightness",s,main,optionMenuDisplay,optionMenuControls);
-      selector = 127;
-      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //FIXME: Add save func
-      menu.setLen(255);
+      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,uint8_tPtr); //FIXME: Add save func
+      //menu.setLen(255);
+      //uint8_tPtr = new uint8_t{127}; //WHYYYYYY DOES THIS BREAK
       break;
   }
 }
@@ -404,7 +404,7 @@ int optionMenuControls(int &sel){
   return 0;
 }
 
-//Controls for options menu
+//Controls for adjusting integers up and downsel
 int intMenuControls(int &sel){
   switch(getInput()){
     case up:

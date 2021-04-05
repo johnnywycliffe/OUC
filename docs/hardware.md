@@ -40,7 +40,8 @@ Needs sorting
 | LED Data (left) | 13 | No | Yes |
 | LED SPARE 2 | 14 | No | Yes |
 | LED SPARE 1 | 15 | No | Yes |
-| Brake wire | 16 | No | No |
+| CAN TX | 16 | No | No |
+| CAN RX | 17 | No | No |
 | OLED CLK | 18 | Hardware locked | Yes |
 | SPI MISO | 19 | Hardware locked | Yes |
 | Joystick Button | 21 | Needs internal pullup | Yes |
@@ -51,10 +52,9 @@ Needs sorting
 | LED Data (front) | 27 | No | Yes |
 | Joystick X | 32 | Analog | Yes |
 | Joystick Y | 33 | Analog | Yes |
-| Turn signal input 1 | 34 | Input only | No |
-| Turn Signal input 2 | 35 | Input only | No |
-| CAN high | 36 | Input only | No |
-| CAN low | 39 | Input only | No |
+| Turn signal input Left | 34 | Input only | No |
+| Turn Signal input Right | 35 | Input only | No |c
+| Brake Input | 39 | Input only | No |
 
 ## Power
 Vehicle power systems are generously described as "Hostile". So, there needs to be a system in place to get the power to everything. THe voltage ranges from 11-14V and 10A typically, but there's spikes.
