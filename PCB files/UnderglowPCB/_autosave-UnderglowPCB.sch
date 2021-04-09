@@ -71,12 +71,12 @@ $EndComp
 $Comp
 L power:GND #PWR017
 U 1 1 606E5808
-P 7900 6400
-F 0 "#PWR017" H 7900 6150 50  0001 C CNN
-F 1 "GND" H 7905 6227 50  0000 C CNN
-F 2 "" H 7900 6400 50  0001 C CNN
-F 3 "" H 7900 6400 50  0001 C CNN
-	1    7900 6400
+P 5150 5050
+F 0 "#PWR017" H 5150 4800 50  0001 C CNN
+F 1 "GND" H 5155 4877 50  0000 C CNN
+F 2 "" H 5150 5050 50  0001 C CNN
+F 3 "" H 5150 5050 50  0001 C CNN
+	1    5150 5050
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -109,7 +109,7 @@ U 1 1 6077CCC8
 P 5100 4150
 F 0 "J7" H 5200 4150 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 4750 3950 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 5100 4150 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5100 4150 50  0001 C CNN
 F 3 "~" H 5100 4150 50  0001 C CNN
 	1    5100 4150
 	-1   0    0    1   
@@ -120,7 +120,7 @@ U 1 1 6077EB32
 P 5100 4600
 F 0 "J8" H 5200 4600 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 4750 4400 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 5100 4600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5100 4600 50  0001 C CNN
 F 3 "~" H 5100 4600 50  0001 C CNN
 	1    5100 4600
 	-1   0    0    1   
@@ -2125,67 +2125,67 @@ F 3 "~" H 8700 6250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J9
 U 1 1 60AA5191
 P 5100 5050
-F 0 "J?" H 5200 5050 50  0000 C CNN
+F 0 "J9" H 5200 5050 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 4750 4850 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 5100 5050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5100 5050 50  0001 C CNN
 F 3 "~" H 5100 5050 50  0001 C CNN
 	1    5100 5050
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J10
 U 1 1 60AA6F94
 P 5100 5500
-F 0 "J?" H 5200 5500 50  0000 C CNN
+F 0 "J10" H 5200 5500 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 4750 5300 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 5100 5500 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5100 5500 50  0001 C CNN
 F 3 "~" H 5100 5500 50  0001 C CNN
 	1    5100 5500
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J2
 U 1 1 60AA8534
 P 2850 5100
-F 0 "J?" H 2950 5100 50  0000 C CNN
+F 0 "J2" H 2950 5100 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 2500 4900 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 2850 5100 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 2850 5100 50  0001 C CNN
 F 3 "~" H 2850 5100 50  0001 C CNN
 	1    2850 5100
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J3
 U 1 1 60AA9C69
 P 2850 5650
-F 0 "J?" H 2950 5650 50  0000 C CNN
+F 0 "J3" H 2950 5650 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 2500 5450 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 2850 5650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2850 5650 50  0001 C CNN
 F 3 "~" H 2850 5650 50  0001 C CNN
 	1    2850 5650
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J6
 U 1 1 60AAB3C9
 P 4600 5850
-F 0 "J?" H 4700 5850 50  0000 C CNN
+F 0 "J6" H 4700 5850 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 4300 6050 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 4600 5850 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4600 5850 50  0001 C CNN
 F 3 "~" H 4600 5850 50  0001 C CNN
 	1    4600 5850
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x03 J?
+L Connector_Generic:Conn_01x03 J11
 U 1 1 60AACEEC
 P 5900 6250
-F 0 "J?" H 6000 6250 50  0000 C CNN
+F 0 "J11" H 6000 6250 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 5700 6050 50  0000 C CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal" H 5900 6250 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5900 6250 50  0001 C CNN
 F 3 "~" H 5900 6250 50  0001 C CNN
 	1    5900 6250
 	1    0    0    -1  
