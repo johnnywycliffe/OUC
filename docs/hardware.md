@@ -30,7 +30,7 @@ Hardware descriptions and pinouts
 - Support components
 
 ## Pinout
-Needs sorting
+***Needs sorting - Making PCB files revealed problems***
 | Item | Pin | Restrictions | Vetted |
 | ---- | --- | ------------ | ------ |
 | OLED DC | 2 | No | Yes |
