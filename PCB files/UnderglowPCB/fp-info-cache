@@ -1,4 +1,4 @@
-18991570634029751
+18996426810664751
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -82270,6 +82270,27 @@ LD56100DPU33R
 0
 9
 9
+UnderglowPCB
+SRR1208
+
+
+0
+2
+2
+UnderglowPCB
+TPSMA6L15A
+
+
+0
+2
+2
+UnderglowPCB
+TPSMB15CA
+
+
+0
+2
+2
 Valve
 Valve_ECC-83-1
 Valve ECC-83-1 round pins
