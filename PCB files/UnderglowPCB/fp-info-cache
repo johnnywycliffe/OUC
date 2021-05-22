@@ -1,4 +1,4 @@
-18996426810664751
+18998045539662751
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -82291,6 +82291,13 @@ TPSMB15CA
 0
 2
 2
+UnderglowPCB
+Texas_HSOP-8-1EP_3.9x4.9mm_P1.27mm_ThermalVias
+Texas Instruments HSOP 9, 1.27mm pitch, 3.9x4.9mm body, exposed pad, thermal vias, DDA0008J (http://www.ti.com/lit/ds/symlink/tps5430.pdf)
+HSOP 1.27
+0
+20
+9
 Valve
 Valve_ECC-83-1
 Valve ECC-83-1 round pins

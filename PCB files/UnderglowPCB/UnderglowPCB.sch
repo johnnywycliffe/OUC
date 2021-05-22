@@ -215,7 +215,7 @@ NoConn ~ 8000 2600
 NoConn ~ 8000 2700
 Text Notes 3650 3900 0    50   ~ 0
 OLED Screen mounting holes\n
-Text GLabel 6750 1000 2    50   Input ~ 0
+Text GLabel 6800 3000 2    50   Input ~ 0
 UNDRGLW_LEFT
 Text GLabel 9200 2200 2    50   Input ~ 0
 SPICLK
@@ -223,15 +223,15 @@ Text GLabel 9200 2700 2    50   Input ~ 0
 CAN_RX
 Text GLabel 2600 7150 1    50   Input ~ 0
 BRAKE
-Text GLabel 6800 3500 2    50   Input ~ 0
-UNDRGLW_FRNT
-Text GLabel 6800 3000 2    50   Input ~ 0
-UNDRGLW_REAR
 Text GLabel 6750 2500 2    50   Input ~ 0
+UNDRGLW_FRNT
+Text GLabel 6800 3500 2    50   Input ~ 0
+UNDRGLW_REAR
+Text GLabel 6750 1000 2    50   Input ~ 0
 UNDRGLW_RGHT
-Text GLabel 6750 2000 2    50   Input ~ 0
-5V_LED_SPARE_1
 Text GLabel 6750 1500 2    50   Input ~ 0
+5V_LED_SPARE_1
+Text GLabel 6750 2000 2    50   Input ~ 0
 5V_LED_SPARE_2
 Text GLabel 1250 7100 1    50   Input ~ 0
 TURN_RIGHT
@@ -270,46 +270,46 @@ F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 9200 6200 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74HC14 U4
-U 6 1 60B3CC29
+U 4 1 60B3CC29
 P 6450 2000
 F 0 "U4" H 6450 2300 50  0000 C CNN
 F 1 "74HC14" H 6450 2200 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 2000 50  0001 C CNN
-	6    6450 2000
+	4    6450 2000
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U4
-U 5 1 60B3B715
+U 3 1 60B3B715
 P 5850 2000
 F 0 "U4" H 5850 2317 50  0000 C CNN
 F 1 "74HC14" H 5850 2226 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 2000 50  0001 C CNN
-	5    5850 2000
+	3    5850 2000
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U4
-U 4 1 60B1F88F
+U 5 1 60B1F88F
 P 6450 1500
 F 0 "U4" H 6450 1800 50  0000 C CNN
 F 1 "74HC14" H 6400 1700 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 1500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 1500 50  0001 C CNN
-	4    6450 1500
+	5    6450 1500
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U4
-U 3 1 60B1E3B5
+U 2 1 60B1E3B5
 P 5850 1500
 F 0 "U4" H 5850 1817 50  0000 C CNN
 F 1 "74HC14" H 5850 1726 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 1500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 1500 50  0001 C CNN
-	3    5850 1500
+	2    5850 1500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -325,13 +325,13 @@ F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 1000 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74HC14 U4
-U 2 1 60A4C0C0
+U 6 1 60A4C0C0
 P 6450 1000
 F 0 "U4" H 6450 1300 50  0000 C CNN
 F 1 "74HC14" H 6400 1200 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 1000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 1000 50  0001 C CNN
-	2    6450 1000
+	6    6450 1000
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -347,57 +347,57 @@ F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 2500 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74HC14 U5
-U 4 1 60BA7AD9
+U 5 1 60BA7AD9
 P 6500 3000
 F 0 "U5" H 6500 3300 50  0000 C CNN
 F 1 "74HC14" H 6500 3200 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6500 3000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6500 3000 50  0001 C CNN
-	4    6500 3000
+	5    6500 3000
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U5
-U 3 1 60BA5CDD
+U 2 1 60BA5CDD
 P 5900 3000
 F 0 "U5" H 5900 3317 50  0000 C CNN
 F 1 "74HC14" H 5900 3226 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5900 3000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5900 3000 50  0001 C CNN
-	3    5900 3000
+	2    5900 3000
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U5
-U 2 1 60BA4776
+U 6 1 60BA4776
 P 6450 2500
 F 0 "U5" H 6450 2800 50  0000 C CNN
 F 1 "74HC14" H 6450 2700 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 2500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 2500 50  0001 C CNN
-	2    6450 2500
+	6    6450 2500
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U5
-U 5 1 60BAEB77
+U 3 1 60BAEB77
 P 5900 3500
 F 0 "U5" H 5900 3817 50  0000 C CNN
 F 1 "74HC14" H 5900 3726 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5900 3500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5900 3500 50  0001 C CNN
-	5    5900 3500
+	3    5900 3500
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC14 U5
-U 6 1 60BAFCAA
+U 4 1 60BAFCAA
 P 6500 3500
 F 0 "U5" H 6500 3800 50  0000 C CNN
 F 1 "74HC14" H 6500 3700 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6500 3500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6500 3500 50  0001 C CNN
-	6    6500 3500
+	4    6500 3500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -781,7 +781,7 @@ U 1 1 606DEA6E
 P 10200 4800
 F 0 "J2" H 9750 5150 50  0000 L CNN
 F 1 "DB9_Male" V 10400 4600 50  0000 L CNN
-F 2 "Connector_Dsub:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm" H 10200 4800 50  0001 C CNN
+F 2 "UnderglowPCB:DB9" H 10200 4800 50  0001 C CNN
 F 3 " ~" H 10200 4800 50  0001 C CNN
 	1    10200 4800
 	1    0    0    -1  
@@ -885,19 +885,7 @@ Text GLabel 9200 2000 2    50   Input ~ 0
 UG_LOW_REAR
 Text GLabel 9200 3200 2    50   Input ~ 0
 BRAKE_LOW
-Text GLabel 5550 1000 0    50   Input ~ 0
-UG_LOW_LEFT
-Text GLabel 5550 1500 0    50   Input ~ 0
-UG_LOW_SPARE_1
-Text GLabel 5550 2000 0    50   Input ~ 0
-UG_LOW_SPARE_2
-Text GLabel 5550 2500 0    50   Input ~ 0
-UG_LOW_RIGHT
-Text GLabel 5600 3000 0    50   Input ~ 0
-UG_LOW_REAR
 Text GLabel 9200 1400 2    50   Input ~ 0
-UG_LOW_FRONT
-Text GLabel 5600 3500 0    50   Input ~ 0
 UG_LOW_FRONT
 Text Notes 4950 600  0    50   ~ 0
 Schmitt 3.3v to 5v logic
@@ -1095,35 +1083,12 @@ Wire Notes Line
 	2600 5150 2600 3800
 Wire Notes Line
 	2600 3800 1850 3800
-Wire Wire Line
-	6600 6000 6600 6100
-Wire Wire Line
-	7600 5900 7600 5950
-$Comp
-L ExternalPartsLib:LD56100DPU33R U3
-U 1 1 606D2F34
-P 7100 5900
-F 0 "U3" H 7100 6125 50  0000 C CNN
-F 1 "LD56100DPU33R" H 7100 6034 50  0000 C CNN
-F 2 "UnderglowPCB:LD56100DPU33R" H 7400 5950 50  0001 C CNN
-F 3 "https://www.st.com/resource/en/datasheet/ld56100.pdf" H 7400 5950 50  0001 C CNN
-	1    7100 5900
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	7600 6300 7600 6400
-Connection ~ 7600 5950
-Wire Wire Line
-	7600 5950 7600 6000
-Wire Wire Line
-	6600 6000 6600 5900
-Connection ~ 6600 6000
 $Comp
 L Device:C_Small C9
 U 1 1 627D4366
 P 6300 6200
 F 0 "C9" H 6392 6246 50  0000 L CNN
-F 1 "2.2u" H 6392 6155 50  0000 L CNN
+F 1 "10u" H 6392 6155 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 6300 6200 50  0001 C CNN
 F 3 "~" H 6300 6200 50  0001 C CNN
 	1    6300 6200
@@ -1134,7 +1099,7 @@ L Device:C_Small C10
 U 1 1 627D4B6C
 P 8000 6200
 F 0 "C10" H 8092 6246 50  0000 L CNN
-F 1 "2.2u" H 8092 6155 50  0000 L CNN
+F 1 "10u" H 8092 6155 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 8000 6200 50  0001 C CNN
 F 3 "~" H 8000 6200 50  0001 C CNN
 	1    8000 6200
@@ -1143,15 +1108,9 @@ $EndComp
 Wire Wire Line
 	8000 5950 8000 6100
 Wire Wire Line
-	7600 5950 7850 5950
-Wire Wire Line
 	8000 6300 8000 6400
-Connection ~ 7600 6400
-Wire Wire Line
-	6600 6400 6300 6400
 Wire Wire Line
 	6300 6400 6300 6300
-Connection ~ 6600 6400
 Wire Wire Line
 	6300 6100 6300 6000
 Wire Wire Line
@@ -1458,11 +1417,11 @@ F 3 "" H 3050 5000 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L power:+5V #PWR0127
+L power:+3.3V #PWR0127
 U 1 1 607C59EC
 P 4300 5050
 F 0 "#PWR0127" H 4300 4900 50  0001 C CNN
-F 1 "+5V" V 4315 5178 50  0000 L CNN
+F 1 "+3.3V" V 4315 5178 50  0000 L CNN
 F 2 "" H 4300 5050 50  0001 C CNN
 F 3 "" H 4300 5050 50  0001 C CNN
 	1    4300 5050
@@ -1548,9 +1507,6 @@ F 3 "" H 6450 6000 50  0001 C CNN
 	1    6450 6000
 	1    0    0    -1  
 $EndComp
-Connection ~ 6450 6000
-Wire Wire Line
-	6450 6000 6600 6000
 $Comp
 L power:+3.3V #PWR0135
 U 1 1 60820572
@@ -1562,7 +1518,6 @@ F 3 "" H 7850 5950 50  0001 C CNN
 	1    7850 5950
 	1    0    0    -1  
 $EndComp
-Connection ~ 7850 5950
 Wire Wire Line
 	7850 5950 8000 5950
 $Comp
@@ -1579,12 +1534,12 @@ $EndComp
 $Comp
 L power:+12V #PWR0136
 U 1 1 608D06CA
-P 2000 5500
-F 0 "#PWR0136" H 2000 5350 50  0001 C CNN
-F 1 "+12V" V 2015 5628 50  0000 L CNN
-F 2 "" H 2000 5500 50  0001 C CNN
-F 3 "" H 2000 5500 50  0001 C CNN
-	1    2000 5500
+P 2200 5500
+F 0 "#PWR0136" H 2200 5350 50  0001 C CNN
+F 1 "+12V" V 2215 5628 50  0000 L CNN
+F 2 "" H 2200 5500 50  0001 C CNN
+F 3 "" H 2200 5500 50  0001 C CNN
+	1    2200 5500
 	0    1    1    0   
 $EndComp
 $Comp
@@ -1601,40 +1556,14 @@ $EndComp
 Connection ~ 9250 800 
 Wire Wire Line
 	9250 800  9700 800 
-$Comp
-L power:+3.3V #PWR0138
-U 1 1 60962D2B
-P 7600 6200
-F 0 "#PWR0138" H 7600 6050 50  0001 C CNN
-F 1 "+3.3V" V 7600 6300 50  0000 L CNN
-F 2 "" H 7600 6200 50  0001 C CNN
-F 3 "" H 7600 6200 50  0001 C CNN
-	1    7600 6200
-	0    1    1    0   
-$EndComp
-$Comp
-L power:+5V #PWR0139
-U 1 1 60965248
-P 7600 6100
-F 0 "#PWR0139" H 7600 5950 50  0001 C CNN
-F 1 "+5V" V 7615 6228 50  0000 L CNN
-F 2 "" H 7600 6100 50  0001 C CNN
-F 3 "" H 7600 6100 50  0001 C CNN
-	1    7600 6100
-	0    1    1    0   
-$EndComp
 NoConn ~ 9900 4500
 Wire Notes Line
 	3850 5500 4800 5500
-Text Notes 6350 6700 0    50   ~ 0
-KiCAD complains about pins 1 & 2.\nPins are correct: IC Outputs to both pins
 Connection ~ 9550 5700
 Wire Wire Line
 	9550 5700 9200 5700
 Wire Wire Line
 	8700 5700 8700 6150
-Wire Wire Line
-	6600 6400 7100 6400
 $Comp
 L Power_Protection:USBLC6-2SC6 U7
 U 1 1 60AD564D
@@ -1740,87 +1669,19 @@ Wire Notes Line
 Wire Notes Line
 	5200 6500 5200 5950
 $Comp
-L Connector:TestPoint TP2
-U 1 1 60F0B6D3
-P 4200 6300
-F 0 "TP2" H 4142 6326 50  0000 R CNN
-F 1 "TestPoint" H 4142 6417 50  0000 R CNN
-F 2 "TestPoint:TestPoint_Plated_Hole_D2.0mm" H 4400 6300 50  0001 C CNN
-F 3 "~" H 4400 6300 50  0001 C CNN
-	1    4200 6300
-	-1   0    0    1   
-$EndComp
-$Comp
-L power:+5V #PWR0141
-U 1 1 60F11DC3
-P 4200 6300
-F 0 "#PWR0141" H 4200 6150 50  0001 C CNN
-F 1 "+5V" H 4215 6428 50  0000 L CNN
-F 2 "" H 4200 6300 50  0001 C CNN
-F 3 "" H 4200 6300 50  0001 C CNN
-	1    4200 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+12V #PWR0142
-U 1 1 60F17577
-P 3700 6300
-F 0 "#PWR0142" H 3700 6150 50  0001 C CNN
-F 1 "+12V" H 3715 6428 50  0000 L CNN
-F 2 "" H 3700 6300 50  0001 C CNN
-F 3 "" H 3700 6300 50  0001 C CNN
-	1    3700 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP1
-U 1 1 60F1B537
-P 3700 6300
-F 0 "TP1" H 3642 6326 50  0000 R CNN
-F 1 "TestPoint" H 3642 6417 50  0000 R CNN
-F 2 "TestPoint:TestPoint_Plated_Hole_D2.0mm" H 3900 6300 50  0001 C CNN
-F 3 "~" H 3900 6300 50  0001 C CNN
-	1    3700 6300
-	-1   0    0    1   
-$EndComp
-$Comp
-L Connector:TestPoint TP3
-U 1 1 60F4F2AF
-P 4700 6300
-F 0 "TP3" H 4642 6326 50  0000 R CNN
-F 1 "TestPoint" H 4642 6417 50  0000 R CNN
-F 2 "TestPoint:TestPoint_Plated_Hole_D2.0mm" H 4900 6300 50  0001 C CNN
-F 3 "~" H 4900 6300 50  0001 C CNN
-	1    4700 6300
-	-1   0    0    1   
-$EndComp
-$Comp
-L power:+3.3V #PWR0143
-U 1 1 60F545C1
-P 4700 6300
-F 0 "#PWR0143" H 4700 6150 50  0001 C CNN
-F 1 "+3.3V" H 4800 6450 50  0000 C CNN
-F 2 "" H 4700 6300 50  0001 C CNN
-F 3 "" H 4700 6300 50  0001 C CNN
-	1    4700 6300
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:D_Schottky D1
 U 1 1 60B83B60
-P 1850 5500
-F 0 "D1" H 1900 5300 50  0000 C CNN
+P 2050 5500
+F 0 "D1" H 1950 5300 50  0000 C CNN
 F 1 "RB088BM-60TL" H 1900 5400 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-252-2_TabPin1" H 1850 5500 50  0001 C CNN
-F 3 "~" H 1850 5500 50  0001 C CNN
-	1    1850 5500
+F 2 "Package_TO_SOT_SMD:TO-252-2_TabPin1" H 2050 5500 50  0001 C CNN
+F 3 "~" H 2050 5500 50  0001 C CNN
+	1    2050 5500
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	1450 3300 1450 3400
 NoConn ~ 1350 3300
-Wire Wire Line
-	6600 6200 6600 6400
 $Comp
 L Device:C_Small C11
 U 1 1 61060E69
@@ -1887,8 +1748,6 @@ F 3 "~" H 5900 6250 50  0001 C CNN
 	1    5900 6250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7600 6400 8000 6400
 Text GLabel 1700 5500 0    50   Input ~ 0
 CAR_12V
 Text GLabel 5700 6350 0    50   Input ~ 0
@@ -1905,8 +1764,6 @@ F 3 "" H 7100 6400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 7100 6400
-Wire Wire Line
-	7100 6400 7600 6400
 $Comp
 L power:+5V #PWR0145
 U 1 1 609903AB
@@ -2000,32 +1857,31 @@ Connection ~ 9500 4500
 $Comp
 L Device:D_Zener_Small D2
 U 1 1 608AF3D5
-P 2000 5600
-F 0 "D2" V 2000 5700 50  0000 L CNN
-F 1 "TPSMA6L15A" V 2100 5700 50  0000 L CNN
-F 2 "UnderglowPCB:TPSMA6L15A" V 2000 5600 50  0001 C CNN
-F 3 "~" V 2000 5600 50  0001 C CNN
-	1    2000 5600
+P 1700 5600
+F 0 "D2" V 1700 5700 50  0000 L CNN
+F 1 "TPSMA6L15A" V 1800 5700 50  0000 L CNN
+F 2 "UnderglowPCB:TPSMA6L15A" V 1700 5600 50  0001 C CNN
+F 3 "~" V 1700 5600 50  0001 C CNN
+	1    1700 5600
 	0    1    1    0   
 $EndComp
-Connection ~ 2000 5500
 $Comp
 L power:GND #PWR0146
 U 1 1 608D7A3E
-P 2000 5700
-F 0 "#PWR0146" H 2000 5450 50  0001 C CNN
-F 1 "GND" H 2005 5527 50  0000 C CNN
-F 2 "" H 2000 5700 50  0001 C CNN
-F 3 "" H 2000 5700 50  0001 C CNN
-	1    2000 5700
+P 1700 5700
+F 0 "#PWR0146" H 1700 5450 50  0001 C CNN
+F 1 "GND" H 1705 5527 50  0000 C CNN
+F 2 "" H 1700 5700 50  0001 C CNN
+F 3 "" H 1700 5700 50  0001 C CNN
+	1    1700 5700
 	1    0    0    -1  
 $EndComp
 $Comp
 L ExternalPartsLib:LMR14030-Q1 U2
 U 1 1 608E17F0
 P 4450 7300
-F 0 "U2" H 4475 7675 50  0000 C CNN
-F 1 "LMR14030-Q1" H 4475 7584 50  0000 C CNN
+F 0 "U2" H 4600 7550 50  0000 C CNN
+F 1 "LMR14030-Q1" H 4500 7050 50  0000 C CNN
 F 2 "Package_SO:Texas_HSOP-8-1EP_3.9x4.9mm_P1.27mm_ThermalVias" H 4200 7350 50  0001 C CNN
 F 3 "" H 4200 7350 50  0001 C CNN
 	1    4450 7300
@@ -2275,7 +2131,7 @@ Wire Wire Line
 	4850 7150 4850 7050
 Wire Wire Line
 	4850 7050 5000 7050
-Text Notes 1450 5750 0    50   ~ 0
+Text Notes 2200 5900 0    50   ~ 0
 Power In
 Wire Notes Line
 	1250 5200 2600 5200
@@ -2301,4 +2157,71 @@ NoConn ~ 9200 1700
 NoConn ~ 9200 2300
 NoConn ~ 9200 2400
 NoConn ~ 5700 6250
+NoConn ~ 9350 5050
+NoConn ~ 10100 4800
+NoConn ~ 10200 4850
+$Comp
+L power:GND #PWR0151
+U 1 1 610F0CD7
+P 4400 7000
+F 0 "#PWR0151" H 4400 6750 50  0001 C CNN
+F 1 "GND" H 4405 6827 50  0000 C CNN
+F 2 "" H 4400 7000 50  0001 C CNN
+F 3 "" H 4400 7000 50  0001 C CNN
+	1    4400 7000
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6300 6400 7100 6400
+Wire Wire Line
+	7100 6400 7150 6400
+Wire Wire Line
+	7150 6400 7150 6300
+Wire Wire Line
+	7150 6300 7100 6300
+Connection ~ 7150 6400
+Wire Wire Line
+	7150 6400 8000 6400
+Wire Wire Line
+	6450 6000 6800 6000
+Connection ~ 6450 6000
+Wire Wire Line
+	7400 6000 7850 6000
+Wire Wire Line
+	7850 6000 7850 5950
+Connection ~ 7850 5950
+$Comp
+L Regulator_Linear:NCP1117-3.3_SOT223 U3
+U 1 1 6092DAB6
+P 7100 6000
+F 0 "U3" H 7100 6242 50  0000 C CNN
+F 1 "NCP1117-3.3_SOT223" H 7100 6151 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 7100 6200 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub_link/Collateral/NCP1117-D.PDF" H 7200 5750 50  0001 C CNN
+	1    7100 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Fuse_Small F1
+U 1 1 60971B24
+P 1800 5500
+F 0 "F1" H 1600 5700 50  0000 C CNN
+F 1 "3413.0330.22" H 1600 5600 50  0000 C CNN
+F 2 "Fuse:Fuse_1206_3216Metric" H 1800 5500 50  0001 C CNN
+F 3 "~" H 1800 5500 50  0001 C CNN
+	1    1800 5500
+	1    0    0    -1  
+$EndComp
+Text GLabel 5600 3000 0    50   Input ~ 0
+UG_LOW_LEFT
+Text GLabel 5550 2000 0    50   Input ~ 0
+UG_LOW_SPARE_1
+Text GLabel 5550 1500 0    50   Input ~ 0
+UG_LOW_SPARE_2
+Text GLabel 5550 1000 0    50   Input ~ 0
+UG_LOW_RIGHT
+Text GLabel 5550 2500 0    50   Input ~ 0
+UG_LOW_FRONT
+Text GLabel 5600 3500 0    50   Input ~ 0
+UG_LOW_REAR
 $EndSCHEMATC
