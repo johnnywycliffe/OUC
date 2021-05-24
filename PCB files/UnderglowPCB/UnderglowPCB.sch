@@ -107,12 +107,12 @@ U 1 1 607F0F47
 P 8900 4750
 F 0 "U6" H 8900 5231 50  0000 C CNN
 F 1 "SN65HVD230" H 8900 5140 50  0000 C CNN
-F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 8900 4250 50  0001 C CNN
+F 2 "UnderglowPCB:Texas_HSOP-8-1EP_3.9x4.9mm_P1.27mm_ThermalVias" H 8900 4250 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/sn65hvd230.pdf" H 8800 5150 50  0001 C CNN
 	1    8900 4750
 	1    0    0    -1  
 $EndComp
-Text GLabel 9200 3100 2    50   Input ~ 0
+Text GLabel 9200 2700 2    50   Input ~ 0
 CAN_TX
 $Comp
 L power:GND #PWR0105
@@ -135,7 +135,7 @@ U 1 1 608929F9
 P 4500 5150
 F 0 "J11" H 4580 5192 50  0000 L CNN
 F 1 "Conn_01x05" V 4750 4900 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 4500 5150 50  0001 C CNN
+F 2 "UnderglowPCB:Joystick_Header" H 4500 5150 50  0001 C CNN
 F 3 "~" H 4500 5150 50  0001 C CNN
 	1    4500 5150
 	1    0    0    -1  
@@ -159,9 +159,9 @@ Text GLabel 4300 5350 0    50   Input ~ 0
 JOYSTICK_B
 Text Notes 3850 4850 0    50   ~ 0
 Joystick mounting holes
-Text GLabel 8000 1300 0    50   Input ~ 0
-JOYSTICK_X
 Text GLabel 8000 1200 0    50   Input ~ 0
+JOYSTICK_X
+Text GLabel 8000 1300 0    50   Input ~ 0
 JOYSTICK_Y
 Text GLabel 9200 2500 2    50   Input ~ 0
 JOYSTICK_B
@@ -173,7 +173,7 @@ U 1 1 60959DD6
 P 4500 4300
 F 0 "J12" H 4580 4342 50  0000 L CNN
 F 1 "Conn_01x07" V 4750 4100 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x07_P2.54mm_Vertical" H 4500 4300 50  0001 C CNN
+F 2 "UnderglowPCB:SSD1306_Footprint" H 4500 4300 50  0001 C CNN
 F 3 "~" H 4500 4300 50  0001 C CNN
 	1    4500 4300
 	1    0    0    -1  
@@ -201,11 +201,11 @@ Text GLabel 4300 4600 0    50   Input ~ 0
 OLED_CS
 Text GLabel 9200 2600 2    50   Input ~ 0
 MOSI
-Text GLabel 9200 1800 2    50   Input ~ 0
+Text GLabel 9200 2800 2    50   Input ~ 0
 OLED_CS
 Text GLabel 9200 2900 2    50   Input ~ 0
 OLED_DC
-Text GLabel 9200 2800 2    50   Input ~ 0
+Text GLabel 9200 1800 2    50   Input ~ 0
 OLED_RESET
 NoConn ~ 8000 2200
 NoConn ~ 8000 2300
@@ -215,189 +215,23 @@ NoConn ~ 8000 2600
 NoConn ~ 8000 2700
 Text Notes 3650 3900 0    50   ~ 0
 OLED Screen mounting holes\n
-Text GLabel 6800 3000 2    50   Input ~ 0
-UNDRGLW_LEFT
 Text GLabel 9200 2200 2    50   Input ~ 0
 SPICLK
-Text GLabel 9200 2700 2    50   Input ~ 0
+Text GLabel 9200 3100 2    50   Input ~ 0
 CAN_RX
 Text GLabel 2600 7150 1    50   Input ~ 0
 BRAKE
-Text GLabel 6750 2500 2    50   Input ~ 0
-UNDRGLW_FRNT
-Text GLabel 6800 3500 2    50   Input ~ 0
-UNDRGLW_REAR
-Text GLabel 6750 1000 2    50   Input ~ 0
-UNDRGLW_RGHT
-Text GLabel 6750 1500 2    50   Input ~ 0
-5V_LED_SPARE_1
-Text GLabel 6750 2000 2    50   Input ~ 0
-5V_LED_SPARE_2
 Text GLabel 1250 7100 1    50   Input ~ 0
 TURN_RIGHT
 $Comp
 L power:GND #PWR0108
 U 1 1 60C7A158
-P 8700 6600
-F 0 "#PWR0108" H 8700 6350 50  0001 C CNN
-F 1 "GND" V 8705 6472 50  0000 R CNN
-F 2 "" H 8700 6600 50  0001 C CNN
-F 3 "" H 8700 6600 50  0001 C CNN
-	1    8700 6600
-	0    1    1    0   
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 7 1 60B58F7D
-P 10100 6200
-F 0 "U5" H 10150 6550 50  0000 L CNN
-F 1 "74HC14" H 10150 5850 50  0000 L CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 10100 6200 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 10100 6200 50  0001 C CNN
-	7    10100 6200
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 7 1 60B4246C
-P 9200 6200
-F 0 "U4" H 9250 6550 50  0000 L CNN
-F 1 "74HC14" H 9250 5850 50  0000 L CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 9200 6200 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 9200 6200 50  0001 C CNN
-	7    9200 6200
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 4 1 60B3CC29
-P 6450 2000
-F 0 "U4" H 6450 2300 50  0000 C CNN
-F 1 "74HC14" H 6450 2200 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 2000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 2000 50  0001 C CNN
-	4    6450 2000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 3 1 60B3B715
-P 5850 2000
-F 0 "U4" H 5850 2317 50  0000 C CNN
-F 1 "74HC14" H 5850 2226 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 2000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 2000 50  0001 C CNN
-	3    5850 2000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 5 1 60B1F88F
-P 6450 1500
-F 0 "U4" H 6450 1800 50  0000 C CNN
-F 1 "74HC14" H 6400 1700 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 1500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 1500 50  0001 C CNN
-	5    6450 1500
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 2 1 60B1E3B5
-P 5850 1500
-F 0 "U4" H 5850 1817 50  0000 C CNN
-F 1 "74HC14" H 5850 1726 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 1500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 1500 50  0001 C CNN
-	2    5850 1500
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 1 1 60A2FDB1
-P 5850 1000
-F 0 "U4" H 5850 1317 50  0000 C CNN
-F 1 "74HC14" H 5850 1226 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 1000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 1000 50  0001 C CNN
-	1    5850 1000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U4
-U 6 1 60A4C0C0
-P 6450 1000
-F 0 "U4" H 6450 1300 50  0000 C CNN
-F 1 "74HC14" H 6400 1200 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 1000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 1000 50  0001 C CNN
-	6    6450 1000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 1 1 60A614D6
-P 5850 2500
-F 0 "U5" H 5850 2817 50  0000 C CNN
-F 1 "74HC14" H 5850 2726 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5850 2500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5850 2500 50  0001 C CNN
-	1    5850 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 5 1 60BA7AD9
-P 6500 3000
-F 0 "U5" H 6500 3300 50  0000 C CNN
-F 1 "74HC14" H 6500 3200 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6500 3000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6500 3000 50  0001 C CNN
-	5    6500 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 2 1 60BA5CDD
-P 5900 3000
-F 0 "U5" H 5900 3317 50  0000 C CNN
-F 1 "74HC14" H 5900 3226 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5900 3000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5900 3000 50  0001 C CNN
-	2    5900 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 6 1 60BA4776
-P 6450 2500
-F 0 "U5" H 6450 2800 50  0000 C CNN
-F 1 "74HC14" H 6450 2700 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6450 2500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6450 2500 50  0001 C CNN
-	6    6450 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 3 1 60BAEB77
-P 5900 3500
-F 0 "U5" H 5900 3817 50  0000 C CNN
-F 1 "74HC14" H 5900 3726 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 5900 3500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5900 3500 50  0001 C CNN
-	3    5900 3500
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC14 U5
-U 4 1 60BAFCAA
-P 6500 3500
-F 0 "U5" H 6500 3800 50  0000 C CNN
-F 1 "74HC14" H 6500 3700 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_SMDSocket_SmallPads" H 6500 3500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 6500 3500 50  0001 C CNN
-	4    6500 3500
+P 6150 3250
+F 0 "#PWR0108" H 6150 3000 50  0001 C CNN
+F 1 "GND" H 6250 3100 50  0000 R CNN
+F 2 "" H 6150 3250 50  0001 C CNN
+F 3 "" H 6150 3250 50  0001 C CNN
+	1    6150 3250
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -468,46 +302,46 @@ Signal connector
 $Comp
 L Device:C_Small C2
 U 1 1 60F5615C
-P 10100 950
-F 0 "C2" H 10200 1000 50  0000 L CNN
-F 1 "1u" H 10200 900 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0402_1005Metric" H 10100 950 50  0001 C CNN
-F 3 "~" H 10100 950 50  0001 C CNN
-	1    10100 950 
+P 10200 900
+F 0 "C2" H 10300 950 50  0000 L CNN
+F 1 "1u" H 10300 850 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 10200 900 50  0001 C CNN
+F 3 "~" H 10200 900 50  0001 C CNN
+	1    10200 900 
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C_Small C1
 U 1 1 60F572D4
-P 9700 950
-F 0 "C1" H 9800 1000 50  0000 L CNN
-F 1 "100u" H 9800 900 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0402_1005Metric" H 9700 950 50  0001 C CNN
-F 3 "~" H 9700 950 50  0001 C CNN
-	1    9700 950 
+P 9800 900
+F 0 "C1" H 9900 950 50  0000 L CNN
+F 1 "100u" H 9900 850 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 9800 900 50  0001 C CNN
+F 3 "~" H 9800 900 50  0001 C CNN
+	1    9800 900 
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR0110
 U 1 1 60F82FBD
-P 9900 1100
-F 0 "#PWR0110" H 9900 850 50  0001 C CNN
-F 1 "GND" H 9905 927 50  0000 C CNN
-F 2 "" H 9900 1100 50  0001 C CNN
-F 3 "" H 9900 1100 50  0001 C CNN
-	1    9900 1100
+P 10000 1050
+F 0 "#PWR0110" H 10000 800 50  0001 C CNN
+F 1 "GND" H 10005 877 50  0000 C CNN
+F 2 "" H 10000 1050 50  0001 C CNN
+F 3 "" H 10000 1050 50  0001 C CNN
+	1    10000 1050
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C_Small C12
 U 1 1 610625B5
-P 9650 6250
-F 0 "C12" H 9750 6300 50  0000 L CNN
-F 1 "10u" H 9750 6200 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 9650 6250 50  0001 C CNN
-F 3 "~" H 9650 6250 50  0001 C CNN
-	1    9650 6250
-	1    0    0    -1  
+P 7100 2100
+F 0 "C12" H 7250 2050 50  0000 L CNN
+F 1 "0.1u" H 7250 2150 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7100 2100 50  0001 C CNN
+F 3 "~" H 7100 2100 50  0001 C CNN
+	1    7100 2100
+	-1   0    0    1   
 $EndComp
 NoConn ~ 9900 4400
 NoConn ~ 9900 4600
@@ -873,19 +707,17 @@ Wire Notes Line
 	10500 4150 10500 5500
 Wire Notes Line
 	7700 5500 7700 4150
-Text GLabel 9200 1500 2    50   Input ~ 0
+Text GLabel 9200 2100 2    50   Input ~ 0
 UG_LOW_LEFT
 Text GLabel 9200 1200 2    50   Input ~ 0
 UG_LOW_SPARE_1
 Text GLabel 9200 1900 2    50   Input ~ 0
 UG_LOW_SPARE_2
-Text GLabel 9200 2100 2    50   Input ~ 0
-UG_LOW_RIGHT
 Text GLabel 9200 2000 2    50   Input ~ 0
 UG_LOW_REAR
-Text GLabel 9200 3200 2    50   Input ~ 0
+Text GLabel 9200 3000 2    50   Input ~ 0
 BRAKE_LOW
-Text GLabel 9200 1400 2    50   Input ~ 0
+Text GLabel 9200 1500 2    50   Input ~ 0
 UG_LOW_FRONT
 Text Notes 4950 600  0    50   ~ 0
 Schmitt 3.3v to 5v logic
@@ -898,58 +730,23 @@ Wire Notes Line
 Wire Notes Line
 	7450 500  4800 500 
 Wire Wire Line
-	10100 5700 9650 5700
+	9800 800  9800 750 
 Wire Wire Line
-	8700 5700 9200 5700
-Connection ~ 9200 5700
+	9800 750  10200 750 
 Wire Wire Line
-	8700 6700 9200 6700
+	10200 750  10200 800 
 Wire Wire Line
-	8700 6350 8700 6600
+	9800 1000 9800 1050
 Wire Wire Line
-	10100 6700 9650 6700
-Connection ~ 9200 6700
+	9800 1050 10000 1050
 Wire Wire Line
-	9650 6150 9650 5700
-Connection ~ 9650 5700
-Wire Wire Line
-	9650 5700 9550 5700
-Wire Wire Line
-	9650 6350 9650 6700
-Connection ~ 9650 6700
-Wire Wire Line
-	9650 6700 9200 6700
-Connection ~ 8700 6600
-Wire Wire Line
-	8700 6600 8700 6700
-Text Notes 8400 5650 0    50   ~ 0
-Shmitt 3.3v to 5v power
-Wire Notes Line
-	8350 5550 8350 6750
-Wire Notes Line
-	8350 6750 10500 6750
-Wire Notes Line
-	10500 6750 10500 5550
-Wire Notes Line
-	10500 5550 8350 5550
-Wire Wire Line
-	9700 850  9700 800 
-Wire Wire Line
-	9700 800  10100 800 
-Wire Wire Line
-	10100 800  10100 850 
-Wire Wire Line
-	9700 1050 9700 1100
-Wire Wire Line
-	9700 1100 9900 1100
-Wire Wire Line
-	10100 1100 10100 1050
+	10200 1050 10200 1000
 Wire Wire Line
 	8600 800  9250 800 
-Connection ~ 9700 800 
-Connection ~ 9900 1100
+Connection ~ 9800 750 
+Connection ~ 10000 1050
 Wire Wire Line
-	9900 1100 10100 1100
+	10000 1050 10200 1050
 Wire Notes Line
 	7500 500  10500 500 
 Wire Notes Line
@@ -1488,13 +1285,13 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR0133
 U 1 1 608121AC
-P 9550 5700
-F 0 "#PWR0133" H 9550 5550 50  0001 C CNN
-F 1 "+5V" H 9565 5873 50  0000 C CNN
-F 2 "" H 9550 5700 50  0001 C CNN
-F 3 "" H 9550 5700 50  0001 C CNN
-	1    9550 5700
-	-1   0    0    1   
+P 6700 2200
+F 0 "#PWR0133" H 6700 2050 50  0001 C CNN
+F 1 "+5V" H 6715 2373 50  0000 C CNN
+F 2 "" H 6700 2200 50  0001 C CNN
+F 3 "" H 6700 2200 50  0001 C CNN
+	1    6700 2200
+	1    0    0    -1  
 $EndComp
 $Comp
 L power:+5V #PWR0134
@@ -1553,17 +1350,11 @@ F 3 "" H 9250 800 50  0001 C CNN
 	1    9250 800 
 	1    0    0    -1  
 $EndComp
-Connection ~ 9250 800 
 Wire Wire Line
-	9250 800  9700 800 
+	9350 750  9800 750 
 NoConn ~ 9900 4500
 Wire Notes Line
 	3850 5500 4800 5500
-Connection ~ 9550 5700
-Wire Wire Line
-	9550 5700 9200 5700
-Wire Wire Line
-	8700 5700 8700 6150
 $Comp
 L Power_Protection:USBLC6-2SC6 U7
 U 1 1 60AD564D
@@ -1685,13 +1476,13 @@ NoConn ~ 1350 3300
 $Comp
 L Device:C_Small C11
 U 1 1 61060E69
-P 8700 6250
-F 0 "C11" H 8800 6300 50  0000 L CNN
-F 1 "10u" H 8800 6200 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 8700 6250 50  0001 C CNN
-F 3 "~" H 8700 6250 50  0001 C CNN
-	1    8700 6250
-	1    0    0    -1  
+P 5450 2100
+F 0 "C11" H 5600 2100 50  0000 L CNN
+F 1 "0.1u" H 5550 2000 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5450 2100 50  0001 C CNN
+F 3 "~" H 5450 2100 50  0001 C CNN
+	1    5450 2100
+	-1   0    0    1   
 $EndComp
 $Comp
 L Connector_Generic:Conn_01x03 J6
@@ -1710,7 +1501,7 @@ U 1 1 60AA8534
 P 2850 5100
 F 0 "J8" H 2950 5100 50  0000 C CNN
 F 1 "Screw_Terminal_01x03" H 2500 4900 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 2850 5100 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2850 5100 50  0001 C CNN
 F 3 "~" H 2850 5100 50  0001 C CNN
 	1    2850 5100
 	-1   0    0    1   
@@ -1775,7 +1566,7 @@ F 3 "" H 4300 4100 50  0001 C CNN
 	1    4300 4100
 	0    -1   -1   0   
 $EndComp
-Text GLabel 9200 3000 2    50   Input ~ 0
+Text GLabel 9200 3200 2    50   Input ~ 0
 TURN_LEFT_LOW
 Text GLabel 9200 3300 2    50   Input ~ 0
 TURN_RIGHT_LOW
@@ -2020,7 +1811,6 @@ Wire Wire Line
 Connection ~ 3700 7650
 Wire Wire Line
 	3700 7650 3900 7650
-NoConn ~ 4100 7250
 $Comp
 L Device:C_Small C7
 U 1 1 609FBAEF
@@ -2075,9 +1865,7 @@ Connection ~ 3500 7050
 Wire Wire Line
 	3500 7050 3700 7050
 Wire Wire Line
-	3700 7050 4100 7050
-Wire Wire Line
-	4100 7050 4100 7150
+	3700 7050 4050 7050
 Connection ~ 3700 7050
 Wire Wire Line
 	3350 7250 3350 7650
@@ -2155,8 +1943,6 @@ $EndComp
 NoConn ~ 9200 1600
 NoConn ~ 9200 1700
 NoConn ~ 9200 2300
-NoConn ~ 9200 2400
-NoConn ~ 5700 6250
 NoConn ~ 9350 5050
 NoConn ~ 10100 4800
 NoConn ~ 10200 4850
@@ -2212,16 +1998,154 @@ F 3 "~" H 1800 5500 50  0001 C CNN
 	1    1800 5500
 	1    0    0    -1  
 $EndComp
-Text GLabel 5600 3000 0    50   Input ~ 0
-UG_LOW_LEFT
-Text GLabel 5550 2000 0    50   Input ~ 0
-UG_LOW_SPARE_1
-Text GLabel 5550 1500 0    50   Input ~ 0
-UG_LOW_SPARE_2
-Text GLabel 5550 1000 0    50   Input ~ 0
-UG_LOW_RIGHT
-Text GLabel 5550 2500 0    50   Input ~ 0
+$Comp
+L power:+3.3V #PWR0138
+U 1 1 60CB9947
+P 5600 2200
+F 0 "#PWR0138" H 5600 2050 50  0001 C CNN
+F 1 "+3.3V" H 5615 2373 50  0000 C CNN
+F 2 "" H 5600 2200 50  0001 C CNN
+F 3 "" H 5600 2200 50  0001 C CNN
+	1    5600 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6150 3250 6150 3200
+Wire Wire Line
+	6500 3000 6600 3000
+Wire Wire Line
+	6600 3000 6600 3200
+Wire Wire Line
+	6600 3200 6150 3200
+Connection ~ 6150 3200
+Wire Wire Line
+	6150 3200 6150 3150
+Wire Wire Line
+	6600 3000 6600 2900
+Wire Wire Line
+	6600 2900 6500 2900
+Connection ~ 6600 3000
+Wire Wire Line
+	6600 2900 6600 2800
+Wire Wire Line
+	6600 2800 6500 2800
+Connection ~ 6600 2900
+Wire Wire Line
+	4050 7050 4050 7150
+Wire Wire Line
+	4050 7250 4100 7250
+Wire Wire Line
+	4100 7150 4050 7150
+Connection ~ 4050 7150
+Wire Wire Line
+	4050 7150 4050 7250
+$Comp
+L power:+3.3V #PWR0139
+U 1 1 60D7AA5C
+P 5800 3000
+F 0 "#PWR0139" H 5800 2850 50  0001 C CNN
+F 1 "+3.3V" V 5700 3050 50  0000 C CNN
+F 2 "" H 5800 3000 50  0001 C CNN
+F 3 "" H 5800 3000 50  0001 C CNN
+	1    5800 3000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5800 2900 5550 2900
+Wire Wire Line
+	6150 3250 5550 3250
+Connection ~ 6150 3250
+Wire Wire Line
+	5800 2800 5550 2800
+Wire Wire Line
+	5550 2800 5550 2900
+Connection ~ 5550 2900
+Wire Wire Line
+	5550 2900 5550 3250
+Wire Wire Line
+	5800 2200 5600 2200
+Wire Wire Line
+	6500 2200 6700 2200
+Connection ~ 6700 2200
+Wire Wire Line
+	5450 2200 5600 2200
+Connection ~ 5600 2200
+Text GLabel 6550 1850 1    50   Input ~ 0
+UNDRGLW_FRNT
+Text GLabel 5750 1850 1    50   Input ~ 0
 UG_LOW_FRONT
-Text GLabel 5600 3500 0    50   Input ~ 0
+$Comp
+L ExternalPartsLib:TXB0108RGYR U4
+U 1 1 60CDAD29
+P 6150 2550
+F 0 "U4" H 6150 3225 50  0000 C CNN
+F 1 "TXB0108RGYR" H 6150 3134 50  0000 C CNN
+F 2 "UnderglowPCB:VQFN-20" H 6150 2550 50  0001 C CNN
+F 3 "" H 6150 2550 50  0001 C CNN
+	1    6150 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6550 1850 6550 2100
+Wire Wire Line
+	6550 2100 6500 2100
+Wire Wire Line
+	5750 2100 5800 2100
+$Comp
+L power:GND #PWR0141
+U 1 1 60E3DF8B
+P 5450 2000
+F 0 "#PWR0141" H 5450 1750 50  0001 C CNN
+F 1 "GND" H 5550 1850 50  0000 R CNN
+F 2 "" H 5450 2000 50  0001 C CNN
+F 3 "" H 5450 2000 50  0001 C CNN
+	1    5450 2000
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0142
+U 1 1 60E3EA3D
+P 7100 2000
+F 0 "#PWR0142" H 7100 1750 50  0001 C CNN
+F 1 "GND" H 7200 1850 50  0000 R CNN
+F 2 "" H 7100 2000 50  0001 C CNN
+F 3 "" H 7100 2000 50  0001 C CNN
+	1    7100 2000
+	-1   0    0    1   
+$EndComp
+Text GLabel 5800 2300 0    50   Input ~ 0
+UG_LOW_LEFT
+Text GLabel 5800 2400 0    50   Input ~ 0
 UG_LOW_REAR
+Text GLabel 9200 1400 2    50   Input ~ 0
+UG_LOW_RIGHT
+Text GLabel 5800 2500 0    50   Input ~ 0
+UG_LOW_RIGHT
+Wire Wire Line
+	5750 2100 5750 1850
+Wire Wire Line
+	6700 2200 7100 2200
+Text GLabel 5800 2700 0    50   Input ~ 0
+UG_LOW_SPARE_2
+Text GLabel 5800 2600 0    50   Input ~ 0
+UG_LOW_SPARE_1
+Wire Wire Line
+	9350 750  9350 800 
+Wire Wire Line
+	9350 800  9250 800 
+Connection ~ 9250 800 
+Text GLabel 6500 2300 2    50   Input ~ 0
+UNDRGLW_LEFT
+Text GLabel 6500 2400 2    50   Input ~ 0
+UNDRGLW_REAR
+Text GLabel 6500 2500 2    50   Input ~ 0
+UNDRGLW_RGHT
+Text GLabel 6500 2600 2    50   Input ~ 0
+5V_LED_SPARE_1
+Text GLabel 6500 2700 2    50   Input ~ 0
+5V_LED_SPARE_2
+Text GLabel 5700 6250 0    50   Input ~ 0
+AUX
+Text GLabel 9200 2400 2    50   Input ~ 0
+AUX
 $EndSCHEMATC

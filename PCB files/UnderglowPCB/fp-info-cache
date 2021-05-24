@@ -1,4 +1,4 @@
-18998045539662751
+19002910837112751
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -82264,6 +82264,13 @@ DB9
 11
 11
 UnderglowPCB
+Joystick_Header
+Through hole straight pin header, 1x05, 2.54mm pitch, single row
+Through hole pin header THT 1x05 2.54mm single row
+0
+5
+5
+UnderglowPCB
 LD56100DPU33R
 
 
@@ -82277,6 +82284,13 @@ SRR1208
 0
 2
 2
+UnderglowPCB
+SSD1306_Footprint
+Through hole straight pin header, 1x07, 2.54mm pitch, single row
+Through hole pin header THT 1x07 2.54mm single row
+0
+7
+7
 UnderglowPCB
 TPSMA6L15A
 
@@ -82298,6 +82312,13 @@ HSOP 1.27
 0
 20
 9
+UnderglowPCB
+VQFN-20
+
+
+0
+25
+21
 Valve
 Valve_ECC-83-1
 Valve ECC-83-1 round pins
