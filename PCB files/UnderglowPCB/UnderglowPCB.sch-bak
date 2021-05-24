@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "Open Underglow Controller"
 Date "2021-04-06"
-Rev "1.0.0"
+Rev "1.3.0"
 Comp "Jeremy Stintzcum"
 Comment1 ""
 Comment2 ""
@@ -201,11 +201,11 @@ Text GLabel 4300 4600 0    50   Input ~ 0
 OLED_CS
 Text GLabel 9200 2600 2    50   Input ~ 0
 MOSI
-Text GLabel 9200 1800 2    50   Input ~ 0
+Text GLabel 9200 2800 2    50   Input ~ 0
 OLED_CS
 Text GLabel 9200 2900 2    50   Input ~ 0
 OLED_DC
-Text GLabel 9200 2800 2    50   Input ~ 0
+Text GLabel 9200 1800 2    50   Input ~ 0
 OLED_RESET
 NoConn ~ 8000 2200
 NoConn ~ 8000 2300
@@ -226,12 +226,12 @@ TURN_RIGHT
 $Comp
 L power:GND #PWR0108
 U 1 1 60C7A158
-P 6150 3250
-F 0 "#PWR0108" H 6150 3000 50  0001 C CNN
-F 1 "GND" H 6250 3100 50  0000 R CNN
-F 2 "" H 6150 3250 50  0001 C CNN
-F 3 "" H 6150 3250 50  0001 C CNN
-	1    6150 3250
+P 6150 2550
+F 0 "#PWR0108" H 6150 2300 50  0001 C CNN
+F 1 "GND" H 6200 2400 50  0000 R CNN
+F 2 "" H 6150 2550 50  0001 C CNN
+F 3 "" H 6150 2550 50  0001 C CNN
+	1    6150 2550
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -335,12 +335,12 @@ $EndComp
 $Comp
 L Device:C_Small C12
 U 1 1 610625B5
-P 7100 2100
-F 0 "C12" H 7250 2050 50  0000 L CNN
-F 1 "0.1u" H 7250 2150 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 7100 2100 50  0001 C CNN
-F 3 "~" H 7100 2100 50  0001 C CNN
-	1    7100 2100
+P 6850 1050
+F 0 "C12" H 7000 1000 50  0000 L CNN
+F 1 "0.1u" H 7000 1100 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6850 1050 50  0001 C CNN
+F 3 "~" H 6850 1050 50  0001 C CNN
+	1    6850 1050
 	-1   0    0    1   
 $EndComp
 NoConn ~ 9900 4400
@@ -715,7 +715,7 @@ Text GLabel 9200 1900 2    50   Input ~ 0
 UG_LOW_SPARE_2
 Text GLabel 9200 2000 2    50   Input ~ 0
 UG_LOW_REAR
-Text GLabel 9200 3200 2    50   Input ~ 0
+Text GLabel 9200 3000 2    50   Input ~ 0
 BRAKE_LOW
 Text GLabel 9200 1500 2    50   Input ~ 0
 UG_LOW_FRONT
@@ -723,10 +723,6 @@ Text Notes 4950 600  0    50   ~ 0
 Schmitt 3.3v to 5v logic
 Wire Notes Line
 	4800 500  4800 3700
-Wire Notes Line
-	4800 3700 7450 3700
-Wire Notes Line
-	7450 3700 7450 500 
 Wire Notes Line
 	7450 500  4800 500 
 Wire Wire Line
@@ -751,8 +747,6 @@ Wire Notes Line
 	7500 500  10500 500 
 Wire Notes Line
 	10500 500  10500 4100
-Wire Notes Line
-	7500 4100 7500 500 
 Wire Wire Line
 	1050 7450 1050 7750
 Wire Wire Line
@@ -1055,10 +1049,6 @@ Wire Notes Line
 Wire Notes Line
 	4850 5700 6050 5700
 Wire Notes Line
-	6050 5700 6050 3750
-Wire Notes Line
-	6050 3750 4850 3750
-Wire Notes Line
 	3650 3800 4800 3800
 Wire Notes Line
 	4800 3800 4800 4700
@@ -1285,12 +1275,12 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR0133
 U 1 1 608121AC
-P 6700 2200
-F 0 "#PWR0133" H 6700 2050 50  0001 C CNN
-F 1 "+5V" H 6715 2373 50  0000 C CNN
-F 2 "" H 6700 2200 50  0001 C CNN
-F 3 "" H 6700 2200 50  0001 C CNN
-	1    6700 2200
+P 6250 900
+F 0 "#PWR0133" H 6250 750 50  0001 C CNN
+F 1 "+5V" H 6265 1073 50  0000 C CNN
+F 2 "" H 6250 900 50  0001 C CNN
+F 3 "" H 6250 900 50  0001 C CNN
+	1    6250 900 
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1476,12 +1466,12 @@ NoConn ~ 1350 3300
 $Comp
 L Device:C_Small C11
 U 1 1 61060E69
-P 5450 2100
-F 0 "C11" H 5600 2100 50  0000 L CNN
-F 1 "0.1u" H 5550 2000 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 5450 2100 50  0001 C CNN
-F 3 "~" H 5450 2100 50  0001 C CNN
-	1    5450 2100
+P 5400 1050
+F 0 "C11" H 5550 1050 50  0000 L CNN
+F 1 "0.1u" H 5500 950 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5400 1050 50  0001 C CNN
+F 3 "~" H 5400 1050 50  0001 C CNN
+	1    5400 1050
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -1566,7 +1556,7 @@ F 3 "" H 4300 4100 50  0001 C CNN
 	1    4300 4100
 	0    -1   -1   0   
 $EndComp
-Text GLabel 9200 3000 2    50   Input ~ 0
+Text GLabel 9200 3200 2    50   Input ~ 0
 TURN_LEFT_LOW
 Text GLabel 9200 3300 2    50   Input ~ 0
 TURN_RIGHT_LOW
@@ -2001,35 +1991,14 @@ $EndComp
 $Comp
 L power:+3.3V #PWR0138
 U 1 1 60CB9947
-P 5600 2200
-F 0 "#PWR0138" H 5600 2050 50  0001 C CNN
-F 1 "+3.3V" H 5615 2373 50  0000 C CNN
-F 2 "" H 5600 2200 50  0001 C CNN
-F 3 "" H 5600 2200 50  0001 C CNN
-	1    5600 2200
+P 6050 900
+F 0 "#PWR0138" H 6050 750 50  0001 C CNN
+F 1 "+3.3V" H 6065 1073 50  0000 C CNN
+F 2 "" H 6050 900 50  0001 C CNN
+F 3 "" H 6050 900 50  0001 C CNN
+	1    6050 900 
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6150 3250 6150 3200
-Wire Wire Line
-	6500 3000 6600 3000
-Wire Wire Line
-	6600 3000 6600 3200
-Wire Wire Line
-	6600 3200 6150 3200
-Connection ~ 6150 3200
-Wire Wire Line
-	6150 3200 6150 3150
-Wire Wire Line
-	6600 3000 6600 2900
-Wire Wire Line
-	6600 2900 6500 2900
-Connection ~ 6600 3000
-Wire Wire Line
-	6600 2900 6600 2800
-Wire Wire Line
-	6600 2800 6500 2800
-Connection ~ 6600 2900
 Wire Wire Line
 	4050 7050 4050 7150
 Wire Wire Line
@@ -2039,113 +2008,112 @@ Wire Wire Line
 Connection ~ 4050 7150
 Wire Wire Line
 	4050 7150 4050 7250
-$Comp
-L power:+3.3V #PWR0139
-U 1 1 60D7AA5C
-P 5800 3000
-F 0 "#PWR0139" H 5800 2850 50  0001 C CNN
-F 1 "+3.3V" V 5700 3050 50  0000 C CNN
-F 2 "" H 5800 3000 50  0001 C CNN
-F 3 "" H 5800 3000 50  0001 C CNN
-	1    5800 3000
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	5800 2900 5550 2900
-Wire Wire Line
-	6150 3250 5550 3250
-Connection ~ 6150 3250
-Wire Wire Line
-	5800 2800 5550 2800
-Wire Wire Line
-	5550 2800 5550 2900
-Connection ~ 5550 2900
-Wire Wire Line
-	5550 2900 5550 3250
-Wire Wire Line
-	5800 2200 5600 2200
-Wire Wire Line
-	6500 2200 6700 2200
-Connection ~ 6700 2200
-Wire Wire Line
-	5450 2200 5600 2200
-Connection ~ 5600 2200
-Text GLabel 6550 1850 1    50   Input ~ 0
+Text GLabel 6550 1450 2    50   Input ~ 0
 UNDRGLW_FRNT
-Text GLabel 5750 1850 1    50   Input ~ 0
+Text GLabel 5750 1450 0    50   Input ~ 0
 UG_LOW_FRONT
-$Comp
-L ExternalPartsLib:TXB0108RGYR U4
-U 1 1 60CDAD29
-P 6150 2550
-F 0 "U4" H 6150 3225 50  0000 C CNN
-F 1 "TXB0108RGYR" H 6150 3134 50  0000 C CNN
-F 2 "UnderglowPCB:VQFN-20" H 6150 2550 50  0001 C CNN
-F 3 "" H 6150 2550 50  0001 C CNN
-	1    6150 2550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6550 1850 6550 2100
-Wire Wire Line
-	6550 2100 6500 2100
-Wire Wire Line
-	5750 2100 5800 2100
 $Comp
 L power:GND #PWR0141
 U 1 1 60E3DF8B
-P 5450 2000
-F 0 "#PWR0141" H 5450 1750 50  0001 C CNN
-F 1 "GND" H 5550 1850 50  0000 R CNN
-F 2 "" H 5450 2000 50  0001 C CNN
-F 3 "" H 5450 2000 50  0001 C CNN
-	1    5450 2000
-	-1   0    0    1   
+P 5400 1150
+F 0 "#PWR0141" H 5400 900 50  0001 C CNN
+F 1 "GND" H 5500 1000 50  0000 R CNN
+F 2 "" H 5400 1150 50  0001 C CNN
+F 3 "" H 5400 1150 50  0001 C CNN
+	1    5400 1150
+	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR0142
 U 1 1 60E3EA3D
-P 7100 2000
-F 0 "#PWR0142" H 7100 1750 50  0001 C CNN
-F 1 "GND" H 7200 1850 50  0000 R CNN
-F 2 "" H 7100 2000 50  0001 C CNN
-F 3 "" H 7100 2000 50  0001 C CNN
-	1    7100 2000
-	-1   0    0    1   
+P 6850 1150
+F 0 "#PWR0142" H 6850 900 50  0001 C CNN
+F 1 "GND" H 6950 1000 50  0000 R CNN
+F 2 "" H 6850 1150 50  0001 C CNN
+F 3 "" H 6850 1150 50  0001 C CNN
+	1    6850 1150
+	1    0    0    -1  
 $EndComp
-Text GLabel 5800 2300 0    50   Input ~ 0
+Text GLabel 5750 1550 0    50   Input ~ 0
 UG_LOW_LEFT
-Text GLabel 5800 2400 0    50   Input ~ 0
+Text GLabel 5750 1650 0    50   Input ~ 0
 UG_LOW_REAR
 Text GLabel 9200 1400 2    50   Input ~ 0
 UG_LOW_RIGHT
-Text GLabel 5800 2500 0    50   Input ~ 0
+Text GLabel 5750 1750 0    50   Input ~ 0
 UG_LOW_RIGHT
-Wire Wire Line
-	5750 2100 5750 1850
-Wire Wire Line
-	6700 2200 7100 2200
-Text GLabel 5800 2700 0    50   Input ~ 0
+Text GLabel 5750 1950 0    50   Input ~ 0
 UG_LOW_SPARE_2
-Text GLabel 5800 2600 0    50   Input ~ 0
+Text GLabel 5750 1850 0    50   Input ~ 0
 UG_LOW_SPARE_1
 Wire Wire Line
 	9350 750  9350 800 
 Wire Wire Line
 	9350 800  9250 800 
 Connection ~ 9250 800 
-Text GLabel 6500 2300 2    50   Input ~ 0
+Text GLabel 6550 1550 2    50   Input ~ 0
 UNDRGLW_LEFT
-Text GLabel 6500 2400 2    50   Input ~ 0
+Text GLabel 6550 1650 2    50   Input ~ 0
 UNDRGLW_REAR
-Text GLabel 6500 2500 2    50   Input ~ 0
+Text GLabel 6550 1750 2    50   Input ~ 0
 UNDRGLW_RGHT
-Text GLabel 6500 2600 2    50   Input ~ 0
+Text GLabel 6550 1850 2    50   Input ~ 0
 5V_LED_SPARE_1
-Text GLabel 6500 2700 2    50   Input ~ 0
+Text GLabel 6550 1950 2    50   Input ~ 0
 5V_LED_SPARE_2
 Text GLabel 5700 6250 0    50   Input ~ 0
 AUX
 Text GLabel 9200 2400 2    50   Input ~ 0
 AUX
+$Comp
+L Logic_LevelTranslator:TXB0108DQSR U4
+U 1 1 60B7C808
+P 6150 1750
+F 0 "U4" H 6350 2400 50  0000 C CNN
+F 1 "TXB0108DQSR" H 6150 700 50  0000 C CNN
+F 2 "Package_SON:USON-20_2x4mm_P0.4mm" H 6150 1000 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/txb0108.pdf" H 6150 1650 50  0001 C CNN
+	1    6150 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 900  6050 950 
+Wire Wire Line
+	5400 950  5650 950 
+Connection ~ 6050 950 
+Wire Wire Line
+	6050 950  6050 1050
+Wire Wire Line
+	6250 1050 6250 950 
+Wire Wire Line
+	6250 950  6850 950 
+Connection ~ 6250 950 
+Wire Wire Line
+	6250 950  6250 900 
+Wire Wire Line
+	5750 2050 5750 2150
+Connection ~ 5750 2150
+Wire Wire Line
+	6550 2050 6550 2150
+Connection ~ 6550 2150
+Wire Wire Line
+	5750 1350 5650 1350
+Wire Wire Line
+	5650 1350 5650 950 
+Connection ~ 5650 950 
+Wire Wire Line
+	5650 950  6050 950 
+Wire Wire Line
+	6550 2500 6150 2500
+Wire Wire Line
+	5750 2150 5750 2500
+Wire Wire Line
+	6550 2150 6550 2500
+Wire Wire Line
+	6150 2450 6150 2500
+Connection ~ 6150 2500
+Wire Wire Line
+	6150 2500 5750 2500
+Wire Wire Line
+	6150 2550 6150 2500
 $EndSCHEMATC
