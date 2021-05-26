@@ -17,8 +17,6 @@
 
 [ESP 32 OBD2 Emulator](https://github.com/limiter121/esp32-obd2-emulator)
 
-[ESP 32 SD card hookup](http://acoptex.com/project/1285/basics-project-072y-esp32-development-board-with-sd-card-module-at-acoptexcom/)
-
 [Flash memory](https://randomnerdtutorials.com/esp32-flash-memory/)
 
 [ESP WROOM 32 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf)
@@ -29,26 +27,6 @@
 
 [ESP 32 Pinout](https://randomnerdtutorials.com/esp32-pinout-reference-gpios/)
 
-## Libraries
-[CAN](https://github.com/sandeepmistry/arduino-CAN)
-
-[OBD2](https://github.com/sandeepmistry/arduino-OBD2)
-
-[FastLED](https://github.com/FastLED/FastLED)
-
-[ESP 32 OLED](https://github.com/ThingPulse/esp8266-oled-ssd1306)
-
 ## LEDS
 [LED Library comparisons](https://blog.ja-ke.tech/2019/06/02/neopixel-performance.html)
 
-## Parts
-[OBD2 to DB9](https://www.sparkfun.com/products/10087)
-
-[DB9](https://www.mouser.com/Connectors/D-Sub-Connectors/D-Sub-Standard-Connectors/_/N-9gybx?P=1z0xbudZ1ytmhdqZ1yzv7x2)
-
-[Level shifter](https://electronics.stackexchange.com/questions/486571/12v-to-3-3-v-logic-level-shifter)
-
-[Level shifter 2](https://www.diodes.com/assets/Datasheets/74HCT14.pdf)
-
-[Light bar connectors](https://www.amazon.com/gp/product/B01LCV8ZMA/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-- Get 5 pin, small for current LED set
