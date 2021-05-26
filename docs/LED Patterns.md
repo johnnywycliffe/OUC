@@ -49,6 +49,7 @@ Preset patterns, more complex than the "simple" patterns
 6. Shamrock - Green shifting pattern
 7. Halloween - Orange, green and purple
 8. Christmas - Red and green lights, white twinkles
+9. FFTss
 
 ## Colors
 ### Built in palettes

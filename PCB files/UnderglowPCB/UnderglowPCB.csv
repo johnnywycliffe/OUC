@@ -1,72 +1,38 @@
-Reference, Value, Footprint, Datasheet
-"J4","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"J5","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"U6","SN65HVD230","UnderglowPCB:Texas_HSOP-8-1EP_3.9x4.9mm_P1.27mm_ThermalVias","https://www.ti.com/lit/ds/symlink/sn65hvd230.pdf"
-"J11","Conn_01x05","UnderglowPCB:Joystick_Header","~"
-"J12","Conn_01x07","UnderglowPCB:SSD1306_Footprint","~"
-"R11","27k","Resistor_SMD:R_0603_1608Metric","~"
-"R12","10k","Resistor_SMD:R_0603_1608Metric","~"
-"R9","27k","Resistor_SMD:R_0603_1608Metric","~"
-"R10","10k","Resistor_SMD:R_0603_1608Metric","~"
-"C2","1u","Capacitor_SMD:C_0402_1005Metric","~"
-"C1","100u","Capacitor_SMD:C_0402_1005Metric","~"
-"C12","0.1u","Capacitor_SMD:C_0603_1608Metric","~"
-"D8","LED","LED_SMD:LED_0603_1608Metric","~"
-"R16","2.2k","Resistor_SMD:R_0603_1608Metric","~"
-"R15","2.2k","Resistor_SMD:R_0603_1608Metric","~"
-"D7","LED","LED_SMD:LED_0603_1608Metric","~"
-"C18","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"H4","MH_Pad","MountingHole:MountingHole_4.3mm_M4_Pad_Via","~"
-"U8","CP2102N-A01-GQFN28","Package_DFN_QFN:QFN-28-1EP_5x5mm_P0.5mm_EP3.35x3.35mm","https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf"
-"R8","10k","Resistor_SMD:R_0603_1608Metric","~"
-"J3","USB_B_Micro","Connector_USB:USB_Micro-AB_Molex_47590-0001","~"
-"R7","4.7k","Resistor_SMD:R_0603_1608Metric","~"
-"D6","BAT760-7","Diode_SMD:D_SOD-323","~"
-"J2","DB9_Male","UnderglowPCB:DB9"," ~"
-"C15","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C16","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C17","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C13","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C19","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C20","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"R13","27k","Resistor_SMD:R_0603_1608Metric","~"
-"R14","10k","Resistor_SMD:R_0603_1608Metric","~"
-"C9","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"C10","10u","Capacitor_SMD:C_0603_1608Metric","~"
-"Q1","S8050","Package_TO_SOT_SMD:SOT-23","http://www.unisonic.com.tw/datasheet/S8050.pdf"
-"Q2","S8050","Package_TO_SOT_SMD:SOT-23","http://www.unisonic.com.tw/datasheet/S8050.pdf"
-"R5","10k","Resistor_SMD:R_0603_1608Metric","~"
-"R4","10k","Resistor_SMD:R_0603_1608Metric","~"
-"H3","MH_Pad","MountingHole:MountingHole_4.3mm_M4_Pad_Via","~"
-"H2","MH_Pad","MountingHole:MountingHole_4.3mm_M4_Pad_Via","~"
-"H1","MH_Pad","MountingHole:MountingHole_4.3mm_M4_Pad_Via","~"
-"U1","ESP32-WROOM-32D","RF_Module:ESP32-WROOM-32","https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf"
-"U7","USBLC6-2SC6","Package_TO_SOT_SMD:SOT-23-6","https://www.st.com/resource/en/datasheet/usblc6-2.pdf"
-"C14",".1u","Capacitor_SMD:C_0603_1608Metric","~"
-"D1","RB088BM-60TL","Package_TO_SOT_SMD:TO-252-2_TabPin1","~"
-"C11","0.1u","Capacitor_SMD:C_0603_1608Metric","~"
-"J6","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"J8","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"J9","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"J10","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"J1","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"R6","120","Resistor_SMD:R_0603_1608Metric","~"
-"D4","TPSMB15CA","UnderglowPCB:TPSMB15CA","~"
-"D5","TPSMB15CA","UnderglowPCB:TPSMB15CA","~"
-"D2","TPSMA6L15A","UnderglowPCB:TPSMA6L15A","~"
-"U2","LMR14030-Q1","Package_SO:Texas_HSOP-8-1EP_3.9x4.9mm_P1.27mm_ThermalVias",""
-"C5","22n","Capacitor_SMD:C_0603_1608Metric","~"
-"R1","49.9k","Resistor_SMD:R_0603_1608Metric","~"
-"R2","100k","Resistor_SMD:R_0603_1608Metric","~"
-"R3","17.8k","Resistor_SMD:R_0603_1608Metric","~"
-"L1","SRR1208-6R5ML","UnderglowPCB:SRR1208","~"
-"D3","VSSAF512","UnderglowPCB:TPSMA6L15A","~"
-"C6",".1u","Capacitor_SMD:C_0603_1608Metric","~"
-"C7","47u","Capacitor_SMD:C_1210_3225Metric","~"
-"C8","47u","Capacitor_SMD:C_1210_3225Metric","~"
-"C4","2.2u","Capacitor_SMD:C_0603_1608Metric","~"
-"C3","2.2u","Capacitor_SMD:C_0603_1608Metric","~"
-"J7","Screw_Terminal_01x03","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","~"
-"U3","NCP1117-3.3_SOT223","Package_TO_SOT_SMD:SOT-223-3_TabPin2","http://www.onsemi.com/pub_link/Collateral/NCP1117-D.PDF"
-"F1","3413.0330.22","Fuse:Fuse_1206_3216Metric","~"
-"U4","TXB0108RGYR","UnderglowPCB:VQFN-20",""
+Id,Designator,Quantity,Manufacturer,MFG Part #,Description/Value,Package,Type,Notes
+1,U1,1,Espressif Systems,"ESP32-WROOM-32E
+(M113EH2800PH3Q0)",Micrcontroller,ESP32-WROOM-32,SMD,
+2,D3,1,Vishay General Semiconductor,VSSAF512-M3/H,Schottky diode,DO-221AC,SMD,
+3,C1,1,"CAL-CHIP ELECTRONICS, INC.",GMC32X5R107M6R3NT,100u,C_1210_3225Metric,SMD,
+4,"C12,C11,C14,C6",4,"CAL-CHIP ELECTRONICS, INC.",GMC10Y5V104Z16NTD,0.1u,C_0603_1608Metric,SMD,
+5,U4,1,Texas Instruments,TXB0108DQSR,3.3v to 5v Logic Level shifter,SON-20,SMD,
+6,U6,1,Texas Instruments,SN65HVD230QDRG4Q1,CAN-BUS Tranciever,SOIC-8,SMD,
+7,U8,1,Sillicon Labs,CP2102N-A02-GQFN28,USB to UART Bridge,QFN-28,SMD,
+8,D1,1,ROHM Semiconductor,RB088BM-60TL,Schottky Protection diode,TO-252-2_TabPin1,SMD,
+9,"C9,C17,C16,C15,C18,C19,C20,C13,C10",9,"CAL-CHIP ELECTRONICS, INC.",GMC10X5R106M6R3NT,10u,C_0603_1608Metric,SMD,
+10,D6,1,"Yangzhou Yangjie Electronic Technology Co.,Ltd",B5818WS-F2-0000HF,B5818WS,D_SOD-323,SMD,
+11,R7,1,Meritek,CR16472J,,R_0603_1608Metric,SMD,
+12,U7,1,STMicroelectronics,USBLC6-2SC6,ESD Suppression,SOT-23-6,SMD,
+13,"R8,R10,R12,R14,R4,R5",6,Viking Tech,CR-03FL7---10K,10k,R_0603_1608Metric,SMD,
+14,J3,1,Molex,47590-0001,USB_B_Micro,USB_Micro-AB_Molex_47590-0001,Thru-hole,
+15,F1,1,Schurter Inc,3413.0330.22,Fuse,Fuse_1206_3216Metric,SMD,
+16,U3,1,ON Semiconductor,NCP1117ST33T3G,3.3V Regulator,SOT-223-3_TabPin2,SMD,
+17,"R9,R11,R13",3,Meritek,CR16273J,27k,R_0603_1608Metric,SMD,
+18,R6,1,Meritek,CR16121J,120,R_0603_1608Metric,SMD,
+19,"Q1,Q2",2,Comchip Technology,SS8050-G,NPN Transistor,SOT-23,SMD,
+20,C2,1,"CAL-CHIP ELECTRONICS, INC.",GMC04X5R105K10NT,1u,C_0402_1005Metric,SMD,
+21,"D7,D8",2,Würth Elektronik,150040RS73240,LED,LED_0603_1608Metric,SMD,
+22,"R15,R16",2,Meritek,CR16222J,,R_0603_1608Metric,SMD,
+23,"C3,C4",2,"CAL-CHIP ELECTRONICS, INC.",GMC10X5R225K16NT,2.2u,C_0603_1608Metric,SMD,
+24,C5,1,Samsung Electro-Mechanics,CL10B223KC8WPNC,22n,C_0603_1608Metric,SMD,
+25,"C7,C8",2,"CAL-CHIP ELECTRONICS, INC.",GMC32X5R476M6R3NT,47u,C_1210_3225Metric,SMD,
+26,D2,1,Littelfuse,TPSMA6L15A,TVS Diode,DO-221AC-2 (SMA),SMD,
+27,"D4,D5",2,Littelfuse,TPSMB15A,TPSMB15CA,DO-214AA-2,SMD,
+28,L1,1,Bourns,SRR1208-6R5ML,6.5u,Non-standard,SMD,
+29,R1,1,Viking Tech,AR03DTC4992,49.9k,R_0603_1608Metric,SMD,
+30,R2,1,Viking Tech,CR-03FL7--100K,100k,R_0603_1608Metric,SMD,
+31,R3,1,Meritek,CR161782F,17.8k,R_0603_1608Metric,SMD,
+32,U2,1,Texas Instruments,LMR14030SQDDARQ1,12v Switch mode power supply,"8-PowerSOIC (0.154"", 3.90mm Width)",SMD,
+33,"J8,J9,J10,J4,J5,J6,J7,J1",8,,,Conn_01x03,PinHeader_1x03_P2.54mm_Vertical,,DNS/DNP/DNI
+34,J11,1,,,Conn_01x05,Joystick_Header,,DNS/DNP/DNI
+35,J12,1,,,Conn_01x07,SSD1306_Footprint,,DNS/DNP/DNI
+36,J2,1,,,DB9_Male,DB9,,DNS/DNP/DNI
