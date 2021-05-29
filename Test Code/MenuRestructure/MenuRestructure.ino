@@ -82,7 +82,7 @@ typedef struct {
   char deviceID[10];
   bool firstboot = true;
   //User settings
-  uint8_t brightness; //Screen brightness
+  uint8_t brightness = 127; //Screen brightness
   //LED settings
   bool autoshutoff; //If device automatically shuts off when driving
   SelectedPattern turn; //Turn signal behaviour
@@ -155,7 +155,6 @@ public:
   void runPassive(int select){
     if(itemArr[select].passive != NULL){
       void *PassItem = itemArr[select].getPassiveItem();
-      Serial.println("Gets to here");
       itemArr[select].passive(PassItem);
     }
   }
@@ -238,8 +237,8 @@ unsigned long menuTime = 0;
 //Pointers for storing data
 int *selPtr = &selector;
 State *sPtr;
-int *intPtr;
-uint8_t *uint8_tPtr;
+uint8_t optionsByte = 0;
+uint8_t *optionsPtr = &optionsByte;
 
 void setup(){
   //debug
@@ -258,6 +257,7 @@ void setup(){
   // /debug
   setMenu(main);
   menu.disp(selector);
+  
 }
 
 void loop(){
@@ -300,10 +300,13 @@ void setMenu(State s){
       menu.setItem("Pattern 2","none",pErrorW);
       break;
     case screenbright:
-      menu.set("Set Brightness",s,main,optionMenuDisplay,optionMenuControls);
-      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,uint8_tPtr); //FIXME: Add save func
-      //menu.setLen(255);
-      //uint8_tPtr = new uint8_t{127}; //WHYYYYYY DOES THIS BREAK
+      menu.set("Set Brightness",s,main,brightnessMenuDisplay,optionMenuControls);
+      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //FIXME: Add save func
+      menu.setLen(8);
+
+      //FIXME: Selector and value are currently tied. Need to seperate into two values updated simultaneously
+      //Either seperate to two vars or disconnect select behaviour from direct control.
+      //Refactor to use optionPtr including in brigthness menu display to avoid screwing up
       break;
   }
 }
@@ -314,8 +317,11 @@ void setMenuW(void* ptr){
 }
 
 //Set screen brightness
-void setScreenBrightness(void* bPtr){
-  display.setBrightness(*(int*)bPtr);
+void setScreenBrightness(void *bPtr){
+  int temp = *(int8_t*)bPtr;
+  int8_t t = (int8_t)temp * 16;
+  Serial.println(t);
+  display.setBrightness(t);
 }
 
 //Display options =================================================================================
