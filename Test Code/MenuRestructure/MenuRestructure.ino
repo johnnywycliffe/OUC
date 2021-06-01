@@ -74,7 +74,7 @@ enum SelectedPattern {
 //Templates
 typedef void (*GFunc)(void*);       //Function pointer for MenuItem
 typedef void (*displayFunc)(int);   //Screen display Function
-typedef int (*controlFunc)(int&);   //Control scheme function
+typedef int (*controlFunc)(int&, uint8_t);   //Control scheme function
 
 //Device settings
 typedef struct {
@@ -82,7 +82,7 @@ typedef struct {
   char deviceID[10];
   bool firstboot = true;
   //User settings
-  uint8_t brightness = 127; //Screen brightness
+  uint8_t brightness; //Screen brightness
   //LED settings
   bool autoshutoff; //If device automatically shuts off when driving
   SelectedPattern turn; //Turn signal behaviour
@@ -132,10 +132,7 @@ class Menu{
   //Item Array
   MenuItem itemArr[100]; //Array of menu items
   uint8_t len;           //Actual length
-  
-  //Maybe remove?
-  //State next;            //Next menu to display (if needed)
-  //int currVal;           //Value to print as current
+  int8_t inputMode;      //If scrolling through items is desirable - change to bool?
 public:
   Menu(){
   }
@@ -145,10 +142,6 @@ public:
   //Member Functions
   displayFunc disp; //function to call to display
   controlFunc cont;  //Control scheme
-  void setItem(char *t, char *d, GFunc a,  void* ai=NULL, GFunc p=NULL, void* pi=NULL){
-    itemArr[len].set(t,d,a,ai,p,pi);  //Initialize MenuItem
-    len++;                            //Incriment length
-  }
   void runActive(int select){
     itemArr[select].active(itemArr[select].getActiveItem());
   }
@@ -166,9 +159,17 @@ public:
     disp = d;
     cont = c;
     len = 0;
+    inputMode = 0;
+  }
+  void setItem(char *t, char *d, GFunc a,  void* ai=NULL, GFunc p=NULL, void* pi=NULL){
+    itemArr[len].set(t,d,a,ai,p,pi);  //Initialize MenuItem
+    len++;                            //Increment length
   }
   void setLen(uint8_t l){
     len = l;
+  }
+  void setInputMode(int8_t m){
+    inputMode = m;
   }
   //Getters
   char* getMenuTitle(){
@@ -189,13 +190,14 @@ public:
   uint8_t getLen(){
     return len;
   }
-
-
+  int8_t getInputMode(){
+    return inputMode;
+  }
+  /*
   State getState(){
     return currState;
   }
   /*
-  
   void setLen(int l){ //used for int as maxVal, bool as true(1) or false(0), and progBar as maxVal
     len = l;
   }
@@ -210,14 +212,6 @@ public:
     currVal = cv;
   }
   //Get
-  
-  
-  char* getTitle(int pos){
-    return itemArr[pos].title;
-  }
-  char* getDesc(int pos){
-    return itemArr[pos].desc;
-  }
   State getState(){
     return s;
   }
@@ -241,38 +235,58 @@ uint8_t optionsByte = 0;
 uint8_t *optionsPtr = &optionsByte;
 
 void setup(){
-  //debug
+  //DEBUG
   Serial.begin(115200);
   Serial.println("Start new test");
   //Buttons
   joyButton.begin();
-  //Display
+  //Display - Make optional
   if(!display.init()) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
   display.flipScreenVertically();
-  display.setBrightness(255);
+  //DEBUG
+  deviceSettings.brightness = 255;
+  //END DEBUG
+  display.setBrightness(deviceSettings.brightness);
   display.display();
-  // /debug
+  //DEBUG
   setMenu(main);
   menu.disp(selector);
-  
 }
 
 void loop(){
-  /* Menu theory of operation:
-  based on state:
-    - Input is interpreted differently
-    - Active function runs, allowing LEDs to animate and brightness of screen to update, etc
-    - Passive functions are called when button is pressed
-    - Screen is updated according to state
-  */
   if(millis() >= menuTime + MENUDELAY){
-    menuTime = millis();
-    menu.cont(selector);
+    menuTime = millis(); //Resets last time updated
+    int result = menu.cont(selector,menu.getLen()); //Runs currently selected input
+    switch (result){
+      case -1:
+        setMenu(menu.getPrev());
+        break;
+      case -2:
+        switch (menu.getInputMode()){ //Make into if statement is no other mode required
+          case 1:
+            menu.runActive(0);
+            break;
+          default:
+            menu.runActive(selector);
+            break;
+        }
+        break;
+      default:
+        //do nothing
+        break;
+    }
     menu.disp(selector);
-    menu.runPassive(selector);
+    switch (menu.getInputMode()){ //Make into if statement is no other mode required
+      case 1:
+        menu.runPassive(0);
+        break;
+      default:
+        menu.runPassive(selector);
+        break;
+    }
   }
 }
 
@@ -301,12 +315,9 @@ void setMenu(State s){
       break;
     case screenbright:
       menu.set("Set Brightness",s,main,brightnessMenuDisplay,optionMenuControls);
-      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //FIXME: Add save func
+      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //TODO: Add save func
       menu.setLen(8);
-
-      //FIXME: Selector and value are currently tied. Need to seperate into two values updated simultaneously
-      //Either seperate to two vars or disconnect select behaviour from direct control.
-      //Refactor to use optionPtr including in brigthness menu display to avoid screwing up
+      menu.setInputMode(1);
       break;
   }
 }
@@ -318,10 +329,8 @@ void setMenuW(void* ptr){
 
 //Set screen brightness
 void setScreenBrightness(void *bPtr){
-  int temp = *(int8_t*)bPtr;
-  int8_t t = (int8_t)temp * 16;
-  Serial.println(t);
-  display.setBrightness(t);
+  uint8_t temp = (uint8_t)*(uint8_t*)bPtr * 32;
+  display.setBrightness(temp);
 }
 
 //Display options =================================================================================
@@ -387,48 +396,23 @@ void pErrorW(void *ptr){
 
 //Controls Options ================================================================================
 //Controls for options menu
-int optionMenuControls(int &sel){
+//FIXME: Factor out menu, pass by ptr
+int optionMenuControls(int &sel, uint8_t len){
   switch(getInput()){
     case up:
       sel--;                              //Decriment select / move up
-      if(sel < 0) sel = menu.getLen()-1;  //Wrap if out of bounds
+      if(sel < 0) sel = len-1;  //Wrap if out of bounds
       break;
     case down:
       sel++;                              //Incriment select / move down
-      if(sel >= menu.getLen()) sel = 0;   //Wrap if out of bounds
+      if(sel >= len) sel = 0;   //Wrap if out of bounds
       break;
     case left:
     case back:
-      setMenu(menu.getPrev());              //Back up a menu
-      break;
+      return -1; //Back up a menu
     case right:
     case select:
-      menu.runActive(sel);                //Run whatever is in MenuItem
-      break;
-  }
-  //Serial.println(select);
-  return 0;
-}
-
-//Controls for adjusting integers up and downsel
-int intMenuControls(int &sel){
-  switch(getInput()){
-    case up:
-      sel--;                              //Decriment select / move up
-      if(sel < 0) sel = menu.getLen()-1;  //Wrap if out of bounds
-      break;
-    case down:
-      sel++;                              //Incriment select / move down
-      if(sel >= menu.getLen()) sel = 0;   //Wrap if out of bounds
-      break;
-    case left:
-    case back:
-      setMenu(menu.getPrev());              //Back up a menu
-      break;
-    case right:
-    case select:
-      menu.runActive(sel);                //Run whatever is in MenuItem
-      break;
+      return -2; //Run active item
   }
   //Serial.println(select);
   return 0;
@@ -449,11 +433,7 @@ Controls getInput(){
     return left;
   }
   if(joyButton.pressed()){
-    return select; //FIXME: Joybutton should return back
-  }
-  /* FIXME: Add in second button
-  if(selectButton.pressed()){
     return select;
-  }*/
+  }
   return nop;
 }
