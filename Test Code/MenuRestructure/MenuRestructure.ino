@@ -29,6 +29,8 @@
 #define DEADZONEHIGH 3800
 #define MENUDELAY 200
 
+#define NOTIMP (void*)"Not implemented"
+
 enum State{ //Menu state
   main, settings, gauge1, pattern1, pattern2, pattern3, bluetooth, ledsetting1, ledsetting2,
   brakeandturn, brake, turn, color, pickpattern, animation, ledorder, ledcount, ledflip,
@@ -305,18 +307,18 @@ void setMenu(State s){
       break;
     case gauge1:
       menu.set("Gauges Menu",s,main,optionMenuDisplay,optionMenuControls);
-      menu.setItem("gauge 1","none",pErrorW);
-      menu.setItem("gauge 2","none",pErrorW);
+      menu.setItem("gauge 1","none",pErrorW,NOTIMP);
+      menu.setItem("gauge 2","none",pErrorW,NOTIMP);
       break;
     case pattern1:
       menu.set("Pattern Menu",s,main,optionMenuDisplay,optionMenuControls);
-      menu.setItem("Pattern 1","none",pErrorW);
-      menu.setItem("Pattern 2","none",pErrorW);
+      menu.setItem("Pattern 1","none",pErrorW,NOTIMP);
+      menu.setItem("Pattern 2","none",pErrorW,NOTIMP);
       break;
     case screenbright:
       menu.set("Set Brightness",s,main,brightnessMenuDisplay,optionMenuControls);
-      menu.setItem("Current: ","New: ",pErrorW,NULL,setScreenBrightness,selPtr); //TODO: Add save func
-      menu.setLen(8);
+      menu.setItem("Current: ","New: ",pErrorW,NOTIMP,setScreenBrightness,selPtr); //TODO: Add save func
+      menu.setLen(9);
       menu.setInputMode(1);
       break;
   }
@@ -329,7 +331,12 @@ void setMenuW(void* ptr){
 
 //Set screen brightness
 void setScreenBrightness(void *bPtr){
-  uint8_t temp = (uint8_t)*(uint8_t*)bPtr * 32;
+  uint8_t temp = (uint8_t)*(uint8_t*)bPtr; //Change form 16 bit to 8 bit and dereference
+  if(temp == 8){
+    temp = 255; //8 * 32 = 256, this catches it so no overflow occurs
+  } else {
+    temp *= 32;
+  }
   display.setBrightness(temp);
 }
 
@@ -391,6 +398,7 @@ void pError(char *eText){
 //pError Wrapper 
 //FIXME: Char arrays are const, which means const void*, which mean, this doesn't work.
 void pErrorW(void *ptr){
+  Serial.println(*(char*)ptr); //DEBUG
   pError((char*)ptr); //pError expects pointer
 }
 
