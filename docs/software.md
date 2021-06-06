@@ -11,11 +11,21 @@ The inputs to the device are:
 
 To choose between these, there is bluetooth mode or a joystick/button combo.
 
-### Optimizations to make:
-- Function pointers to clean up the menu and make it OH SO MUCH easier to work with
-- add in passive (on click) and active (constantly running) functions 
-- Add in new control schemes
-- Add in return to last menu in last menu position
+## Classes (make as seperate libraries?)
+- Menu: Handles operation ot he menu
+  - Screen: Handles screen manipulation fo rmenu class
+  - Parser: Handles input from a serial device
+    - Computer: Loads settings in ardiuno terminal when attached to a computer
+    - Bluetooth: Loads data in when attached to bluetooth
+- LEDPattern: Sets LEDs to be displayed
+  - LEDManager: Handles all hardware interface functions
+- CAN: handle back and forth info to and from car
+- EEPROM manager: Saving data to eeprom
+
+Items kept in main:
+- Joystick Controls
+- Settings
+
 
 ### Menu
 The menu has a few modes:
