@@ -9,22 +9,29 @@ The inputs to the device are:
 - Self/Animations: Pre-programmed animations to drive LEDs in a set pattern.
 - Turn Signals/Brakes: When installed, can light up red when braking and flash yellow when using turn signals
 
-To choose between these, there is bluetooth mode or a joystick/button combo.
+To choose between these, there is bluetooth mode or a joystick/button combo, or can be operated by computer
 
-## Classes (make as seperate libraries?)
+## Classes (make seperate libraries?)
 - Menu: Handles operation ot he menu
-  - Screen: Handles screen manipulation fo rmenu class
+  - Screen: Handles screen manipulation for menu class
+  - Input: Handles joystick and button presses
   - Parser: Handles input from a serial device
     - Computer: Loads settings in ardiuno terminal when attached to a computer
     - Bluetooth: Loads data in when attached to bluetooth
-- LEDPattern: Sets LEDs to be displayed
+- LEDPreset: Sets LEDs to be displayed
+  - LEDPattern: Only contains data for an individual pattern
+  - PatternManager: Actually updates patterns, inits them based on LEDPattern fed
   - LEDManager: Handles all hardware interface functions
 - CAN: handle back and forth info to and from car
 - EEPROM manager: Saving data to eeprom
+- Settings: Settings stuff
 
-Items kept in main:
-- Joystick Controls
-- Settings
+## LED setup
+- 5 presets saved to EEPROM, can be recalled at any time
+- 1 Active preset; preset that will run when settings are finalized/aborted
+- 1 preset for currently being modified patterns (called test)
+- 1 LED manager
+- 1 Pattern Manager
 
 ### Breakdown of LED operational theory
 LEDManager:
@@ -40,20 +47,33 @@ LEDPreset:
 LEDPatterns:
 - Where the current pattern is defined. Contains data like offset, length, brightness, palette...
 - Does NOT contain LED array. Just information needed to construct array
+- Probably could be a struct.
 
 PatternManager:
 - Given a LEDPattern, an offset and an Array to operate on, updates LEDs accordingly
 - Shared between presets
-- This class is going to be the majority of the looks
+- This class is going to setup and update the LEDs based on confiuration handed to it
 
+## Menu
+### Actives
+- Load a new menu, resets sel and runs setupmenu(State)
+- Load a new menu with a limited number of options
+- Load a new menu with a custom title
+- Save active pattern to test pattern
+- Save test pattern to current pattern - abstract to two?
+- Load a new menu and throw an eror for caution (Wiring, OBD-II, etc)
+- Load a new menu and update selected LED string
+- Save RGB order into hardware struct
+- Save LED count into hardware struct
+- Save LED flip state into hardware struct
+- Save turn signal pattern into device settings
+- Save brake pattern into device settings
+- Save autoshutoff state into device settings
+- Bluetooth
 
-
-
-
-
-
-
-
+### Passives
+- Update color palette on active: Active is known, state and sel describe 
+- Update screen brightness: deviceSettings is known, 
 
 # OUTDATED
 Anything below this needs to be revised/removed

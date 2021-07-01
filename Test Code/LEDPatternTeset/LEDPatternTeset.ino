@@ -281,12 +281,18 @@ int LEDManager::getUnderglowLength(){
 
 //======================Pattern=============================
 enum Pattern {
-  narrow, medium, large, wide, halfandhalf, quarters, animation, solid
+  solid, narrow, medium, large, wide, halfandhalf, quarters, dots, 
+  animation //Animation is used only for items that don't allow a preset arrangement of pixels
 };
 
 enum Animation {
-  staticLEDs, rotateCW, rotateCCW
+  staticLEDs, rotateCW, rotateCCW, fade1, fade2, faderand, cylon,     //Uses pattern
+  colorpop, splatter, drip,                                           //Uses pattern, but needs special setup
+  pacifica, flames, murica, valntine, shamrock, halloween, christmas, //Uses pattern, but needs psecial setup
+  gauge1, gauge2, gauge3, gauge4, gauge5, gauge6, gauge7,             //Gauge clusters
+  brakes1, brakes2, brakes3, signal1, signal2, signal3, signal4, signal5, signal6 //Car exclusive
 };
+
 //Pattern class
 class LEDPattern {
   CRGBPalette16 RGBP;
@@ -331,46 +337,104 @@ public:
 //Setup a pattern by erasing the old one.
 void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt){
   Pattern p = lPatt.getPattern();
-  int paletteIndex = 0;
   int len = startPos+lPatt.getLength();
-  for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
-    switch(p){
-      default:
-      case solid:{
-        arr[i] = ColorFromPalette(lPatt.getPalette(),paletteIndex,
-          lPatt.getPatternBrightness(), lPatt.getBlendMode()); 
-        paletteIndex += round((float)256.0/len);
-        break; 
-      }
-      case narrow:{ 
-        int off = (i + lPatt.getOffsetPos()) % len;
-        if(i%2 == 0){ //Every other LED
-          arr[off] = ColorFromPalette(lPatt.getPalette(),paletteIndex,
-            lPatt.getPatternBrightness(), lPatt.getBlendMode());
+  if(p != animation){
+    for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
+      int off = (i + lPatt.getOffsetPos()) % len; //Rotate pattern around offset
+      int paletteIndex = round(i*(256.0/len));    //get correct color index from palette
+      int color = 0;                              //Color
+      switch(p){
+        default:
+        case solid:{                      //All LEDs one color
+          //do nothing
+          break; 
         }
-        paletteIndex += round(256.0/len);
-        break;
+        case narrow:{                     //Every other LED is on
+          if(i%2 == 0){
+            color = paletteIndex;
+          } else {
+            color = -1;
+          }
+          break;
+        }
+        case medium:{                     //Every 2 leds are on
+          if(i%4 > 2){
+            color = paletteIndex;
+          } else {
+            color = -1;
+          }
+          break;
+        }
+        case large:{                      //Every 3 leds are on
+          if(i%6 > 3){
+            color = paletteIndex;
+          } else {
+            color = -1;
+          }
+          break;
+        }
+        case wide:{                       //Every 6 leds are on
+          if(i%12 > 6){                   
+            color = paletteIndex;
+          } else {
+            color = -1;
+          }
+          break;
+        }
+        case halfandhalf:{                //Half one color, half another
+          if(i < len/2){
+            //do nothing
+          } else {
+            color = 128;
+          }
+          break;
+        }
+        case quarters:{                   //Each quater is one color
+          if(i < len/4){
+            //do nothing
+          } else if (i < len/2) {
+            color = 64;
+          } else if (i < (len/2+len/4)) {
+            color = 128;
+          } else {
+            color = 192;
+          }
+          break;
+        }
+        case dots:{                       //Smaller, discrete dots
+          if(i%6 == 0){
+            color = paletteIndex;
+          } else {
+            color = -1;
+          }
+          break;
+        }
       }
-      case medium:{
-        //do nothing
-        break;
+      //Apply color from palette to pixel
+      if(color > 0){ 
+        arr[off] = ColorFromPalette(lPatt.getPalette(),color,
+              lPatt.getPatternBrightness(), lPatt.getBlendMode());
+      } else {
+        arr[off] = CRGB::Black;
       }
+    }
+  } else {
+    //TODO: Animation setup
+  }
+}
+
+//
+void PatternManager::updatePattern(CRGB arr, int startPos, LEDPattern lPatt){
+  Pattern p = lPatt.getPattern();
+  int len = startPos+lPatt.getLength();
+  if(p == animation){
+    //TODO: Go to special animation types (Pacifica, MURICA, etc)
+  } else {
+    for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
+      //TODO: stuff
     }
   }
 }
-/*
-void PatternManager::updatePattern(CRGB arr, int startPos ,LEDPattern ledPattern){
-  for(int i=startPos;i<(startPos+ledPattern.getLength();i++)){ //Start at correct pos and don't interfere with other strings of LEDs
-    
-  }
-}
-*/
-//Functions to load special pattern/animation types
-/*pacifica, risingflames, twinklefox,
-murica, colorpop, splatter, drip, christmas, valentines, shamrock, halloween*/
-//Functions for PID patterns
-//Functions for turns signals and brakes
-//step function
 
 //====================LED Preset===========================
 class LEDPreset {
