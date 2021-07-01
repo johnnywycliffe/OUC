@@ -67,7 +67,7 @@ class LEDManager {              //LED manager need sot contain all the of the LE
   LEDString leftLED;
   LEDString spare1LED;
   LEDString spare2LED;
-  CRGB *underglow;              //Main FastLED class
+  CRGB *ledArr;                 //Main FastLED class
   int totalLEDs;                //Number of total LEDS
   //Private functions
   void setupLEDs();             //Function to run to instantiate LEDs in memory
@@ -81,6 +81,7 @@ public:
   int getUnderglowLength();
   int getSpare1Length(){return spare1LED.ledCount;}
   int getSpare2Length(){return spare2LED.ledCount;}
+  CRGB* getLEDArr(){return ledArr;}
 };
 
 //LED Initialization
@@ -99,7 +100,7 @@ void LEDManager::initLEDs(uint8_t *lCounts, ColorOrder *cOs, bool *rev){
   for(int i=0;i<6;i++){
     totalLEDs+=lCounts[i];
   }
-  underglow = new CRGB[totalLEDs];
+  ledArr = new CRGB[totalLEDs];
   
   //Run main LED initializer
   setupLEDs();
@@ -113,22 +114,22 @@ void LEDManager::setupLEDs(){
   switch(frontLED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,RGB>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,RGB>(ledArr,LEDTotal,frontLED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,RBG>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,RBG>(ledArr,LEDTotal,frontLED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,GRB>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,GRB>(ledArr,LEDTotal,frontLED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,GBR>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,GBR>(ledArr,LEDTotal,frontLED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,BRG>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,BRG>(ledArr,LEDTotal,frontLED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,FRONT_LED_PIN,BGR>(underglow,LEDTotal,frontLED.ledCount);
+      LEDS.addLeds<WS2811,FRONT_LED_PIN,BGR>(ledArr,LEDTotal,frontLED.ledCount);
       break;
   }
   LEDTotal += frontLED.ledCount;
@@ -136,22 +137,22 @@ void LEDManager::setupLEDs(){
   switch(rightLED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,RGB>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,RGB>(ledArr,LEDTotal,rightLED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,RBG>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,RBG>(ledArr,LEDTotal,rightLED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,GRB>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,GRB>(ledArr,LEDTotal,rightLED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,GBR>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,GBR>(ledArr,LEDTotal,rightLED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,BRG>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,BRG>(ledArr,LEDTotal,rightLED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,RIGHT_LED_PIN,BGR>(underglow,LEDTotal,rightLED.ledCount);
+      LEDS.addLeds<WS2811,RIGHT_LED_PIN,BGR>(ledArr,LEDTotal,rightLED.ledCount);
       break;
   }
   LEDTotal += rightLED.ledCount;
@@ -159,22 +160,22 @@ void LEDManager::setupLEDs(){
   switch(rearLED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,RGB>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,RGB>(ledArr,LEDTotal,rearLED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,RBG>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,RBG>(ledArr,LEDTotal,rearLED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,GRB>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,GRB>(ledArr,LEDTotal,rearLED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,GBR>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,GBR>(ledArr,LEDTotal,rearLED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,BRG>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,BRG>(ledArr,LEDTotal,rearLED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,REAR_LED_PIN,BGR>(underglow,LEDTotal,rearLED.ledCount);
+      LEDS.addLeds<WS2811,REAR_LED_PIN,BGR>(ledArr,LEDTotal,rearLED.ledCount);
       break;
   }
   LEDTotal += rearLED.ledCount;
@@ -182,22 +183,22 @@ void LEDManager::setupLEDs(){
   switch(leftLED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,RGB>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,RGB>(ledArr,LEDTotal,leftLED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,RBG>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,RBG>(ledArr,LEDTotal,leftLED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,GRB>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,GRB>(ledArr,LEDTotal,leftLED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,GBR>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,GBR>(ledArr,LEDTotal,leftLED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,BRG>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,BRG>(ledArr,LEDTotal,leftLED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,LEFT_LED_PIN,BGR>(underglow,LEDTotal,leftLED.ledCount);
+      LEDS.addLeds<WS2811,LEFT_LED_PIN,BGR>(ledArr,LEDTotal,leftLED.ledCount);
       break;
   }
   LEDTotal += leftLED.ledCount;
@@ -205,22 +206,22 @@ void LEDManager::setupLEDs(){
   switch(spare1LED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,RGB>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,RGB>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,RBG>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,RBG>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,GRB>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,GRB>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,GBR>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,GBR>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,BRG>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,BRG>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,SPARE1_LED_PIN,BGR>(underglow,LEDTotal,spare1LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE1_LED_PIN,BGR>(ledArr,LEDTotal,spare1LED.ledCount);
       break;
   }
   LEDTotal += spare1LED.ledCount;
@@ -228,22 +229,22 @@ void LEDManager::setupLEDs(){
   switch(spare2LED.cOrder){
     default:
     case rgb:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,RGB>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,RGB>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
     case rbg:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,RBG>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,RBG>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
     case grb:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,GRB>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,GRB>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
     case gbr:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,GBR>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,GBR>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
     case brg:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,BRG>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,BRG>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
     case bgr:
-      LEDS.addLeds<WS2811,SPARE2_LED_PIN,BGR>(underglow,LEDTotal,spare2LED.ledCount);
+      LEDS.addLeds<WS2811,SPARE2_LED_PIN,BGR>(ledArr,LEDTotal,spare2LED.ledCount);
       break;
   }
   LEDTotal += spare2LED.ledCount;
@@ -261,15 +262,15 @@ void LEDManager::updateLEDs(CRGB *arr){
 void LEDManager::colorSorter(CRGB color, int position){
   //This function runs once per LED update. To keep comparisons down, Checks reversed first. 
   if(frontLED.reversed && position < frontLED.ledCount){
-    underglow[((frontLED.startPos+frontLED.ledCount-1)-(position-frontLED.startPos))] = color;
+    ledArr[((frontLED.startPos+frontLED.ledCount-1)-(position-frontLED.startPos))] = color;
   } else if (rightLED.reversed && position < rightLED.ledCount + rightLED.startPos){
-    underglow[((rightLED.startPos+rightLED.ledCount-1)-(position-rightLED.startPos))] = color;
+    ledArr[((rightLED.startPos+rightLED.ledCount-1)-(position-rightLED.startPos))] = color;
   } else if (rearLED.reversed && position < rearLED.ledCount + rearLED.startPos){
-    underglow[((rearLED.startPos+rearLED.ledCount-1)-(position-rearLED.startPos))] = color;
+    ledArr[((rearLED.startPos+rearLED.ledCount-1)-(position-rearLED.startPos))] = color;
   } else if (leftLED.reversed && position < leftLED.ledCount + leftLED.startPos){
-    underglow[((leftLED.startPos+leftLED.ledCount-1)-(position-leftLED.startPos))] = color;
+    ledArr[((leftLED.startPos+leftLED.ledCount-1)-(position-leftLED.startPos))] = color;
   } else { //Not flipped, one of the spare strips.
-    underglow[position] = color;
+    ledArr[position] = color;
   } 
 }
 
@@ -278,104 +279,134 @@ int LEDManager::getUnderglowLength(){
   return (totalLEDs - (spare1LED.ledCount + spare2LED.ledCount));
 }
 
-//======================PATTERN TEST======================
-//uint8_t offsetPos; //How offset from default position pattern is.
-//CRGBPalette16 RGBP; //RGB color pallette
-//uint8_t brightness; //Brightness level of LEDs
-//uint8_t animSpd; //Animation speed
-//uint8_t trackedPID; // OBD-II PID Datsa to be read (if relevant)
-//SelectedPattern sp; //Current pattern used
-
+//======================Pattern=============================
 enum Pattern {
-  narrow, medium, large, wide, halfandhalf, quarters, dots 
+  narrow, medium, large, wide, halfandhalf, quarters, animation, solid
 };
 
+enum Animation {
+  staticLEDs, rotateCW, rotateCCW
+};
 //Pattern class
 class LEDPattern {
-  CRGB *leds; //Pattern to be manipulated
   CRGBPalette16 RGBP;
   int offsetPos; //Offest from driver side corner 
   uint8_t brightness; //Overall brightness of LEDs
-  int leng; //Total numb er of LEDs in string
+  int leng; //Total number of LEDs in string
+  Pattern patt; //Pattern to load into manager
+  TBlendType tbt; //Blend mode
 public:
-  LEDPattern(int len){
-    leds = new CRGB[len];
-    leng = len;
-  }
-  ~LEDPattern(){
-    delete leds;
-  }
   //Setters
-  void setPattern(Pattern);
+  void setPattern(Pattern p){patt = p;}
   void setPalette(CRGBPalette16 c){RGBP = c;}
+  void setOffsetPos(int op){offsetPos = op;}
   void setPatternBrightness(uint8_t b){ brightness = b;}
-  void setOffestPos(int op){offsetPos = op;}
+  void setLength(int l){leng = l;}
+  void setBlendMode(bool);
   //Getters
-  CRGB getPattern(){return *leds;}
-  CRGB getPixel(int p){return leds[p];}
+  Pattern getPattern(){return patt;}
   CRGBPalette16 getPalette(){return RGBP;}
   int getOffsetPos(){return offsetPos;}
   int getPatternBrightness(){return brightness;}
   int getLength(){return leng;}
+  TBlendType getBlendMode(){return tbt;}
 };
 
-void LEDPattern::setPattern(Pattern p){
-  switch(p){
-    default:
-    case narrow:
-      //Using color pallet, adjusted by offset, to set up a pattern of LEDs
-      //Use the number of LEDs to stretch palette to color spectrum
-      //Only color the correct LEDs based on 
-      break;
+void LEDPattern::setBlendMode(bool linear){
+  if(linear){
+    tbt = LINEARBLEND;
+  } else {
+    tbt = NOBLEND;
   }
 }
 
-class LEDAnimation {
-  //Functions to load special pattern/animation types
-  /*pacifica, risingflames, twinklefox,
-  murica, colorpop, splatter, drip, christmas, valentines, shamrock, halloween*/
-  //Functions for PID patterns
-  //Functions for turns signals and brakes
-  //step function
-};
-
-class LEDPreset { //Contains all pattern funcitions. One per preset.
-  LEDPattern *underglow; //Ptr so len can be set later
-  LEDAnimation *uAnimation;
-  LEDPattern *spare1;
-  LEDPattern *spare2;
-  //Function to update and retrieve each of these.
- 
+//====================Pattern Manager=======================
+class PatternManager {
+  CRGB* prevRound; //Stores last frame for reference
 public:
-  void init(int,int,int); //Sets up LEDs
-  CRGB* getPattern(CRGB*,int);
-  void step(); //Move all animations forwards one step
+  void initializePattern(CRGB,int,LEDPattern);
+  void updatePattern(CRGB,int,LEDPattern);
 };
 
-void LEDPreset::init(int underglowLen, int spare1Len, int spare2Len){
-  
+//Setup a pattern by erasing the old one.
+void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt){
+  Pattern p = lPatt.getPattern();
+  int paletteIndex = 0;
+  int len = startPos+lPatt.getLength();
+  for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
+    switch(p){
+      default:
+      case solid:{
+        arr[i] = ColorFromPalette(lPatt.getPalette(),paletteIndex,
+          lPatt.getPatternBrightness(), lPatt.getBlendMode()); 
+        paletteIndex += round((float)256.0/len);
+        break; 
+      }
+      case narrow:{ 
+        int off = (i + lPatt.getOffsetPos()) % len;
+        if(i%2 == 0){ //Every other LED
+          arr[off] = ColorFromPalette(lPatt.getPalette(),paletteIndex,
+            lPatt.getPatternBrightness(), lPatt.getBlendMode());
+        }
+        paletteIndex += round(256.0/len);
+        break;
+      }
+      case medium:{
+        //do nothing
+        break;
+      }
+    }
+  }
+}
+/*
+void PatternManager::updatePattern(CRGB arr, int startPos ,LEDPattern ledPattern){
+  for(int i=startPos;i<(startPos+ledPattern.getLength();i++)){ //Start at correct pos and don't interfere with other strings of LEDs
+    
+  }
+}
+*/
+//Functions to load special pattern/animation types
+/*pacifica, risingflames, twinklefox,
+murica, colorpop, splatter, drip, christmas, valentines, shamrock, halloween*/
+//Functions for PID patterns
+//Functions for turns signals and brakes
+//step function
+
+//====================LED Preset===========================
+class LEDPreset {
+  //Common instances
+  LEDManager* lMan;
+  PatternManager* pMan;
+  //Per-Pattern
+  LEDPattern patt[3];
+public:
+  LEDPreset(LEDManager*,PatternManager*);
+  void SetPattern(uint8_t,Pattern,CRGB,int,uint8_t);
+  //TODO void Run(){} //Update LEDs one frame
+};
+
+//Initialization 
+//TODO: Fix magic numbers
+LEDPreset::LEDPreset(LEDManager* lManPtr, PatternManager* pManPtr){
+  lMan = lManPtr;
+  pMan = pManPtr;
+  //Length determined by hardware position, cannot be updated without reset
+  patt[0].setLength(lMan->getUnderglowLength());
+  patt[1].setLength(lMan->getSpare1Length());
+  patt[2].setLength(lMan->getSpare2Length());
 }
 
-//Returns all of the data
-CRGB* LEDPreset::getPattern(CRGB* out, int len){
-  int uL = underglow->getLength();
-  int s1L = spare1->getLength();
-  int s2L = spare2->getLength();
-  for(int i=0; i < len; i++){
-    if(i < uL){ out[i]=underglow->getPixel(i);}
-    else if(i < s1L){ out[i]=spare1->getPixel(i-uL);}
-    else if(i < s2L){ out[i]=spare2->getPixel(i-(uL+s1L));}
-    else {break;} //End the loop even if buffer not full
-  }
-  return out;
+//Update a pattern
+void LEDPreset::SetPattern(uint8_t string,Pattern pattern,CRGB palette,int offsett,uint8_t brightness){
+  patt[string].setPattern(pattern);
+  patt[string].setPalette(palette);
+  patt[string].setOffsetPos(offsett);
+  patt[string].setPatternBrightness(brightness);
 }
 
 //=======================TEST CODE=========================
-
 LEDManager lMan;
-LEDPreset *active;
-LEDPreset preset1;
-LEDPreset preset2;
+LEDManager* lManPtr = &lMan;
 
 //Test
 void setup(){

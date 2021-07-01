@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "Open Underglow Controller"
 Date "2021-04-06"
-Rev "1.3.2"
+Rev "1.3.4"
 Comp "Jeremy Stintzcum"
 Comment1 ""
 Comment2 ""

@@ -13,6 +13,15 @@ Current test LEDS:
 - Front/Back LED count is 18 pixels in groups of three
 - Side LED count is 30 Pixels in groups of three.
 
+## Math
+To make sure the pattern loops around properly, move along length of palette like this:
+
+paletteIndex = round(Current LED * (256/length of string))
+
+This will minimized rounding error stackup. Example using pixel 55 of 96: 56 * 256/96 = 56 * 2.667 = 149.352 -> 149
+
+Division is performed first to avoid overflowing.
+
 ## Patterns
 Basic patterns, user programmable
 

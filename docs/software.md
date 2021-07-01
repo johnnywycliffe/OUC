@@ -26,6 +26,37 @@ Items kept in main:
 - Joystick Controls
 - Settings
 
+### Breakdown of LED operational theory
+LEDManager:
+- Has reference to real LEDs, all hardware driving functions
+- Can call update function
+- Shared between presets
+
+LEDPreset:
+- Generates pattern string with given preset
+- Each preset has a pattern defined for each of the three strings: Underglow, Spare1 and Spare2
+- These subpatterns are built into an overarching pattern which is loaded into LEDmanager
+
+LEDPatterns:
+- Where the current pattern is defined. Contains data like offset, length, brightness, palette...
+- Does NOT contain LED array. Just information needed to construct array
+
+PatternManager:
+- Given a LEDPattern, an offset and an Array to operate on, updates LEDs accordingly
+- Shared between presets
+- This class is going to be the majority of the looks
+
+
+
+
+
+
+
+
+
+
+# OUTDATED
+Anything below this needs to be revised/removed
 
 ### Menu
 The menu has a few modes:
