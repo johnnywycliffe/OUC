@@ -29,9 +29,8 @@ Basic patterns, user programmable
 2. 2 wide: every two pixels alternates color 1 and 2
 3. 3 Wide: every three pixels...
 4. 6 wide: every six pixels...
-5. Split 50/50
-6. Split 25/25/25/25
-7. Dot(s) (with trail when animated)
+5. Dot(s) (with trail when animated)
+6. Solid
 
 ## Animations
 Can be applied to basic patterns

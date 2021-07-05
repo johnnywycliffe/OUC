@@ -44,7 +44,7 @@ Prices are listed for 1 component as of 26MAY2021 from links provided
 | Part name/number | Description | QTY | Price (unit) | Link |
 | ---------------- | ----------- | --- | -------------| ---- |
 | OBD2 Cable | Cable from OB2 Port of Car to device | 1 | $9.95 | [Link](https://www.digikey.com/catalog/en/partgroup/obd-ii-to-db9-cable/57744#:~:text=This%20cable%20allows%20you%20to,the%20cable%20is%20five%20feet.) |
-| LEDS | WS2811, 12v | Some LEDs for test or install | 1 | $25.99 | [Link](https://www.amazon.com/BTF-LIGHTING-Addressable-Flexible-Silicone-Waterproof/dp/B01CNL6LLA/ref=sr_1_5?dchild=1&keywords=WS2811+12V&qid=1622055314&sr=8-5) |
+| LEDS  WS2811, 12v | Some LEDs for test or install | 1 | $25.99 | [Link](https://www.amazon.com/BTF-LIGHTING-Addressable-Flexible-Silicone-Waterproof/dp/B01CNL6LLA/ref=sr_1_5?dchild=1&keywords=WS2811+12V&qid=1622055314&sr=8-5) |
 | Joystick | Generic Joystick w/ pushbutton used for navigation of the menus | 1 | $1.00 | [Link](https://www.amazon.com/Wishiot-Joystick-Controller-Breakout-Arduino/dp/B089VXPHDH/ref=sr_1_1?dchild=1&keywords=joystick+with+button+arduino&qid=1621910213&sr=8-1) |
 | OLED 0.96" | SSD1306, SPI screen for displaying information | 1 | $5.00 | [Link](https://www.amazon.com/CenryKay-0-96inch-Display-Compatible-Microcontroller/dp/B08238DZDL/ref=sr_1_2?crid=1C6Y8VA08BYD8&dchild=1&keywords=0.96+oled+spi&qid=1621910148&sprefix=0.96%2Caps%2C161&sr=8-2) |
 | Power interupt switch | Cut power to device to avoid draining battery | 1 | $5.79 | [Link](https://www.amazon.com/Baomain-Toggle-Switch-waterproof-cover/dp/B01IYD8SHQ) |

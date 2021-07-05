@@ -41,6 +41,19 @@ enum ColorOrder { //LED color orders
   rgb, rbg, grb, gbr, brg, bgr
 };
 
+enum Pattern {
+  solid, narrow, medium, large, wide, dots, 
+  animation //Animation is used only for items that don't allow a preset arrangement of pixels
+};
+
+enum Animation {
+  staticLEDs, rotateCW, rotateCCW, fade1, fade2, faderand, cylon,     //Uses pattern
+  colorpop, splatter, drip,                                           //Uses pattern, but needs special setup
+  pacifica, flames, murica, valntine, shamrock, halloween, christmas, //Uses pattern, but needs psecial setup
+  gauge1, gauge2, gauge3, gauge4, gauge5, gauge6, gauge7,             //Gauge clusters
+  brakes1, brakes2, brakes3, signal1, signal2, signal3, signal4, signal5, signal6 //Car exclusive
+};
+
 //TODO: refactor to not be entirely public
 class LEDString {         //Individual strings of LEDs
 public:
@@ -59,7 +72,8 @@ void LEDString::setLEDStripData(uint8_t lCount, ColorOrder cO=rgb, bool rev=fals
   reversed = rev;
 }
 
-class LEDManager {              //LED manager need sot contain all the of the LED control code
+//LED manager need sot contain all the of the LED control code
+class LEDManager {              
   //Members
   LEDString frontLED;
   LEDString rightLED;
@@ -74,7 +88,7 @@ class LEDManager {              //LED manager need sot contain all the of the LE
   void colorSorter(CRGB,int);
 public:
   void initLEDs(uint8_t*,ColorOrder*,bool*);  //Function settings are passed to to set up for initialization
-  void updateLEDs(CRGB*);                     //Updates all LEDs in system
+  void updateLEDs(CRGB*);                          //Updates all LEDs in system
   LEDString* generateConfig();                //Returns a list of data to store
   //Getters
   int getTotalLength(){return totalLEDs;}
@@ -251,7 +265,7 @@ void LEDManager::setupLEDs(){
 }
 
 //Displays all pixels from array
-void LEDManager::updateLEDs(CRGB *arr){
+void LEDManager::updateLEDs(CRGB* arr){
   for(int i = 0; i < totalLEDs; i++){
     colorSorter(arr[i],i); //Inverts pixels if needed
   }
@@ -280,27 +294,15 @@ int LEDManager::getUnderglowLength(){
 }
 
 //======================Pattern=============================
-enum Pattern {
-  solid, narrow, medium, large, wide, halfandhalf, quarters, dots, 
-  animation //Animation is used only for items that don't allow a preset arrangement of pixels
-};
-
-enum Animation {
-  staticLEDs, rotateCW, rotateCCW, fade1, fade2, faderand, cylon,     //Uses pattern
-  colorpop, splatter, drip,                                           //Uses pattern, but needs special setup
-  pacifica, flames, murica, valntine, shamrock, halloween, christmas, //Uses pattern, but needs psecial setup
-  gauge1, gauge2, gauge3, gauge4, gauge5, gauge6, gauge7,             //Gauge clusters
-  brakes1, brakes2, brakes3, signal1, signal2, signal3, signal4, signal5, signal6 //Car exclusive
-};
-
 //Pattern class
 class LEDPattern {
   CRGBPalette16 RGBP;
-  int offsetPos; //Offest from driver side corner 
+  int offsetPos;      //Offest from driver side corner 
   uint8_t brightness; //Overall brightness of LEDs
-  int leng; //Total number of LEDs in string
-  Pattern patt; //Pattern to load into manager
-  TBlendType tbt; //Blend mode
+  int leng;           //Total number of LEDs in string
+  Pattern patt;       //Pattern to load into manager
+  TBlendType tbt;     //Blend mode
+  Animation anim;     //Animation apllied
 public:
   //Setters
   void setPattern(Pattern p){patt = p;}
@@ -309,6 +311,7 @@ public:
   void setPatternBrightness(uint8_t b){ brightness = b;}
   void setLength(int l){leng = l;}
   void setBlendMode(bool);
+  void setAnimation(Animation a){anim = a;};
   //Getters
   Pattern getPattern(){return patt;}
   CRGBPalette16 getPalette(){return RGBP;}
@@ -316,6 +319,7 @@ public:
   int getPatternBrightness(){return brightness;}
   int getLength(){return leng;}
   TBlendType getBlendMode(){return tbt;}
+  Animation getAnimation(){return anim;}
 };
 
 void LEDPattern::setBlendMode(bool linear){
@@ -329,24 +333,28 @@ void LEDPattern::setBlendMode(bool linear){
 //====================Pattern Manager=======================
 class PatternManager {
   CRGB* prevRound; //Stores last frame for reference
+  int len;
 public:
-  void initializePattern(CRGB,int,LEDPattern);
-  void updatePattern(CRGB,int,LEDPattern);
+  void createArr(int);
+  void delArr();
+  void initializePattern(CRGB*,int,LEDPattern);
+  void updatePattern(CRGB*,int,LEDPattern);
+  CRGB savePrevRound(CRGB*,CRGB*,int);
 };
 
 //Setup a pattern by erasing the old one.
-void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt){
+void PatternManager::initializePattern(CRGB* arr, int startPos, LEDPattern lPatt){
   Pattern p = lPatt.getPattern();
   int len = startPos+lPatt.getLength();
   if(p != animation){
     for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
       int off = (i + lPatt.getOffsetPos()) % len; //Rotate pattern around offset
       int paletteIndex = round(i*(256.0/len));    //get correct color index from palette
-      int color = 0;                              //Color
+      int color = 0;  //Color
       switch(p){
         default:
         case solid:{                      //All LEDs one color
-          //do nothing
+          color = paletteIndex;
           break; 
         }
         case narrow:{                     //Every other LED is on
@@ -358,7 +366,7 @@ void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt)
           break;
         }
         case medium:{                     //Every 2 leds are on
-          if(i%4 > 2){
+          if(i%4 > 1){
             color = paletteIndex;
           } else {
             color = -1;
@@ -366,7 +374,7 @@ void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt)
           break;
         }
         case large:{                      //Every 3 leds are on
-          if(i%6 > 3){
+          if(i%6 > 2){
             color = paletteIndex;
           } else {
             color = -1;
@@ -374,30 +382,10 @@ void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt)
           break;
         }
         case wide:{                       //Every 6 leds are on
-          if(i%12 > 6){                   
+          if(i%12 > 5){                   
             color = paletteIndex;
           } else {
             color = -1;
-          }
-          break;
-        }
-        case halfandhalf:{                //Half one color, half another
-          if(i < len/2){
-            //do nothing
-          } else {
-            color = 128;
-          }
-          break;
-        }
-        case quarters:{                   //Each quater is one color
-          if(i < len/4){
-            //do nothing
-          } else if (i < len/2) {
-            color = 64;
-          } else if (i < (len/2+len/4)) {
-            color = 128;
-          } else {
-            color = 192;
           }
           break;
         }
@@ -411,10 +399,12 @@ void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt)
         }
       }
       //Apply color from palette to pixel
-      if(color > 0){ 
+      if(color >= 0){ 
+        //Serial.println(color);
         arr[off] = ColorFromPalette(lPatt.getPalette(),color,
               lPatt.getPatternBrightness(), lPatt.getBlendMode());
       } else {
+        //Serial.println("Black");
         arr[off] = CRGB::Black;
       }
     }
@@ -423,17 +413,41 @@ void PatternManager::initializePattern(CRGB arr, int startPos, LEDPattern lPatt)
   }
 }
 
-//
-void PatternManager::updatePattern(CRGB arr, int startPos, LEDPattern lPatt){
-  Pattern p = lPatt.getPattern();
+//Updates the LEDs
+void PatternManager::updatePattern(CRGB *arr, int startPos, LEDPattern lPatt){
+  Animation anim = lPatt.getAnimation();
   int len = startPos+lPatt.getLength();
-  if(p == animation){
-    //TODO: Go to special animation types (Pacifica, MURICA, etc)
-  } else {
-    for(int i=startPos;i<len;i++){ //Start at correct pos and don't interfere with other strings of LEDs
-      //TODO: stuff
-    }
+  switch(anim){
+    default:
+    case staticLEDs:
+      //Do nothing
+      break;
+    case rotateCW:
+      //savePrevRound(arr,prevRound,len);
+      for(int i=0;i<len;i++){
+        //arr[i] = prevRound[(i+1)%len];
+      }
+      break;
   }
+}
+
+//Copy previous state into array for use
+CRGB PatternManager::savePrevRound(CRGB *src, CRGB *dst, int len){
+  //memcpy(dst, src, sizeof(src[0])*len);
+  for (int i=0;i<len;i++){
+    //Serial.println(i);
+    //*dst++ = *src++;
+    //Serial.println(*src);
+  }
+}
+
+void PatternManager::createArr(int l){
+  prevRound = new CRGB[len];
+  len = l;
+}
+
+void PatternManager::delArr(){
+  delete prevRound;
 }
 
 //====================LED Preset===========================
@@ -442,11 +456,13 @@ class LEDPreset {
   LEDManager* lMan;
   PatternManager* pMan;
   //Per-Pattern
-  LEDPattern patt[3];
+public: //delete
+  LEDPattern patt[3]; //underglow = 0, spare1 = 1, spare2 = 2
 public:
   LEDPreset(LEDManager*,PatternManager*);
-  void SetPattern(uint8_t,Pattern,CRGB,int,uint8_t);
-  //TODO void Run(){} //Update LEDs one frame
+  void SetPattern(uint8_t,Pattern,CRGBPalette16,int,uint8_t,bool,Animation);
+  //TODO: void Start() //Init pattern thru patternmanager
+  //TODO: void Run()   //Update LEDs one frame thru patternmanager
 };
 
 //Initialization 
@@ -461,29 +477,46 @@ LEDPreset::LEDPreset(LEDManager* lManPtr, PatternManager* pManPtr){
 }
 
 //Update a pattern
-void LEDPreset::SetPattern(uint8_t string,Pattern pattern,CRGB palette,int offsett,uint8_t brightness){
+void LEDPreset::SetPattern(uint8_t string,Pattern pattern,CRGBPalette16 palette,int offsett,
+  uint8_t brightness,bool tbt,Animation anim){
   patt[string].setPattern(pattern);
   patt[string].setPalette(palette);
   patt[string].setOffsetPos(offsett);
   patt[string].setPatternBrightness(brightness);
+  patt[string].setBlendMode(tbt);
+  patt[string].setAnimation(anim);
 }
 
 //=======================TEST CODE=========================
 LEDManager lMan;
-LEDManager* lManPtr = &lMan;
+PatternManager pMan;
+CRGB* leds;
+LEDPreset* active;
 
 //Test
 void setup(){
   Serial.begin(115200);
+  
   //This data should be loaded from EEPROM
-  uint8_t l[] = {100,30,18,30,0,0};
+  uint8_t l[] = {97,1,1,1,0,0};
   ColorOrder c[] = {brg,brg,brg,brg,brg,brg};
-  bool r[] = {true,false,false,false,false,false};
+  bool r[] = {false,false,false,false,false,false};
+  
   //Close to actual init code
   lMan.initLEDs(l,c,r);
-  Serial.println(lMan.getUnderglowLength());
+  int len = lMan.getTotalLength();
+  leds = new CRGB [len];
+  active = new LEDPreset(&lMan,&pMan);
+  pMan.createArr(len);
+  
+  //Test code
+  active->SetPattern(0,solid,RainbowColors_p,0,32,true,staticLEDs);
+  pMan.initializePattern(leds,0,active->patt[0]);
+  
+  pMan.updatePattern(leds,0,active->patt[0]);
 }
 
 void loop(){
-  //lMan.updateLEDs();
+  //pMan.updatePattern(leds,0,active->patt[0]);
+  lMan.updateLEDs(leds);
 }
