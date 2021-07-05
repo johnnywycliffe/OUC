@@ -35,7 +35,7 @@
 #define SPARE1_LED_PIN 2
 #define SPARE2_LED_PIN 15
 
-//TODO: Move this to a global type scope for ease of use
+//TODO: Move these to a global type scope for ease of use
 //Declarations
 enum ColorOrder { //LED color orders
   rgb, rbg, grb, gbr, brg, bgr
@@ -432,6 +432,7 @@ void PatternManager::updatePattern(CRGB *arr, int startPos, LEDPattern lPatt){
 }
 
 //Copy previous state into array for use
+//FIXME: For wahtever reason, this crashes the device
 CRGB PatternManager::savePrevRound(CRGB *src, CRGB *dst, int len){
   //memcpy(dst, src, sizeof(src[0])*len);
   for (int i=0;i<len;i++){
